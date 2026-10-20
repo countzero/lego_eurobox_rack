@@ -6,10 +6,16 @@ levels of 120 mm boxes with inserts above, on 8 castors. It takes NextGen boxes
 (ab-in-die-BOX) and regular Euroboxes (Auer and others) alike, and its top is
 prepared for a wooden plate to be fitted later.
 
-> [!NOTE]
-> Work in progress. The [roadmap](docs/roadmap.md) says what is planned and how
-> far each step has got; the dimensions are provisional until the boxes are
-> measured (roadmap 0004).
+**[Open the 3D viewer](https://countzero.github.io/lego_eurobox_rack/)**: turn
+the rack, pull the boxes out, show the planned top plate.
+
+![The rack, three-quarter view, one box pulled out](renders/drawer_out.png)
+
+> [!WARNING]
+> Not ready to build. The box dimensions are provisional until the boxes are
+> measured (roadmap 0004), and the joints of the width beams clash with the
+> angles (roadmap 0010). The [roadmap](docs/roadmap.md) says what is planned
+> and how far each step has got.
 
 ## Front view
 
@@ -43,13 +49,23 @@ is pulled out.
 
 ## Repository
 
-| Path                  | What                                                  |
-| --------------------- | ----------------------------------------------------- |
-| `docs/roadmap.md`     | The steps, their specifications and their status      |
-| `docs/sources.md`     | Every fact with its status and source                 |
-| `docs/conventions.md` | Branches, commits, pull requests, how facts are cited |
-| `docs/releases.md`    | How a release is cut and published                    |
-| `docs/worktrees.md`   | How parallel steps use git worktrees                  |
+| Path                  | What                                                       |
+| --------------------- | ---------------------------------------------------------- |
+| `design/rack.json`    | Every dimension and the part catalog: the single source    |
+| `docs/design.md`      | Decisions, fit check, drawings, joints and contracts       |
+| `docs/inserts.md`     | The inserts of the 120 mm boxes                            |
+| `docs/prices.md`      | Prices of every part, the order split and the totals       |
+| `docs/assembly.md`    | The build, step by step                                    |
+| `bom/`                | Parts list and cut list, generated from `rack.json`        |
+| `blender/`            | The model, built headless from `rack.json`, and its export |
+| `renders/`            | Renders of the model                                       |
+| `web/`                | The 3D viewer, published on GitHub Pages                   |
+| `docs/roadmap.md`     | The steps, their specifications and their status           |
+| `docs/sources.md`     | Every fact with its status and source                      |
+| `docs/conventions.md` | Branches, commits, pull requests, how facts are cited      |
+| `docs/releases.md`    | How a release is cut and published                         |
+| `docs/worktrees.md`   | How parallel steps use git worktrees                       |
+| `docs/web_viewer.md`  | How the viewer is built                                    |
 
 ## License
 
