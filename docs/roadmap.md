@@ -33,17 +33,17 @@ sorted by ID; the order of work follows from the status.
   `docs/roadmap.md` and `docs/sources.md` are updated when its pull request is
   merged.
 
-| ID   | Step                                                         | Status               | PR  |
-| ---- | ------------------------------------------------------------ | -------------------- | --- |
-| 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | In progress          |     |
-| 0002 | [Rack specification](#0002-rack-specification)               | Blocked by 0001      |     |
-| 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Blocked by 0002      |     |
-| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |     |
-| 0005 | [Insert plan](#0005-insert-plan)                             | Blocked by 0002      |     |
-| 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Blocked by 0002      |     |
-| 0007 | [Price comparison](#0007-price-comparison)                   | Blocked by 0002      |     |
-| 0008 | [Assembly guide](#0008-assembly-guide)                       | Blocked by 0002      |     |
-| 0009 | [Web viewer](#0009-web-viewer)                               | Blocked by 0002      |     |
+| ID   | Step                                                         | Status               | PR                                                          |
+| ---- | ------------------------------------------------------------ | -------------------- | ----------------------------------------------------------- |
+| 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1) |
+| 0002 | [Rack specification](#0002-rack-specification)               | Planned              |                                                             |
+| 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Blocked by 0002      |                                                             |
+| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |                                                             |
+| 0005 | [Insert plan](#0005-insert-plan)                             | Blocked by 0002      |                                                             |
+| 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Blocked by 0002      |                                                             |
+| 0007 | [Price comparison](#0007-price-comparison)                   | Blocked by 0002      |                                                             |
+| 0008 | [Assembly guide](#0008-assembly-guide)                       | Blocked by 0002      |                                                             |
+| 0009 | [Web viewer](#0009-web-viewer)                               | Blocked by 0002      |                                                             |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
