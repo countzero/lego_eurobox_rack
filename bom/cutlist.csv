@@ -1,0 +1,59 @@
+material,bar,stock_length,part_id,cut_length,start
+30x30 B-type slot 8,1,3000,profile.upright,823,0
+30x30 B-type slot 8,1,3000,profile.upright,823,826
+30x30 B-type slot 8,1,3000,profile.upright,823,1652
+30x30 B-type slot 8,1,3000,profile.beam_width,416,2478
+30x30 B-type slot 8,2,3000,profile.upright,823,0
+30x30 B-type slot 8,2,3000,profile.upright,823,826
+30x30 B-type slot 8,2,3000,profile.upright,823,1652
+30x30 B-type slot 8,2,3000,profile.beam_width,416,2478
+30x30 B-type slot 8,3,3000,profile.upright,823,0
+30x30 B-type slot 8,3,3000,profile.upright,823,826
+30x30 B-type slot 8,3,3000,profile.beam_depth,550,1652
+30x30 B-type slot 8,3,3000,profile.beam_depth,550,2205
+30x30 B-type slot 8,4,3000,profile.beam_depth,550,0
+30x30 B-type slot 8,4,3000,profile.beam_depth,550,553
+30x30 B-type slot 8,4,3000,profile.beam_depth,550,1106
+30x30 B-type slot 8,4,3000,profile.beam_depth,550,1659
+30x30 B-type slot 8,4,3000,profile.beam_depth,550,2212
+30x30 B-type slot 8,5,3000,profile.beam_depth,550,0
+30x30 B-type slot 8,5,3000,profile.beam_width,416,553
+30x30 B-type slot 8,5,3000,profile.beam_width,416,972
+30x30 B-type slot 8,5,3000,profile.beam_width,416,1391
+30x30 B-type slot 8,5,3000,profile.beam_width,416,1810
+30x30 B-type slot 8,5,3000,profile.beam_width,416,2229
+30x30 B-type slot 8,6,3000,profile.beam_width,416,0
+30x30 B-type slot 8,6,3000,profile.beam_width,416,419
+30x30 B-type slot 8,6,3000,profile.beam_width,416,838
+30x30 B-type slot 8,6,3000,profile.beam_width,416,1257
+30x30 B-type slot 8,6,3000,profile.beam_width,416,1676
+50x50x3 EN AW-6060,1,2000,angle.base,610,0
+50x50x3 EN AW-6060,1,2000,angle.base,610,613
+50x50x3 EN AW-6060,1,2000,angle.base,610,1226
+50x50x3 EN AW-6060,2,2000,angle.base,610,0
+50x50x3 EN AW-6060,2,2000,angle.base,610,613
+50x50x3 EN AW-6060,2,2000,angle.base,610,1226
+50x50x3 EN AW-6060,3,2000,angle.guard,610,0
+50x50x3 EN AW-6060,3,2000,angle.guard,610,613
+50x50x3 EN AW-6060,3,2000,angle.guard,610,1226
+50x50x3 EN AW-6060,4,2000,angle.guard,610,0
+50x50x3 EN AW-6060,4,2000,angle.guard,610,613
+50x50x3 EN AW-6060,4,2000,angle.guard,610,1226
+50x50x3 EN AW-6060,5,2000,angle.support,610,0
+50x50x3 EN AW-6060,5,2000,angle.support,610,613
+50x50x3 EN AW-6060,5,2000,angle.support,610,1226
+50x50x3 EN AW-6060,6,2000,angle.support,610,0
+50x50x3 EN AW-6060,6,2000,angle.support,610,613
+50x50x3 EN AW-6060,6,2000,angle.support,610,1226
+50x50x3 EN AW-6060,7,2000,angle.support,610,0
+50x50x3 EN AW-6060,7,2000,angle.support,610,613
+50x50x3 EN AW-6060,7,2000,angle.support,610,1226
+50x50x3 EN AW-6060,8,2000,angle.support,610,0
+50x50x3 EN AW-6060,8,2000,angle.support,610,613
+50x50x3 EN AW-6060,8,2000,angle.support,610,1226
+50x50x3 EN AW-6060,9,2000,angle.support,610,0
+50x50x3 EN AW-6060,9,2000,angle.support,610,613
+50x50x3 EN AW-6060,9,2000,angle.support,610,1226
+50x50x3 EN AW-6060,10,2000,angle.support,610,0
+50x50x3 EN AW-6060,10,2000,angle.support,610,613
+50x50x3 EN AW-6060,10,2000,angle.support,610,1226

@@ -1,0 +1,30 @@
+id,category,description,material,length,width,quantity,unit,status
+profile.upright,profile,"Upright, M8 core thread at the bottom end",30x30 B-type slot 8,823,,8,piece,build
+profile.beam_width,profile,"Width beam between two uprights, front and back, top and bottom",30x30 B-type slot 8,416,,12,piece,build
+profile.beam_depth,profile,"Depth beam between a front and a back upright, top and bottom",30x30 B-type slot 8,550,,8,piece,build
+angle.base,angle,"Level 1 support, flat leg at the bottom",50x50x3 EN AW-6060,610,,6,piece,build
+angle.support,angle,"Level 2-4 support, flat leg on top, hanging leg guides the box below",50x50x3 EN AW-6060,610,,18,piece,build
+angle.guard,angle,"Tip guard above level 4, same section and orientation as angle.support",50x50x3 EN AW-6060,610,,6,piece,build
+bracket.inside_30,connector,"Inside angle bracket 30 for B-type slot 8, one per beam end (docs/design.md, Joints)",die-cast zinc or aluminium,,,40,piece,build
+screw.m6x12_button,fastener,ISO 7380 M6x12 for the brackets,"steel, zinc-plated",,,80,piece,build
+tnut.m6,fastener,T-nut M6 B-type slot 8 for the brackets,"steel, zinc-plated",,,80,piece,build
+screw.m5x10_countersunk,fastener,"ISO 10642 M5x10 for the angles, flush in a countersunk hole so the hanging leg stays smooth","steel, zinc-plated",,,120,piece,build
+screw.m5x10_button,fastener,ISO 7380 M5x10 for the panels,"steel, zinc-plated",,,60,piece,build
+tnut.m5,fastener,T-nut M5 B-type slot 8 for the angles and the panels,"steel, zinc-plated",,,180,piece,build
+castor.brake,castor,"Swivel castor 75 mm with brake and back hole, at least 60 kg",PU tread,,,4,piece,build
+castor.plain,castor,"Swivel castor 75 mm with back hole, at least 60 kg",PU tread,,,4,piece,build
+screw.m8x25,fastener,ISO 4017 M8x25 through the castor into the upright's core thread,"steel, zinc-plated",,,8,piece,build
+washer.m8_large,fastener,ISO 7093 washer 8.4 for the castor's back hole,"steel, zinc-plated",,,8,piece,build
+panel.back,panel,"Back panel, also the back stop of the boxes","3 mm aluminium composite, white",1368,823,1,piece,build
+panel.side,panel,Side panel,"3 mm aluminium composite, white",613,823,2,piece,build
+tape.uhmw_25,consumable,Self-adhesive UHMW-PE slide tape on the flat legs that carry boxes,"UHMW-PE, 25 mm wide",14640,,1,length,build
+cap.end_30,finish,End cap 30x30 for the upright tops,plastic,,,8,piece,build
+cover.slot_8,finish,Slot cover strip for the top faces of the top frame,"plastic, B-type slot 8",4696,,1,length,build
+box.e120,box,"Eurobox 600x400, height class 120 (Auer EG 64/12 HG, so the EK inserts fit)",PP,,,6,piece,build
+box.e220,box,"Eurobox 600x400, height class 220 (NextGen 2.0 N2G64-22 or Auer EG 64/22 HG)",PP,,,6,piece,build
+insert.ek2,insert,Auer EK 2/100 insert,PP,563,183,1,piece,build
+insert.ek4,insert,Auer EK 4/100 insert,PP,282,183,10,piece,build
+insert.ek8,insert,Auer EK 8/100 insert,PP,141,183,24,piece,build
+plate.top,plate,"Top plate, birch plywood, corners rounded R25",18 mm birch plywood,1414,653,1,piece,planned
+bracket.plate,connector,"Angle bracket 30 with fixing set, swung into the top beams' inner slots",steel,,,10,piece,planned
+screw.wood_4_5x12,fastener,"Wood screw 4.5x12, pan head, from below through the brackets",steel,,,20,piece,planned
