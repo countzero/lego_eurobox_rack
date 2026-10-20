@@ -147,9 +147,16 @@ inner slots, two per end, so the hanging leg stays smooth for the rim.
 | Panel to frame, every 150–200 mm | 60    | 1 `screw.m5x10_button`, 1 `tnut.m5`                        |
 | Castor to upright                | 8     | 1 `screw.m8x25`, 1 `washer.m8_large`, M8 core thread       |
 
-The 20 beams have 40 ends. The bracket sits under a bottom beam and over a top
-beam, where it carries the load into the upright; the boxes load only the
-angles, which bolt straight to the uprights.
+The 20 beams have 40 ends. The bracket sits above a bottom beam and below a top
+beam, the only sides inside the frame; the boxes load only the angles, which
+bolt straight to the uprights.
+
+> [!WARNING]
+> At the 24 ends of the width beams the bracket takes the upright face the
+> angles need: above a bottom width beam it fills 130–160 where `angle.base`
+> sits (130–180), and below a top width beam 863–893 where the hanging leg of
+> `angle.guard` sits (843–893). The depth beams are clear. Roadmap 0010
+> resolves this before parts are ordered.
 
 ## Contracts
 
