@@ -1,0 +1,10 @@
+# Blender backups and lock files
+*.blend1
+*.blend@
+
+# Session scratch files and change worktrees
+.tmp/
+.worktrees/
+
+# Intermediate render output
+renders/tmp/
