@@ -24,9 +24,17 @@
 <nav id="toggles" aria-label="Show">
   <button id="all" aria-pressed="false">All out</button>
   <button id="plate" aria-pressed="true">Top plate</button>
+  <button id="colours" aria-pressed="true" aria-controls="clips">Colours</button>
 </nav>
+<aside id="clips" aria-label="ColorClips">
+  <h2>ColorClips</h2>
+  <div id="presets" role="group" aria-label="Presets"></div>
+  <div id="levels"></div>
+  <p id="step"></p>
+  <ul id="order" aria-label="Packs to order"></ul>
+</aside>
 <div id="label" hidden></div>
-<p id="help">Drag to orbit, right-drag or two fingers to pan, wheel or pinch to zoom. Click a box to pull it out.</p>
+<p id="help">Drag to orbit, right-drag or two fingers to pan, wheel or pinch to zoom. Click a box to pull it out. Pick a ColorClip colour per level under Colours.</p>
 <script>/* JS */</script>
 </body>
 </html>

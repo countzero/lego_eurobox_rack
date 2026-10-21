@@ -108,13 +108,24 @@
         "rule": "one colour per level; every pair of neighbouring levels is close to complementary on the colour wheel, so all four steps contrast alike; both handles of a box",
         "levels": { "1": "red", "2": "turquoise", "3": "purple", "4": "yellow", "5": "blue" },
         "colours": {
-            "red": { "article": "R200-00-01-SET", "srgb": "#F52B43" },
-            "turquoise": { "article": "R200-00-12-SET", "srgb": "#00A8A8" },
-            "purple": { "article": "R200-00-15-SET", "srgb": "#BE5286" },
-            "yellow": { "article": "R200-00-03-SET", "srgb": "#F9E630" },
-            "blue": { "article": "R200-00-02-SET", "srgb": "#055FE9" }
+            "red": { "label": "Rot", "article": "R200-00-01-SET", "srgb": "#F52B43" },
+            "magenta": { "label": "Magenta", "article": "R200-00-11-SET", "srgb": "#EB5E88" },
+            "purple": { "label": "Purpur", "article": "R200-00-15-SET", "srgb": "#BE5286" },
+            "blue": { "label": "Blau", "article": "R200-00-02-SET", "srgb": "#055FE9" },
+            "turquoise": { "label": "Türkis", "article": "R200-00-12-SET", "srgb": "#00A8A8" },
+            "green": { "label": "Grün", "article": "R200-00-08-SET", "srgb": "#1D7529" },
+            "lightgreen": { "label": "Hellgrün", "article": "R200-00-13-SET", "srgb": "#B7E686" },
+            "yellow": { "label": "Gelb", "article": "R200-00-03-SET", "srgb": "#F9E630" },
+            "black": { "label": "Schwarz", "article": "R200-00-06-SET", "srgb": "#242424" }
         },
-        "srgb_note": "UNVERIFIED, median ring colour in aidB's photos: red, yellow and blue from the ColorClip photo, turquoise and purple from the boxes with fitted rings"
+        "srgb_note": "UNVERIFIED, median ring colour in aidB's photos: red, yellow and blue from the ColorClip photo, turquoise and purple from the boxes with fitted rings, magenta, green and light green from the user's samples, checked against aidB's ColorClip photos within CIE76 8, black from its ColorClip photo with the shadows trimmed",
+        "presets": [
+            { "name": "By box type, bold", "why": "one colour per insert type; clear for every kind of colour vision", "levels": { "1": "red", "2": "blue", "3": "blue", "4": "yellow", "5": "yellow" } },
+            { "name": "By box type, calm", "why": "one colour per insert type without red or yellow; the largest steps between the groups", "levels": { "1": "blue", "2": "lightgreen", "3": "lightgreen", "4": "purple", "5": "purple" } },
+            { "name": "Five colours, every viewer", "why": "a colour per level with large steps for normal and red-green colour vision", "levels": { "1": "blue", "2": "green", "3": "turquoise", "4": "lightgreen", "5": "purple" } },
+            { "name": "Colour-blind safer", "why": "a colour per level without red, so red-green colour vision keeps every step", "levels": { "1": "magenta", "2": "yellow", "3": "blue", "4": "green", "5": "turquoise" } },
+            { "name": "Harmonious cool", "why": "neighbouring hues by insert type, lighter towards the top", "levels": { "1": "blue", "2": "turquoise", "3": "turquoise", "4": "lightgreen", "5": "lightgreen" } }
+        ]
     },
     "parts": [
         { "id": "profile.upright", "category": "profile", "description": "Upright between the bars, M8 core thread at both ends, the bottom one extra deep (80 mm)", "material": "30x30 B-type slot 8", "length": 791, "quantity": 8, "unit": "piece", "status": "build" },

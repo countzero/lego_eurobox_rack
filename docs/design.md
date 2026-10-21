@@ -232,7 +232,11 @@ outside (`UNVERIFIED`). Details, drawings and fit in `docs/inserts.md`.
 
 Each box carries a ColorClip ring on both handles, one pack of two per box,
 one colour per level from the bottom: red, turquoise, purple, yellow, blue
-(`rack.json` → `color_clips`, sRGB from aidB's photo, `UNVERIFIED`).
+(`rack.json` → `color_clips.levels`, sRGB from aidB's photo, `UNVERIFIED`).
+`color_clips.colours` lists all nine colours aidB sells, and
+`color_clips.presets` five alternatives to try in the web viewer
+(`docs/web_viewer.md` → *ColorClips*); the model and the parts list follow
+`levels` alone.
 
 ## Contracts
 
