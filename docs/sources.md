@@ -36,12 +36,16 @@ short 300 mm side and its handle at the front.
 
 ## ColorClips
 
-| Fact              | Value                                                                  | Status     | Source                |
-| ----------------- | ---------------------------------------------------------------------- | ---------- | --------------------- |
-| Article, contents | R200-00-xx-SET, 2 rings per pack, one pack per box (both handles)      | VERIFIED   | [aidB C120][aidb-c12] |
-| Colours           | 9; red -01, blue -02, yellow -03 are used                              | VERIFIED   | [aidB C120][aidb-c12] |
-| Price             | 0.82 € per pack of 2                                                   | VERIFIED   | [aidB C120][aidb-c12] |
-| Size              | not published; the model uses a ring 145 × 50 mm over the handle frame | UNVERIFIED | roadmap 0004          |
+| Fact              | Value                                                                                                                                          | Status     | Source                                    |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------- |
+| Article, contents | R200-00-xx-SET, 2 rings per pack, one pack per box (both handles)                                                                              | VERIFIED   | [aidB C120][aidb-c12]                     |
+| Colours           | 9: Rot -01, Blau -02, Gelb -03, Schwarz -06, Grün -08, Magenta -11, Türkis -12, Hellgrün -13, Purpur -15                                       | VERIFIED   | [aidB C120][aidb-c12]                     |
+| Price             | 0.82 € per pack of 2                                                                                                                           | VERIFIED   | [aidB C120][aidb-c12]                     |
+| Colour codes      | no RAL, Pantone or sRGB code published for the rings; searched, not found                                                                      | UNVERIFIED | [aidB][aidb-home]                         |
+| sRGB              | `rack.json` → `color_clips.colours`; a median read of aidB's nine ColorClip photos agrees within CIE76 8 and gives black #242424               | UNVERIFIED | [aidB C120][aidb-c12], ColorClip photos   |
+| Size              | not published; the model uses a ring 145 × 50 mm over the handle frame                                                                         | UNVERIFIED | roadmap 0004                              |
+
+[aidb-home]: https://www.ab-in-die-box.de/
 
 ## Inserts: NextGen sets for 400 × 300 × 120
 

@@ -35,19 +35,19 @@ sorted by ID; the order of work follows from the status.
   `docs/roadmap.md` and `docs/sources.md` are updated when its pull request is
   merged.
 
-| ID   | Step                                                         | Status               | PR                                                          |
-| ---- | ------------------------------------------------------------ | -------------------- | ----------------------------------------------------------- |
-| 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1) |
-| 0002 | [Rack specification](#0002-rack-specification)               | Done                 | [#2](https://github.com/countzero/lego_eurobox_rack/pull/2) |
-| 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Done                 | [#6](https://github.com/countzero/lego_eurobox_rack/pull/6) |
-| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |                                                             |
-| 0005 | [Insert plan](#0005-insert-plan)                             | Done                 | [#4](https://github.com/countzero/lego_eurobox_rack/pull/4) |
-| 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Done                 | [#3](https://github.com/countzero/lego_eurobox_rack/pull/3) |
-| 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8) |
-| 0008 | [Assembly guide](#0008-assembly-guide)                       | Done                 | [#7](https://github.com/countzero/lego_eurobox_rack/pull/7) |
-| 0009 | [Web viewer](#0009-web-viewer)                               | Done                 | [#5](https://github.com/countzero/lego_eurobox_rack/pull/5) |
-| 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Planned              |                                                             |
-| 0011 | [ColorClip picker](#0011-colorclip-picker)                   | In progress          |                                                             |
+| ID   | Step                                                         | Status               | PR                                                            |
+| ---- | ------------------------------------------------------------ | -------------------- | ------------------------------------------------------------- |
+| 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1)   |
+| 0002 | [Rack specification](#0002-rack-specification)               | Done                 | [#2](https://github.com/countzero/lego_eurobox_rack/pull/2)   |
+| 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Done                 | [#6](https://github.com/countzero/lego_eurobox_rack/pull/6)   |
+| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |                                                               |
+| 0005 | [Insert plan](#0005-insert-plan)                             | Done                 | [#4](https://github.com/countzero/lego_eurobox_rack/pull/4)   |
+| 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Done                 | [#3](https://github.com/countzero/lego_eurobox_rack/pull/3)   |
+| 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8)   |
+| 0008 | [Assembly guide](#0008-assembly-guide)                       | Done                 | [#7](https://github.com/countzero/lego_eurobox_rack/pull/7)   |
+| 0009 | [Web viewer](#0009-web-viewer)                               | Done                 | [#5](https://github.com/countzero/lego_eurobox_rack/pull/5)   |
+| 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Planned              |                                                               |
+| 0011 | [ColorClip picker](#0011-colorclip-picker)                   | Done                 | [#10](https://github.com/countzero/lego_eurobox_rack/pull/10) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
