@@ -1,158 +1,113 @@
 # Insert plan
 
-The coarse division of the six boxes of height class 120 on levels 3 and 4.
-Every dimension below comes from `design/rack.json` → `inserts`; every price
-and product property cites `docs/sources.md`. Prices were read on 2026-10-20.
+The coarse division of the twelve boxes of height class 120 on levels L2 to
+L5. Every dimension below comes from `design/rack.json` → `inserts`; every
+price and product property cites `docs/sources.md`. Prices include 19 % VAT
+and were read on 2026-10-21.
 
-## System: Auer EK x/100
+## System: NextGen Einsatzkästen x-100
 
-Auer's „Einsatzkasten“ (insert box) EK x/100 is 100 mm high and comes in three
-footprints that tile the floor of a 600 × 400 box:
+aidB sells NextGen "Einsatzkästen" (insert boxes) 100 mm high in three
+footprints, made for the Eurobox NextGen 400 × 300 × 120 ([aidB set 1/2][aidb-half],
+[aidB set 1/4][aidb-quarter]):
 
-| Insert    | Outer L × W × H     | Per box | Net, single | Incl. 19 % VAT | Status   |
-| --------- | ------------------- | ------- | ----------- | -------------- | -------- |
-| EK 2/100  | 563 × 183 × 100 mm  | 2       | 7.49 €      | 8.91 €         | VERIFIED |
-| EK 4/100  | 282 × 183 × 100 mm  | 4       | 4.47 €      | 5.32 €         | VERIFIED |
-| EK 8/100  | 141 × 183 × 100 mm  | 8       | 3.31 €      | 3.94 €         | VERIFIED |
+| Insert   | Outer L × W × H    | Used here           | Status     |
+| -------- | ------------------ | ------------------- | ---------- |
+| 3613-100 | 365 × 133 × 100 mm | 2 per half box      | VERIFIED   |
+| 1813-100 | 182 × 133 × 100 mm | 4 per quarter box   | VERIFIED   |
+| 0906-100 | 91 × 67 × 100 mm   | not used            | SECONDARY  |
 
-Sizes and net prices are from Auer's own shop ([Auer EK AT][auer-ek],
-[Auer EK DE][auer-ek-de]); the gross prices are `DERIVED` (net × 1.19). Both
-the Austrian and the German page now show the same net single-piece prices and
-both say „Alle Preise zzgl. MwSt.“ (all prices plus VAT). An earlier reading
-of the two pages differed; this plan uses the German net price with 19 % VAT.
-Pallet prices (EK 2/100 5.00 €, EK 4/100 2.98 €, EK 8/100 2.21 € net) need
-220 to 880 pieces and do not apply. Freight is free from 250 € net.
+They fit only the NextGen 400 × 300 × 120 box. Two rows of 133 mm give
+266 mm across the 300 side; one 3613 or two 1813 give 365 or 364 mm along the
+400 side. The block of 266 × 365 mm (quarter: 266 × 364 mm) fills the inner top
+of 265 × 365 mm within the box's ±5 mm tolerance (`DERIVED`).
 
-**Why EK.** Two rows of 183 mm give 366 mm across; four EK 8 (4 × 141), two
-EK 4 (2 × 282) or one EK 2 (563 mm) give 563–564 mm along. The tile of
-564 × 366 mm fills the box with no filler pieces (`DERIVED`). Auer states that
-"a Eurobox of 60 × 40 cm base holds up to eight inserts" ([Auer EK][auer-ek]).
-By contrast, aidB's insert sets for the NextGen 120 box are a 566 × 366 mm
-block that needs 8 filler boxes of 34 × 46 mm in the middle
-([aidB set][aidb-set]).
+**Height.** The 120 box has 115 mm inside; the 100 mm insert stays 15 mm below
+the rim and leaves the 105 mm usable height of a stacked box free, so the box
+above or the support angle does not touch it (`DERIVED`).
 
-**Heights.** The 120 box has 115 mm inside: the EK x/100 (100 mm) and the
-EK x/50 (50 mm) fit under the rim; the EK x/150 (150 mm) does not (`DERIVED`
-from the inner height). The 100 mm insert leaves the 103–105 mm usable height
-of a stacked box free, so a box above or the support angle does not touch it.
-
-**Confirmed for which box:**
-
-| Box                       | Inner L × W (top) | EK fit                                     | Status     |
-| ------------------------- | ----------------- | ------------------------------------------ | ---------- |
-| Auer EG 64/12 HG          | 570 × 370 mm      | confirmed by Auer: up to 8 per 60 × 40 box | VERIFIED   |
-| aidB NextGen 2.0 N2G64-12 | 565 × 365 mm      | very likely, not confirmed                 | UNVERIFIED |
-
-The NextGen box is 1 mm narrower at the top than the 366 mm tile, inside its
-± 5 mm tolerance; aidB's own block is 566 × 366 mm and fits, so EK most likely
-fits too. Roadmap 0004 tries one EK 2/100 in a NextGen 120 box. Until then the
-parts list buys Auer EG 64/12 HG for the 120 class (`box.e120`).
+**Bought as sets.** Set 1/2 (EES43-01-100-04) holds 2 × 3613-100, set 1/4
+(EES43-02-100-04) holds 4 × 1813-100. A single 1813-100 costs 3.25 €, so four
+singles (13.00 €) cost more than the set (`DERIVED`).
 
 ## Layouts
 
-Top view, the handle side at the front (top of the drawing). The two rows of
-`rack.json` lie side by side across the 400 mm width; row 1 is drawn on the
-left. The cells of a row run from the front to the back along the 600 mm
-length. Sizes are the outer sizes of the inserts; the inner sizes are a few
-millimetres smaller and are not published.
-
-### eight: 8 compartments
+Top view, the user's drawings. "Griff" is the handle; the handles are on the
+short 300 sides, and the front handle faces the aisle. The two rows of
+`rack.json` lie side by side across the 300 side; the cells of a row run along
+the 400 side.
 
 ```
-                      FRONT (handle side)
-          +--------------------+--------------------+
-          |  EK 8  141 x 183   |  EK 8  141 x 183   |
-          +--------------------+--------------------+
-          |  EK 8  141 x 183   |  EK 8  141 x 183   |
-          +--------------------+--------------------+
-          |  EK 8  141 x 183   |  EK 8  141 x 183   |
-          +--------------------+--------------------+
-          |  EK 8  141 x 183   |  EK 8  141 x 183   |
-          +--------------------+--------------------+
-                            BACK
+Set 1/2                                   Set 1/4
+         +-------------------------------+          +---------------+---------------+
+         |             3613              |          |     1813      |     1813      |
+Griff -> +-------------------------------+ <- Griff +---------------+---------------+
+         |             3613              |          |     1813      |     1813      |
+         +-------------------------------+          +---------------+---------------+
 ```
 
-8 × EK 8/100: 26.48 € net, **31.51 €** incl. VAT (`DERIVED`).
+| Layout  | Set             | Inserts      | Compartments | Price per box | Per compartment | Status   |
+| ------- | --------------- | ------------ | ------------ | ------------- | --------------- | -------- |
+| half    | EES43-01-100-04 | 2 × 3613-100 | 2            | 9.95 €        | 4.98 €          | VERIFIED |
+| quarter | EES43-02-100-04 | 4 × 1813-100 | 4            | 12.49 €       | 3.12 €          | VERIFIED |
 
-### six: 6 compartments
+The prices per box are read on aidB's pages; the prices per compartment are
+`DERIVED`.
 
-```
-                      FRONT (handle side)
-          +--------------------+--------------------+
-          |                    |  EK 8  141 x 183   |
-          |  EK 4  282 x 183   +--------------------+
-          |                    |  EK 8  141 x 183   |
-          +--------------------+--------------------+
-          |                    |  EK 8  141 x 183   |
-          |  EK 4  282 x 183   +--------------------+
-          |                    |  EK 8  141 x 183   |
-          +--------------------+--------------------+
-                            BACK
-```
+## Mix for the twelve 120 boxes
 
-2 × EK 4/100 + 4 × EK 8/100: 22.18 € net, **26.39 €** incl. VAT (`DERIVED`).
-
-### four: 4 compartments
-
-```
-                      FRONT (handle side)
-          +--------------------+--------------------+
-          |                    |                    |
-          |  EK 4  282 x 183   |  EK 4  282 x 183   |
-          |                    |                    |
-          +--------------------+--------------------+
-          |                    |                    |
-          |  EK 4  282 x 183   |  EK 4  282 x 183   |
-          |                    |                    |
-          +--------------------+--------------------+
-                            BACK
-```
-
-4 × EK 4/100: 17.88 € net, **21.28 €** incl. VAT (`DERIVED`).
-
-### three: 3 compartments
-
-```
-                      FRONT (handle side)
-          +--------------------+--------------------+
-          |                    |                    |
-          |                    |  EK 4  282 x 183   |
-          |                    |                    |
-          |  EK 2  563 x 183   +--------------------+
-          |                    |                    |
-          |                    |  EK 4  282 x 183   |
-          |                    |                    |
-          +--------------------+--------------------+
-                            BACK
-```
-
-1 × EK 2/100 + 2 × EK 4/100: 16.43 € net, **19.55 €** incl. VAT (`DERIVED`).
-
-## Mix for the six 120 boxes
-
-Front view of the two top levels (`rack.json` → `inserts.boxes`):
+Front view of levels L2 to L5 (`rack.json` → `inserts.boxes`). The division
+runs from fine to coarse, top to bottom: the small compartments at eye and
+hand height, the larger ones below, the undivided 220 boxes on L1.
 
 ```
            C1            C2            C3
       +-------------+-------------+-------------+
-  L4  |   eight     |   eight     |   six       |
+  L5  |   quarter   |   quarter   |   quarter   |
       +-------------+-------------+-------------+
-  L3  |   six       |   four      |   three     |
+  L4  |   quarter   |   quarter   |   quarter   |
+      +-------------+-------------+-------------+
+  L3  |   half      |   half      |   half      |
+      +-------------+-------------+-------------+
+  L2  |   half      |   half      |   half      |
       +-------------+-------------+-------------+
 ```
 
-| Layout | Boxes | EK 2 | EK 4 | EK 8 | Compartments |
-| ------ | ----- | ---- | ---- | ---- | ------------ |
-| eight  | 2     | 0    | 0    | 16   | 16           |
-| six    | 2     | 0    | 4    | 8    | 12           |
-| four   | 1     | 0    | 4    | 0    | 4            |
-| three  | 1     | 1    | 2    | 0    | 3            |
-| Total  | 6     | 1    | 10   | 24   | 35           |
+| Layout  | Boxes | Sets | Inserts       | Compartments |
+| ------- | ----- | ---- | ------------- | ------------ |
+| half    | 6     | 6    | 12 × 3613-100 | 12           |
+| quarter | 6     | 6    | 24 × 1813-100 | 24           |
+| Total   | 12    | 12   | 36            | 36           |
 
-The count matches the parts `insert.ek2` (1), `insert.ek4` (10) and
-`insert.ek8` (24). Total: 1 × 7.49 + 10 × 4.47 + 24 × 3.31 = **131.63 € net,
-156.64 € incl. 19 % VAT** (`DERIVED`), below the 250 € net of free freight, so
-Auer's freight comes on top (not read).
+The count matches the parts `insert.set_half` (6) and `insert.set_quarter`
+(6). Total: 6 × 9.95 + 6 × 12.49 = 59.70 + 74.94 = **134.64 € incl. 19 % VAT**
+(`DERIVED`), in the aidB order with the boxes, which ships free
+(`docs/prices.md`).
+
+The three 220 boxes on L1 have no inserts.
+
+## Handles
+
+The end walls of two inserts stand right behind each handle opening. With the
+handle geometry read from the product photos (opening 24 to 54 mm below the
+rim, insert top 15 mm below the rim) the opening is blocked from inside, so the
+handle is gripped from outside only. `UNVERIFIED` until a box is measured.
+
+## ColorClips
+
+One ColorClip set (2 rings, R200-00-xx-SET) per box, on both handles, one
+colour per level (`rack.json` → `color_clips`). Every pair of neighbouring
+levels is close to complementary on the colour wheel, so the four steps
+contrast alike. The sRGB values are the median ring colour in aidB's photos
+and drive the model (`UNVERIFIED`).
+
+| Level | Boxes           | Colour    | Article        | sRGB      | Part             | Packs |
+| ----- | --------------- | --------- | -------------- | --------- | ---------------- | ----- |
+| L5    | 120, set 1/4    | blue      | R200-00-02-SET | `#055FE9` | `clip.blue`      | 3     |
+| L4    | 120, set 1/4    | yellow    | R200-00-03-SET | `#F9E630` | `clip.yellow`    | 3     |
+| L3    | 120, set 1/2    | purple    | R200-00-15-SET | `#BE5286` | `clip.purple`    | 3     |
+| L2    | 120, set 1/2    | turquoise | R200-00-12-SET | `#00A8A8` | `clip.turquoise` | 3     |
+| L1    | 220, no inserts | red       | R200-00-01-SET | `#F52B43` | `clip.red`       | 3     |
 
 ## What goes where
 
@@ -162,37 +117,21 @@ plates and "other" and splitting a category once it grows; shallow containers
 make a part easier to find, and every drawer keeps an "everything else"
 compartment for parts of which there are only a few
 ([Brick Architect, chapter 2][ba], [chapter 4][ba-medium]). The guide estimates
-about 250 pieces per litre ([chapter 4][ba-medium]); an EK 8 holds roughly
-2.5 l (`UNVERIFIED`, from the outer size), so a few hundred parts.
+about 250 pieces per litre ([chapter 4][ba-medium]); a 1813 holds roughly
+2.4 l and a 3613 roughly 4.8 l (`UNVERIFIED`, from the outer size), so a few
+hundred and about a thousand parts.
 
-| Compartment       | Where             | Suggested contents                                        |
-| ----------------- | ----------------- | --------------------------------------------------------- |
-| EK 8 (141 × 183)  | L4.C1, L4.C2      | small parts: 1 × n plates, tiles, 1 × 1 rounds, cheese    |
-|                   |                   | slopes, clips and bars, Technic pins, minifig accessories |
-| EK 8 (141 × 183)  | L4.C3, L3.C1 back | a category that is still small; "everything else"         |
-| EK 4 (282 × 183)  | L4.C3, L3.C1      | 2 × n plates, slopes, Technic beams up to 7 long          |
-| EK 4 (282 × 183)  | L3.C2             | bricks 1 × n and 2 × n, the categories with most parts    |
-| EK 2 (563 × 183)  | L3.C3             | long parts: long plates, Technic beams and axles          |
-| EK 4 (282 × 183)  | L3.C3             | wheels and tyres, windows and doors                       |
+| Compartment       | Where       | Suggested contents                                        |
+| ----------------- | ----------- | --------------------------------------------------------- |
+| 1813 (182 × 133)  | L5, L4      | small parts: 1 × n plates, tiles, 1 × 1 rounds, cheese    |
+|                   |             | slopes, clips and bars, Technic pins, minifig accessories |
+| 1813 (182 × 133)  | one per box | a category that is still small; "everything else"         |
+| 3613 (365 × 133)  | L3          | bricks 1 × n and 2 × n, the categories with most parts    |
+| 3613 (365 × 133)  | L2          | long parts: long plates, Technic beams and axles; wheels  |
 
 Large plates and baseplates go into the 220 boxes without inserts.
 
-## Fallback for NextGen boxes
-
-If roadmap 0004 shows that EK does not fit a NextGen 120 box, slot-together
-„Trennwände“ (divider walls) of HPS (high-impact polystyrene) divide the box
-instead. TBA Plastové obaly sells them for the 60 × 40 × 12 box: 562 × 3 ×
-100 mm long and 370 × 3 × 100 mm short, with pre-cut slots; a division needs
-at least one long and one short wall ([TBA wall][tba-wall]). The long wall
-costs 3.45 € net, 4.17 € incl. VAT. The short wall of 370 mm is wider than the
-365 mm inner top width of NextGen; whether it fits the tapering wall at
-100 mm height is open (`UNVERIFIED`), and a wall can be cut shorter. The walls
-leave open slots at their crossings, so small parts can creep between
-compartments.
-
-[auer-ek]: https://www.auer-packaging.com/at/de/Einsatzk%C3%A4sten-f%C3%BCr-Eurobeh%C3%A4lter.html
-[auer-ek-de]: https://www.auer-packaging.com/de/de/Einsatzk%C3%A4sten-f%C3%BCr-Eurobeh%C3%A4lter.html
-[aidb-set]: https://www.ab-in-die-box.de/b2bde/einsatzkaesten-set-1-4-unterteilung-fuer-600x400x120.html
+[aidb-half]: https://www.ab-in-die-box.de/b2cde/einsatzkaesten-set-1-2-unterteilung-fuer-400x300x120.html
+[aidb-quarter]: https://www.ab-in-die-box.de/b2cde/einsatzkaesten-set-1-4-unterteilung-fuer-400x300x120.html
 [ba]: https://brickarchitect.com/guide/bricks/organization/
 [ba-medium]: https://brickarchitect.com/guide/bricks/medium/
-[tba-wall]: https://www.tbaplast.de/trennwand-fur-eurobehalter-60x40x12-cm--lang

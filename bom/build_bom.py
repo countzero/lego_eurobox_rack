@@ -26,6 +26,7 @@ CUT_CATEGORIES = ("profile", "angle")
 # Material string -> stock key, read from the section that defines the material.
 STOCK_SOURCES = (
     (("frame", "profile", "type"), "profile_30x30"),
+    (("frame", "bottom_bar", "type"), "profile_30x60"),
     (("angles", "section", "type"), "angle_50x50x3"),
 )
 

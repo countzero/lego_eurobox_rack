@@ -9,11 +9,11 @@ request. The published copy is at
 
 - Orbit, pan and zoom with mouse or touch (three.js `OrbitControls`).
 - Buttons for the Front, Side, Top and Three-quarter views and Reset.
-- A click or tap on a box pulls it out; a second click pushes it back. The
-  inserts move with the box. "All out" pulls out every box, "All in" pushes
-  every box back.
-- "Top plate" shows the planned top plate, which is hidden by default.
-  "Panels" hides the back and side panels to show the inside.
+- A click or tap on one of the 15 boxes pulls it out; a second click pushes it
+  back. The inserts and the ColorClip rings move with the box. "All out" pulls
+  out every box, "All in" pushes every box back.
+- "Top plate" hides or shows the planned top plate, which is shown by
+  default. The rack has no panels, so the inside is always visible.
 - On a pointer device, hovering a box highlights it and names it, for example
   "L3 C2, 120 mm class".
 - The info line shows the rack's outer size from the model.
@@ -50,17 +50,17 @@ Remove-Item env:RACK_GLB
 The viewer relies only on the node names and extras of `docs/design.md` →
 *Contracts* → *Model objects and the web export*:
 
-| Read from                         | Used for                                    |
-| --------------------------------- | ------------------------------------------- |
-| `kind: "box"`                     | the clickable boxes                         |
-| `level`, `column`, `class`        | the hover label                             |
-| `travel`, `pull_axis`             | how far and in which direction a box moves  |
-| `kind: "panel"`                   | the "Panels" toggle                         |
-| `kind: "plate"`                   | the "Top plate" toggle, hidden at the start |
-| scene extras `outer_mm`           | the info line                               |
+| Read from                  | Used for                                    |
+| -------------------------- | ------------------------------------------- |
+| `kind: "box"`              | the clickable boxes                         |
+| `level`, `column`, `class` | the hover label                             |
+| `travel`, `pull_axis`      | how far and in which direction a box moves  |
+| `kind: "plate"`            | the "Top plate" toggle, shown at the start  |
+| scene extras `outer_mm`    | the info line                               |
 
-The inserts are children of their box node, so moving the box node moves them
-too. A change to these names or extras needs a change to `web/src/main.js`.
+The inserts and the ColorClip rings are children of their box node, so moving
+the box node moves them too. A change to these names or extras needs a change
+to `web/src/main.js`.
 
 ## Publishing
 

@@ -24,7 +24,6 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
 const boxes = [];
-const panels = [];
 let plate = null;
 let centre = new THREE.Vector3();
 let radius = 1;
@@ -180,7 +179,6 @@ async function load() {
   scene.add(root);
   root.traverse((o) => {
     const x = o.userData;
-    if (x.kind === "panel") panels.push(o);
     if (x.kind === "plate") plate = o;
     if (x.kind === "box") {
       const materials = [];
@@ -201,9 +199,7 @@ async function load() {
       });
     }
   });
-  if (plate) plate.visible = false;
   toggle("plate", plate ? [plate] : []);
-  toggle("panels", panels);
 
   const bounds = new THREE.Box3().setFromObject(root);
   const sphere = bounds.getBoundingSphere(new THREE.Sphere());

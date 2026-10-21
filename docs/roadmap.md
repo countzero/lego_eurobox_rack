@@ -2,10 +2,12 @@
 
 ## Goal
 
-A rolling rack that holds 12 Euroboxes 600 × 400 as LEGO drawers: 3 columns,
-2 levels of 220 mm boxes below and 2 levels of 120 mm boxes with inserts above,
-on 8 castors, with a wooden top plate prepared for later. It must take NextGen
-boxes (ab-in-die-BOX) and regular Euroboxes (Auer, Utz and others) alike.
+A rolling rack that holds 15 Euroboxes NextGen 2.0 Cycle 400 × 300
+(ab-in-die-BOX) as LEGO drawers, the short side with the handle at the front:
+3 columns, one level of 220 mm boxes at the bottom and four levels of 120 mm
+boxes with inserts above, one long bar front and back, on 4 castors, without
+panels, with a wooden top plate prepared for later. It takes any 400 × 300
+Eurobox with a continuous bottom edge.
 Everything needed to buy the parts and build it is in this repository, and a
 web viewer on GitHub Pages shows the rack in 3D with boxes that pull out.
 
@@ -216,7 +218,9 @@ boxes that pull out, published on GitHub Pages as the repository's website.
 ## 0010 Width-beam joints
 
 **Goal:** joints for the 12 width beams that leave the upright faces free for
-the angles, found while writing the assembly guide (0008).
+the angles, found while writing the assembly guide (0008). The 400 × 300
+redesign of 2026-10-21 removes the collision: its brackets sit off the angle
+faces.
 
 **Delivers:** changes to `design/rack.json` (parts and joints) and
 `docs/design.md` → *Joints*; the model, the parts list, the prices and the
