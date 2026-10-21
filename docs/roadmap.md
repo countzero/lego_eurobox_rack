@@ -47,6 +47,7 @@ sorted by ID; the order of work follows from the status.
 | 0008 | [Assembly guide](#0008-assembly-guide)                       | Done                 | [#7](https://github.com/countzero/lego_eurobox_rack/pull/7) |
 | 0009 | [Web viewer](#0009-web-viewer)                               | Done                 | [#5](https://github.com/countzero/lego_eurobox_rack/pull/5) |
 | 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Planned              |                                                             |
+| 0011 | [ColorClip picker](#0011-colorclip-picker)                   | In progress          |                                                             |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -236,3 +237,30 @@ assembly guide generated or updated to match.
 - `docs/assembly.md` and `bom/` agree with the chosen joint.
 
 **Open:** which joint the user prefers; the machining the shops offer for it.
+
+## 0011 ColorClip picker
+
+**Goal:** the ColorClip colour of each level chosen in the web viewer from the
+nine colours aidB sells, with presets and a link that shares the choice, so the
+colours are settled before the model and the order follow them.
+
+**Delivers:** `design/rack.json` (`color_clips`: the nine colours and the
+presets), `web/src/*`, `docs/web_viewer.md`, `docs/design.md` → *Inserts and
+ColorClips*.
+
+**Acceptance:**
+
+- A ColorClips panel shows one row per level with the nine colours as
+  swatches; a pick recolours the rings of that level's three boxes.
+- "Current" (`color_clips.levels`) and five presets set all levels in one
+  click.
+- The choice lives in the URL fragment, `#clips=<L1>,…,<L5>`, read on load and
+  on every change of the fragment and written on every pick; a link restores
+  it, offline too.
+- The panel names the packs to order per colour and the weakest step between
+  neighbouring levels (CIEDE2000).
+- The palette and the presets are read from `rack.json` at build time;
+  `web/rack.glb`, the Blender model and the parts list stay unchanged.
+
+**Open:** the rings' real colours. aidB publishes no RAL code, so the sRGB
+values are read from its product photos (`UNVERIFIED`).
