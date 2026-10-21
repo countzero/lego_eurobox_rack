@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import packed from "rack-model";
+import { addClipMaterials, colourOf, initClips } from "./clips.js";
 import "./style.css";
 
 const canvas = document.getElementById("view");
@@ -111,7 +112,7 @@ canvas.addEventListener("pointermove", (event) => {
   canvas.style.cursor = box ? "pointer" : "";
   label.hidden = !box;
   if (box) {
-    label.textContent = box.name;
+    label.textContent = `${box.name}, ${colourOf(box.level)}`;
     label.style.left = `${event.clientX + 14}px`;
     label.style.top = `${event.clientY + 14}px`;
   }
@@ -187,8 +188,13 @@ async function load() {
         m.material = Array.isArray(m.material) ? m.material.map((c) => c.clone()) : m.material.clone();
         materials.push(...[m.material].flat());
       });
+      o.traverse((c) => {
+        if (c.userData.kind !== "clip") return;
+        c.traverse((m) => { if (m.isMesh) addClipMaterials(x.level, [m.material].flat()); });
+      });
       boxes.push({
         node: o,
+        level: x.level,
         name: `L${x.level} C${x.column}, ${x.class} mm class`,
         axis: new THREE.Vector3(...(x.pull_axis ?? [0, 0, 1])).normalize(),
         travel: x.travel ?? 0.4,
@@ -214,6 +220,7 @@ async function load() {
   tween = null;
 }
 
+initClips();
 load().catch((error) => {
   info.textContent = `The model could not be loaded: ${error.message}`;
   console.error(error);
