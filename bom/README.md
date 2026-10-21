@@ -19,11 +19,11 @@ One row per part of the catalog `parts` in `rack.json`, in catalog order.
 | Column        | Meaning                                                      |
 | ------------- | ------------------------------------------------------------ |
 | `id`          | Part ID, used by every document, list and price              |
-| `category`    | profile, angle, connector, fastener, panel, box and so on    |
+| `category`    | profile, angle, connector, fastener, castor, box and so on   |
 | `description` | What the part is and where it goes                           |
 | `material`    | Section, material or finish                                  |
 | `length`      | Cut or overall length in mm; empty where it does not apply   |
-| `width`       | Width in mm for panels, plates and inserts; otherwise empty  |
+| `width`       | Width in mm for plates and inserts; otherwise empty          |
 | `quantity`    | Count for unit `piece`, total length in mm for unit `length` |
 | `unit`        | `piece` or `length`                                          |
 | `status`      | `build` for what is bought now, `planned` for the top plate  |
@@ -50,10 +50,11 @@ kerf for every cut before it on the bar. The candidate with the least bought
 length wins, then the least waste, then the fewest bars. First-fit decreasing
 is not guaranteed optimal, but for these cuts it reaches the lower bound.
 
-| Material             | Bars          | Cut length | Waste           |
-| -------------------- | ------------- | ---------- | --------------- |
-| 30x30 B-type slot 8  | 6 x 3000 mm   | 15976 mm   | 2024 mm, 11.2 % |
-| 50x50x3 EN AW-6060   | 10 x 2000 mm  | 18300 mm   | 1700 mm, 8.5 %  |
+| Material            | Bars        | Cut length | Waste           |
+| ------------------- | ----------- | ---------- | --------------- |
+| 30x30 B-type slot 8 | 6 x 2000 mm | 11464 mm   | 536 mm, 4.5 %   |
+| 30x60 B-type slot 8 | 1 x 3000 mm | 2136 mm    | 864 mm, 28.8 %  |
+| 50x50x3 EN AW-6060  | 3 x 6000 mm | 15660 mm   | 2340 mm, 13.0 % |
 
 Waste includes the kerfs and the offcut at the end of each bar.
 
@@ -62,9 +63,13 @@ Waste includes the kerfs and the offcut at the end of each bar.
 Most shops cut profiles to length, so you order the pieces below and the cut
 list does not matter. It matters when you buy stock bars or cut yourself.
 
-| Material             | Pieces       | Part IDs                                       |
-| -------------------- | ------------ | ---------------------------------------------- |
-| 30x30 B-type slot 8  | 8 x 823 mm   | `profile.upright`                              |
-| 30x30 B-type slot 8  | 8 x 550 mm   | `profile.beam_depth`                           |
-| 30x30 B-type slot 8  | 12 x 416 mm  | `profile.beam_width`                           |
-| 50x50x3 EN AW-6060   | 30 x 610 mm  | `angle.base`, `angle.support`, `angle.guard`   |
+| Material            | Pieces      | Part IDs                                     |
+| ------------------- | ----------- | -------------------------------------------- |
+| 30x30 B-type slot 8 | 2 x 1068 mm | `profile.bar_top`                            |
+| 30x30 B-type slot 8 | 8 x 791 mm  | `profile.upright`                            |
+| 30x30 B-type slot 8 | 8 x 375 mm  | `profile.beam_depth`                         |
+| 30x60 B-type slot 8 | 2 x 1068 mm | `profile.bar_bottom`                         |
+| 50x50x3 EN AW-6060  | 36 x 435 mm | `angle.base`, `angle.support`, `angle.guard` |
+
+The uprights also need an M8 core thread at both ends (the bottom one 80 mm
+deep) and the bars their through holes; see `parts.csv`.

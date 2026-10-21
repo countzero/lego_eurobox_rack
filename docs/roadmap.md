@@ -2,10 +2,12 @@
 
 ## Goal
 
-A rolling rack that holds 12 Euroboxes 600 × 400 as LEGO drawers: 3 columns,
-2 levels of 220 mm boxes below and 2 levels of 120 mm boxes with inserts above,
-on 8 castors, with a wooden top plate prepared for later. It must take NextGen
-boxes (ab-in-die-BOX) and regular Euroboxes (Auer, Utz and others) alike.
+A rolling rack that holds 15 Euroboxes NextGen 2.0 Cycle 400 × 300
+(ab-in-die-BOX) as LEGO drawers, the short side with the handle at the front:
+3 columns, one level of 220 mm boxes at the bottom and four levels of 120 mm
+boxes with inserts above, one long bar front and back, on 4 castors, without
+panels, with a wooden top plate prepared for later. It takes any 400 × 300
+Eurobox with a continuous bottom edge.
 Everything needed to buy the parts and build it is in this repository, and a
 web viewer on GitHub Pages shows the rack in 3D with boxes that pull out.
 
@@ -33,18 +35,21 @@ sorted by ID; the order of work follows from the status.
   `docs/roadmap.md` and `docs/sources.md` are updated when its pull request is
   merged.
 
-| ID   | Step                                                         | Status               | PR                                                          |
-| ---- | ------------------------------------------------------------ | -------------------- | ----------------------------------------------------------- |
-| 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1) |
-| 0002 | [Rack specification](#0002-rack-specification)               | Done                 | [#2](https://github.com/countzero/lego_eurobox_rack/pull/2) |
-| 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Done                 | [#6](https://github.com/countzero/lego_eurobox_rack/pull/6) |
-| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |                                                             |
-| 0005 | [Insert plan](#0005-insert-plan)                             | Done                 | [#4](https://github.com/countzero/lego_eurobox_rack/pull/4) |
-| 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Done                 | [#3](https://github.com/countzero/lego_eurobox_rack/pull/3) |
-| 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8) |
-| 0008 | [Assembly guide](#0008-assembly-guide)                       | Done                 | [#7](https://github.com/countzero/lego_eurobox_rack/pull/7) |
-| 0009 | [Web viewer](#0009-web-viewer)                               | Done                 | [#5](https://github.com/countzero/lego_eurobox_rack/pull/5) |
-| 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Planned              |                                                             |
+| ID   | Step                                                         | Status               | PR                                                            |
+| ---- | ------------------------------------------------------------ | -------------------- | ------------------------------------------------------------- |
+| 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1)   |
+| 0002 | [Rack specification](#0002-rack-specification)               | Done                 | [#2](https://github.com/countzero/lego_eurobox_rack/pull/2)   |
+| 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Done                 | [#6](https://github.com/countzero/lego_eurobox_rack/pull/6)   |
+| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |                                                               |
+| 0005 | [Insert plan](#0005-insert-plan)                             | Done                 | [#4](https://github.com/countzero/lego_eurobox_rack/pull/4)   |
+| 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Done                 | [#3](https://github.com/countzero/lego_eurobox_rack/pull/3)   |
+| 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8)   |
+| 0008 | [Assembly guide](#0008-assembly-guide)                       | Done                 | [#7](https://github.com/countzero/lego_eurobox_rack/pull/7)   |
+| 0009 | [Web viewer](#0009-web-viewer)                               | Done                 | [#5](https://github.com/countzero/lego_eurobox_rack/pull/5)   |
+| 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Planned              |                                                               |
+| 0011 | [ColorClip picker](#0011-colorclip-picker)                   | Done                 | [#10](https://github.com/countzero/lego_eurobox_rack/pull/10) |
+| 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | In progress          |                                                               |
+| 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -216,7 +221,9 @@ boxes that pull out, published on GitHub Pages as the repository's website.
 ## 0010 Width-beam joints
 
 **Goal:** joints for the 12 width beams that leave the upright faces free for
-the angles, found while writing the assembly guide (0008).
+the angles, found while writing the assembly guide (0008). The 400 × 300
+redesign of 2026-10-21 removes the collision: its brackets sit off the angle
+faces.
 
 **Delivers:** changes to `design/rack.json` (parts and joints) and
 `docs/design.md` → *Joints*; the model, the parts list, the prices and the
@@ -232,3 +239,69 @@ assembly guide generated or updated to match.
 - `docs/assembly.md` and `bom/` agree with the chosen joint.
 
 **Open:** which joint the user prefers; the machining the shops offer for it.
+
+## 0011 ColorClip picker
+
+**Goal:** the ColorClip colour of each level chosen in the web viewer from the
+nine colours aidB sells, with presets and a link that shares the choice, so the
+colours are settled before the model and the order follow them.
+
+**Delivers:** `design/rack.json` (`color_clips`: the nine colours and the
+presets), `web/src/*`, `docs/web_viewer.md`, `docs/design.md` → *Inserts and
+ColorClips*.
+
+**Acceptance:**
+
+- A ColorClips panel shows one row per level with the nine colours as
+  swatches; a pick recolours the rings of that level's three boxes.
+- "Current" (`color_clips.levels`) and five presets set all levels in one
+  click.
+- The choice lives in the URL fragment, `#clips=<L1>,…,<L5>`, read on load and
+  on every change of the fragment and written on every pick; a link restores
+  it, offline too.
+- The panel names the packs to order per colour and the weakest step between
+  neighbouring levels (CIEDE2000).
+- The palette and the presets are read from `rack.json` at build time;
+  `web/rack.glb`, the Blender model and the parts list stay unchanged.
+
+**Open:** the rings' real colours. aidB publishes no RAL code, so the sRGB
+values are read from its product photos (`UNVERIFIED`).
+
+## 0012 Photorealistic boxes
+
+**Goal:** boxes and renders that look like the NextGen 2.0 Cycle in aidB's
+photos: rounded corners and bevelled edges, the inner wall tapered towards the
+floor, the rounded handle opening with its frame and the ColorClip ring, the
+insert trays tapered like the box, a plastic material, and Cycles renders with
+studio light.
+
+**Delivers:** `blender/build_rack.py`, `blender/rack.blend`, `renders/*.png`,
+`web/rack.glb`, `design/rack.json` (`box_shape` and the insert taper),
+`docs/design.md` → *Box shape in the model*.
+
+**Acceptance:**
+
+- `build_rack.py` runs headless and a second run gives the same files, checked
+  by hash.
+- The build stops unless every box is 400 × 300 × its height outside, the inner
+  top is 365 × 265 and no insert reaches through a box wall.
+- Every new `box_shape` value names its status; the pull request lists the
+  `sources.md` rows to add on merge.
+- The renders keep their names and views; Cycles on the CPU with a fixed seed,
+  AgX; `rack.blend` is saved with EEVEE.
+- `web/rack.glb` keeps the node names, extras and material names of 0002 and
+  0011, and stays under twice its size before the step (355 KB).
+
+**Open:** the real shape values (0004, or a drawing from Müller & Sohn).
+
+## 0013 Viewer lighting
+
+**Goal:** the web viewer shows the plastic as the Blender renders do.
+
+**Delivers:** `web/src/*`, `docs/web_viewer.md`.
+
+**Acceptance:**
+
+- AgX tone mapping and a `RoomEnvironment` light the model; the page still
+  opens offline.
+- The box, ring and insert colours match the renders by eye.

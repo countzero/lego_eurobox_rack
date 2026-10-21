@@ -6,9 +6,10 @@ through *Reference* at the end.
 
 ## Project Overview
 
-A rolling rack of 30 × 30 aluminium profiles for 12 Euroboxes 600 × 400, used
-as drawers for LEGO: 3 columns, 4 levels, the short side of each box at the
-front. The repository holds the specification, the Blender model and its
+A rolling rack of 30 × 30 aluminium profiles for 15 Euroboxes 400 × 300
+(NextGen 2.0 Cycle), used as drawers for LEGO: 3 columns, 5 levels, the short
+side of each box with its handle at the front, one long bar front and back on
+4 castors. The repository holds the specification, the Blender model and its
 renders, a web viewer, the parts and cut list, the price comparison and the
 assembly guide. Nothing here is built into software; the rack is built by hand.
 
@@ -23,7 +24,7 @@ assembly guide. Nothing here is built into software; the rack is built by hand.
   `UNVERIFIED`) and its URL in `docs/sources.md`
   (`docs/conventions.md` → *Sources*). An unverified value is never presented
   as a fact.
-- **The rack accepts NextGen and regular Euroboxes.** A design change that
+- **The rack accepts NextGen and regular Euroboxes 400 × 300.** A design change that
   narrows the box envelope of `docs/design.md` is refused unless the user
   agrees.
 
@@ -73,6 +74,11 @@ When your changes overlap foreign work in the same file, stop and ask.
   ```
 
   The Blender MCP server may inspect a scene but never writes a committed file.
+- **The user's Blender window is never closed or relaunched.** It runs
+  `blender/live_reload.py`, which reloads `rack.blend` by itself whenever the
+  headless build rewrites the file; an agent only rebuilds. If no window is
+  open, or the open one does not run the script, the agent asks the user
+  instead of starting or killing Blender.
 - **The web viewer** builds with `npm --prefix web ci` and
   `npm --prefix web run build` (`docs/web_viewer.md` once 0009 exists).
 - **One browser.** Only one session at a time drives the browser.

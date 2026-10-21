@@ -11,7 +11,7 @@ import bpy
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "web", "rack.glb")
 
-EXPORT_COLLECTIONS = ("frame", "angles", "castors", "panels", "boxes", "inserts", "top_plate")
+EXPORT_COLLECTIONS = ("frame", "angles", "castors", "boxes", "inserts", "top_plate")
 
 
 def main():

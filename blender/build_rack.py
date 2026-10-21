@@ -29,14 +29,12 @@ def m(mm):
 # Visual details only.
 SLOT_WIDTH = 8.0
 SLOT_DEPTH = 6.0
-BOX_TAPER = 10.0  # mm the foot is narrower than the rim on each side
 INSERT_WALL = 1.5
-STAGE_GAP = 50.0  # mm between the two box rows in the inserts top view
+STAGE_GAP = 50.0  # mm between the box rows in the inserts top view
 COLOURS = {
     "aluminium": ((0.70, 0.72, 0.75, 1), 0.6, 0.3),
-    "panel_white": ((0.92, 0.92, 0.92, 1), 0.0, 0.5),
-    "box_grey": ((0.15, 0.17, 0.19, 1), 0.0, 0.55),
-    "insert_grey": ((0.45, 0.47, 0.50, 1), 0.0, 0.55),
+    "box_anthracite": ((0.052, 0.052, 0.052, 1), 0.0, 0.6),
+    "insert_grey": ((0.30, 0.31, 0.32, 1), 0.0, 0.5),
     "castor": ((0.06, 0.06, 0.07, 1), 0.0, 0.6),
     "plywood": ((0.80, 0.64, 0.44, 1), 0.0, 0.6),
     "floor": ((0.35, 0.35, 0.35, 1), 0.0, 0.9),
@@ -56,9 +54,20 @@ def reset_scene():
     return scene
 
 
+def srgb_to_linear(hex_colour):
+    def channel(c):
+        c = int(c, 16) / 255
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+    h = hex_colour.lstrip("#")
+    return tuple(channel(h[i:i + 2]) for i in (0, 2, 4)) + (1,)
+
+
 def make_materials():
     mats = {}
-    for name, (colour, metal, rough) in COLOURS.items():
+    colours = dict(COLOURS)
+    for name, spec in RACK["color_clips"]["colours"].items():
+        colours[f"clip_{name}"] = (srgb_to_linear(spec["srgb"]), 0.0, 0.45)
+    for name, (colour, metal, rough) in colours.items():
         mat = bpy.data.materials.new(name)
         mat.use_nodes = True
         bsdf = mat.node_tree.nodes.get("Principled BSDF")
@@ -76,12 +85,16 @@ def collection(scene, name):
     return coll
 
 
-def finish(name, bm, mat, coll, parent=None, location=(0, 0, 0)):
+def to_mesh(name, bm, mat):
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
     mesh = bpy.data.meshes.new(name)
     bm.to_mesh(mesh)
     bm.free()
     mesh.materials.append(mat)
+    return mesh
+
+
+def place(name, mesh, coll, parent=None, location=(0, 0, 0)):
     obj = bpy.data.objects.new(name, mesh)
     obj.location = location
     coll.objects.link(obj)
@@ -90,11 +103,24 @@ def finish(name, bm, mat, coll, parent=None, location=(0, 0, 0)):
     return obj
 
 
+def finish(name, bm, mat, coll, parent=None, location=(0, 0, 0)):
+    return place(name, to_mesh(name, bm, mat), coll, parent, location)
+
+
 def bm_box(bm, lo, hi):
     lo, hi = Vector(lo), Vector(hi)
     size = hi - lo
     mat = Matrix.Translation((lo + hi) / 2) @ Matrix.Diagonal((*size, 1))
     bmesh.ops.create_cube(bm, size=1.0, matrix=mat)
+
+
+def mm_box(bm, x0, x1, y0, y1, z0, z1):
+    """Axis-aligned box from millimetre bounds in any order; empty boxes are skipped."""
+    x0, x1 = sorted((x0, x1))
+    y0, y1 = sorted((y0, y1))
+    z0, z1 = sorted((z0, z1))
+    if x1 - x0 > 1e-6 and y1 - y0 > 1e-6 and z1 - z0 > 1e-6:
+        bm_box(bm, (m(x0), m(y0), m(z0)), (m(x1), m(y1), m(z1)))
 
 
 def bm_cylinder(bm, centre, radius, depth, axis, segments=24):
@@ -126,31 +152,45 @@ def hollow_tray(rim_x, rim_y, foot_x, foot_y, height, in_x, in_y, in_foot_x, in_
     return bm
 
 
-def profile_section():
+def rect_section(wa, wb):
+    """Outline of a slotted profile wa x wb mm, one slot per 30 mm module of each side."""
     w, d = SLOT_WIDTH / 2, SLOT_DEPTH
-    s = RACK["frame"]["profile"]["section"] / 2
-    pts = [(-s, -s), (-w, -s), (-w, -s + d), (w, -s + d), (w, -s),
-           (s, -s), (s, -w), (s - d, -w), (s - d, w), (s, w),
-           (s, s), (w, s), (w, s - d), (-w, s - d), (-w, s),
-           (-s, s), (-s, w), (-s + d, w), (-s + d, -w), (-s, -w)]
+    ha, hb = wa / 2, wb / 2
+
+    def mods(length, half):
+        return [-half + 15 + 30 * i for i in range(int(round(length / 30)))]
+
+    pts = [(-ha, -hb)]
+    for c in mods(wa, ha):
+        pts += [(c - w, -hb), (c - w, -hb + d), (c + w, -hb + d), (c + w, -hb)]
+    pts.append((ha, -hb))
+    for c in mods(wb, hb):
+        pts += [(ha, c - w), (ha - d, c - w), (ha - d, c + w), (ha, c + w)]
+    pts.append((ha, hb))
+    for c in reversed(mods(wa, ha)):
+        pts += [(c + w, hb), (c + w, hb - d), (c - w, hb - d), (c - w, hb)]
+    pts.append((-ha, hb))
+    for c in reversed(mods(wb, hb)):
+        pts += [(-ha, c + w), (-ha + d, c + w), (-ha + d, c - w), (-ha, c - w)]
     return [(m(a), m(b)) for a, b in pts]
 
 
 SECTION = None
 
 
-def profile(name, axis, centre_a, centre_b, start, end, mat, coll, parent):
-    """30x30 slotted profile along axis from start to end (mm)."""
+def profile(name, axis, centre_a, centre_b, start, end, mat, coll, parent, section=None):
+    """Slotted profile along axis from start to end (mm); section in the other two axes."""
+    section = section or SECTION
     bm = bmesh.new()
     rings = []
     for t in (m(start), m(end)):
         ring = []
-        for a, b in SECTION:
+        for a, b in section:
             a, b = a + m(centre_a), b + m(centre_b)
             p = {"x": (t, a, b), "y": (a, t, b), "z": (a, b, t)}[axis]
             ring.append(bm.verts.new(p))
         rings.append(ring)
-    n = len(SECTION)
+    n = len(section)
     for i in range(n):
         j = (i + 1) % n
         bm.faces.new((rings[0][i], rings[0][j], rings[1][j], rings[1][i]))
@@ -165,22 +205,51 @@ def build_frame(mats, colls, frame_root):
     fr = RACK["frame"]
     sec = fr["profile"]["section"]
     h = sec / 2
+    al, coll = mats["aluminium"], colls["frame"]
     ux, uy = fr["upright_x"], fr["upright_y"]
     up = fr["upright"]
     for i, x in enumerate(ux):
         for y, side in zip(uy, ("front", "back")):
             profile(f"upright.{i + 1}.{side}", "z", x + h, y + h, up["bottom"], up["top"],
-                    mats["aluminium"], colls["frame"], frame_root)
-    levels = {"bottom": fr["bottom_frame"], "top": fr["top_frame"]}
-    for lvl, zz in levels.items():
-        zc = (zz["bottom"] + zz["top"]) / 2
-        for c in range(fr["columns"]):
-            for y, side in zip(uy, ("front", "back")):
-                profile(f"beam.width.{lvl}.{side}.C{c + 1}", "x", y + h, zc,
-                        ux[c] + sec, ux[c + 1], mats["aluminium"], colls["frame"], frame_root)
+                    al, coll, frame_root)
+    bb, tb = fr["bottom_bar"], fr["top_bar"]
+    bar_section = rect_section(bb["depth"], bb["height"])
+    for y, side in zip(uy, ("front", "back")):
+        profile(f"bar.bottom.{side}", "x", y + bb["depth"] / 2, (bb["bottom"] + bb["top"]) / 2,
+                0, bb["length"], al, coll, frame_root, section=bar_section)
+        profile(f"bar.top.{side}", "x", y + h, (tb["bottom"] + tb["top"]) / 2,
+                0, tb["length"], al, coll, frame_root)
+    db = fr["depth_beam"]
+    for i, x in enumerate(ux):
+        for lvl in ("bottom", "top"):
+            zz = db[lvl]
+            profile(f"beam.depth.{lvl}.{i + 1}", "y", x + h, (zz["bottom"] + zz["top"]) / 2,
+                    uy[0] + sec, uy[1], al, coll, frame_root)
+
+
+def build_plates(mats, colls, frame_root):
+    """Joint plates on the outer faces of the front and the back frame."""
+    fr = RACK["frame"]
+    sec = fr["profile"]["section"]
+    jp = fr["joint_plate"]
+    t, size = jp["thickness"], jp["size"]
+    ux, last = fr["upright_x"], len(fr["upright_x"]) - 1
+    bb, tb = fr["bottom_bar"], fr["top_bar"]
+    joints = (("bottom", bb["top"] - sec, bb["top"], +1), ("top", tb["bottom"], tb["top"], -1))
+    for y0, side in ((-t, "front"), (fr["depth"], "back")):
         for i, x in enumerate(ux):
-            profile(f"beam.depth.{lvl}.{i + 1}", "y", x + h, zc, uy[0] + sec, uy[1],
-                    mats["aluminium"], colls["frame"], frame_root)
+            kind = "l" if i in (0, last) else "t"
+            for lvl, z0, z1, up in joints:
+                bm = bmesh.new()
+                vz = (z0, z0 + size) if up > 0 else (z1 - size, z1)
+                mm_box(bm, x, x + sec, y0, y0 + t, *vz)
+                if kind == "t":
+                    hx = (x - sec, x + 2 * sec)
+                else:
+                    hx = (x, x + size) if i == 0 else (x + sec - size, x + sec)
+                mm_box(bm, *hx, y0, y0 + t, z0, z1)
+                finish(f"plate.{kind}.{side}.{lvl}.{i + 1}", bm, mats["aluminium"],
+                       colls["frame"], frame_root)
 
 
 def angle(name, x_face, inward, z_flat_lo, flat_up, mats, coll, parent):
@@ -191,35 +260,52 @@ def angle(name, x_face, inward, z_flat_lo, flat_up, mats, coll, parent):
     """
     a = RACK["angles"]
     leg, t, length = a["section"]["leg"], a["section"]["thickness"], a["length"]
-    x0, x1 = sorted((x_face, x_face + inward * leg))
-    xl0, xl1 = sorted((x_face, x_face + inward * t))
     zf0, zf1 = z_flat_lo, z_flat_lo + t
     zl0, zl1 = (zf1 - leg, zf1) if flat_up else (zf0, zf0 + leg)
     bm = bmesh.new()
-    bm_box(bm, (m(x0), 0, m(zf0)), (m(x1), m(length), m(zf1)))
-    bm_box(bm, (m(xl0), 0, m(zl0)), (m(xl1), m(length), m(zl1)))
+    mm_box(bm, x_face, x_face + inward * leg, 0, length, zf0, zf1)
+    mm_box(bm, x_face, x_face + inward * t, 0, length, zl0, zl1)
     bmesh.ops.remove_doubles(bm, verts=bm.verts[:], dist=1e-6)
     return finish(name, bm, mats["aluminium"], coll, parent)
 
 
+def bay_faces(c):
+    fr = RACK["frame"]
+    ux, sec = fr["upright_x"], fr["profile"]["section"]
+    return ((ux[c] + sec, +1, "left"), (ux[c + 1], -1, "right"))
+
+
 def build_angles(mats, colls, frame_root):
     fr, a = RACK["frame"], RACK["angles"]
-    sec, t = fr["profile"]["section"], a["section"]["thickness"]
-    ux = fr["upright_x"]
+    t = a["section"]["thickness"]
     for c in range(fr["columns"]):
-        faces = ((ux[c] + sec, +1, "left"), (ux[c + 1], -1, "right"))
         for lv in RACK["levels"]:
-            kind = lv["angle"]
-            for x_face, inward, side in faces:
-                if kind == "angle.base":
+            for x_face, inward, side in bay_faces(c):
+                if lv["angle"] == "angle.base":
                     angle(f"angle.base.L{lv['level']}.C{c + 1}.{side}", x_face, inward,
                           a["base"]["flat_leg_top"] - t, False, mats, colls["angles"], frame_root)
                 else:
                     angle(f"angle.support.L{lv['level']}.C{c + 1}.{side}", x_face, inward,
                           lv["floor"] - t, True, mats, colls["angles"], frame_root)
-        for x_face, inward, side in faces:
+        for x_face, inward, side in bay_faces(c):
             angle(f"angle.guard.C{c + 1}.{side}", x_face, inward,
                   RACK["tip_guard"]["flat_leg_bottom"], True, mats, colls["angles"], frame_root)
+
+
+def build_stops(mats, colls, frame_root):
+    """Back stops: an inside bracket on each back upright face, one leg across the box path."""
+    bs = RACK["back_stop"]
+    yf = bs["face_y"]
+    depth = RACK["frame"]["depth"]
+    for lv in RACK["levels"]:
+        z0, z1 = (lv["floor"] + a for a in bs["above_floor"][lv["class"]])
+        for c in range(RACK["frame"]["columns"]):
+            for x_face, inward, side in bay_faces(c):
+                bm = bmesh.new()
+                mm_box(bm, x_face, x_face + inward * 3, yf, depth, z0, z1)
+                mm_box(bm, x_face, x_face + inward * 30, yf, yf + 3, z0, z1)
+                finish(f"stop.L{lv['level']}.C{c + 1}.{side}", bm, mats["aluminium"],
+                       colls["frame"], frame_root)
 
 
 def build_castors(mats, colls, frame_root):
@@ -227,7 +313,8 @@ def build_castors(mats, colls, frame_root):
     h = fr["castor_height"]
     half = fr["profile"]["section"] / 2
     wheel_r = 0.375 * h
-    for i, x in enumerate(fr["upright_x"]):
+    ux = fr["upright_x"]
+    for i, x in ((1, ux[0]), (len(ux), ux[-1])):
         for y, kind in zip(fr["upright_y"], ("brake", "plain")):
             cx, cy = m(x + half), m(y + half)
             bm = bmesh.new()
@@ -242,26 +329,89 @@ def build_castors(mats, colls, frame_root):
             if kind == "brake":
                 bm_box(bm, (-m(0.06 * h), -m(0.32 * h), m(0.6 * h)),
                        (m(0.06 * h), -m(0.15 * h), m(0.65 * h)))
-            obj = finish(f"castor.{kind}.{i + 1}", bm, mats["castor"], colls["castors"], frame_root)
+            obj = finish(f"castor.{kind}.{i}", bm, mats["castor"], colls["castors"], frame_root)
             obj.location = (cx, cy, 0)
 
 
-def build_panels(mats, colls):
-    p, fr = RACK["panels"], RACK["frame"]
-    t = p["thickness"]
-    z0 = fr["upright"]["bottom"]
-    out = []
+# ---------------------------------------------------------------- boxes
+
+def slab(bm, x0, x1, y0, y1, z0, z1, hole=None):
+    """Box with an optional rectangular hole (hx0, hx1, hz0, hz1) through y."""
+    if hole is None or hole[3] <= z0 or hole[2] >= z1:
+        mm_box(bm, x0, x1, y0, y1, z0, z1)
+        return
+    hx0, hx1 = hole[0], hole[1]
+    hz0, hz1 = max(hole[2], z0), min(hole[3], z1)
+    mm_box(bm, x0, x1, y0, y1, z0, hz0)
+    mm_box(bm, x0, x1, y0, y1, hz1, z1)
+    mm_box(bm, x0, hx0, y0, y1, hz0, hz1)
+    mm_box(bm, hx1, x1, y0, y1, hz0, hz1)
+
+
+def ring(bm, ox, oy, ix, iy, z0, z1, hole=None):
+    """Wall ring between the outer (ox, oy) and inner (ix, iy) half sizes; the hole is in the short walls."""
+    for s in (-1, 1):
+        mm_box(bm, s * ox, s * ix, -oy, oy, z0, z1)
+        slab(bm, -ix, ix, s * oy, s * iy, z0, z1, hole)
+
+
+def cycle_box(bx):
+    """NextGen 2.0 Cycle box after box_shape; origin at the front bottom centre."""
+    s = RACK["box_shape"]
+    hd = s["handle"]
+    H = bx["height"]
+    X, Y = bx["width"] / 2, bx["length"] / 2
+    ix, iy = bx["inner_width"] / 2, bx["inner_length"] / 2
+    rim0 = H - s["rim_band"]
+    collar0 = rim0 - s["collar"]
+    ledge0 = collar0 - s["ledge"]
+    foot1 = s["foot_band"]
+    hole = (-hd["opening_width"] / 2, hd["opening_width"] / 2,
+            H - hd["opening_top_below_rim"] - hd["opening_height"], H - hd["opening_top_below_rim"])
     bm = bmesh.new()
-    bm_box(bm, (0, m(p["back"]["y"]), m(z0)),
-           (m(p["back"]["width"]), m(p["back"]["y"] + t), m(z0 + p["back"]["height"])))
-    out.append(finish("panel.back", bm, mats["panel_white"], colls["panels"]))
-    for name, x0 in (("panel.side.left", -t), ("panel.side.right", fr["width"])):
-        bm = bmesh.new()
-        bm_box(bm, (m(x0), 0, m(z0)),
-               (m(x0 + t), m(p["side"]["depth"]), m(z0 + p["side"]["height"])))
-        out.append(finish(name, bm, mats["panel_white"], colls["panels"]))
-    for obj in out:
-        obj["kind"] = "panel"
+    floor_z = H - bx["inner_height"]
+    mm_box(bm, -ix, ix, -iy, iy, 0, floor_z)
+    p = s["panel_recess"]
+    ring(bm, X - p, Y - p, ix, iy, foot1, ledge0, hole)
+    ring(bm, X - 1, Y - 1, ix, iy, 0, foot1)
+    ring(bm, X, Y, ix, iy, ledge0, collar0, hole)
+    ring(bm, X - s["collar_recess"], Y - s["collar_recess"], ix, iy, collar0, rim0, hole)
+    ring(bm, X, Y, ix, iy, rim0, H)
+    cp = s["corner_post"]
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            mm_box(bm, sx * X, sx * (X - cp), sy * Y, sy * (Y - cp), foot1, ledge0)
+        for r0, r1 in s["long_side_ribs"]:
+            mm_box(bm, sx * X, sx * (X - p), -Y + r0, -Y + r1, foot1, ledge0)
+    fw, fh = hd["frame_width"] / 2, hd["frame_height"]
+    ftop = H - hd["frame_top_below_rim"]
+    for sy in (-1, 1):
+        slab(bm, -fw, fw, sy * (Y + 1), sy * iy, ftop - fh, ftop, hole)
+    bmesh.ops.translate(bm, verts=bm.verts[:], vec=(0, m(Y), 0))
+    return bm
+
+
+def clip_ring(bx):
+    """ColorClip on the face of the handle frame, both short sides; origin as the box."""
+    s = RACK["box_shape"]
+    hd, cl = s["handle"], s["clip"]
+    H, Y = bx["height"], bx["length"] / 2
+    ftop = H - hd["frame_top_below_rim"]
+    zc = ftop - hd["frame_height"] / 2
+    band = (cl["outer_height"] - hd["opening_height"]) / 2 - 2
+    hole = (-cl["outer_width"] / 2 + band, cl["outer_width"] / 2 - band,
+            zc - cl["outer_height"] / 2 + band, zc + cl["outer_height"] / 2 - band)
+    bm = bmesh.new()
+    for sy in (-1, 1):
+        slab(bm, -cl["outer_width"] / 2, cl["outer_width"] / 2, sy * (Y + 1),
+             sy * (Y + 1 + cl["thickness"]), zc - cl["outer_height"] / 2,
+             zc + cl["outer_height"] / 2, hole)
+    bmesh.ops.translate(bm, verts=bm.verts[:], vec=(0, m(Y), 0))
+    return bm
+
+
+def clip_colour(level):
+    return RACK["color_clips"]["levels"][str(level)]
 
 
 def build_boxes(mats, colls):
@@ -269,25 +419,18 @@ def build_boxes(mats, colls):
     sec = fr["profile"]["section"]
     ux = fr["upright_x"]
     front_y = RACK["box_position"]["front_y"]
+    box_meshes, clip_meshes = {}, {}
     boxes = {}
     for lv in RACK["levels"]:
         key = RACK["model_boxes"][lv["class"]]
         bx = RACK["box_models"][key]
+        if key not in box_meshes:
+            box_meshes[key] = to_mesh(f"mesh.{key}", cycle_box(bx), mats["box_anthracite"])
         for c in range(fr["columns"]):
             name = f"box.L{lv['level']}.C{c + 1}"
-            floor_z = bx["height"] - bx["inner_height"]
-            bm = hollow_tray(
-                m(bx["width"]), m(bx["length"]),
-                m(bx["width"] - 2 * BOX_TAPER), m(bx["length"] - 2 * BOX_TAPER),
-                m(bx["height"]),
-                m(bx["inner_width"]), m(bx["inner_length"]),
-                m(bx["inner_width"] - 2 * BOX_TAPER), m(bx["inner_length"] - 2 * BOX_TAPER),
-                m(floor_z))
-            # origin at the front bottom centre of the box
-            bmesh.ops.translate(bm, verts=bm.verts[:], vec=(0, m(bx["length"] / 2), 0))
             xc = (ux[c] + sec + ux[c + 1]) / 2
-            obj = finish(name, bm, mats["box_grey"], colls["boxes"],
-                         location=(m(xc), m(front_y), m(lv["floor"])))
+            obj = place(name, box_meshes[key], colls["boxes"],
+                        location=(m(xc), m(front_y), m(lv["floor"])))
             obj["kind"] = "box"
             obj["level"] = lv["level"]
             obj["column"] = c + 1
@@ -295,12 +438,20 @@ def build_boxes(mats, colls):
             obj["model"] = key
             obj["travel"] = m(RACK["pull_out"]["travel"])
             obj["pull_axis"] = [0, 0, 1]
+            colour = clip_colour(lv["level"])
+            ck = (key, colour)
+            if ck not in clip_meshes:
+                clip_meshes[ck] = to_mesh(f"mesh.clip.{key}.{colour}", clip_ring(bx), mats[f"clip_{colour}"])
+            clip = place(f"clip.L{lv['level']}.C{c + 1}.{colour}", clip_meshes[ck], colls["boxes"], parent=obj)
+            clip["kind"] = "clip"
+            clip["colour"] = colour
             boxes[(lv["level"], c + 1)] = (obj, bx)
     return boxes
 
 
 def build_inserts(mats, colls, boxes):
     ins = RACK["inserts"]
+    meshes = {}
     for key, layout_name in ins["boxes"].items():
         level, column = (int(part[1:]) for part in key.split("."))
         box, bx = boxes[(level, column)]
@@ -314,22 +465,23 @@ def build_inserts(mats, colls, boxes):
             for k, t in enumerate(row):
                 size = ins["types"][t]
                 w, l, h = size["width"], size["length"], ins["height"]
-                bm = hollow_tray(m(w), m(l), m(w), m(l), m(h),
-                                 m(w - 2 * INSERT_WALL), m(l - 2 * INSERT_WALL),
-                                 m(w - 2 * INSERT_WALL), m(l - 2 * INSERT_WALL), m(INSERT_WALL))
+                if t not in meshes:
+                    bm = hollow_tray(m(w), m(l), m(w - 2), m(l - 2), m(h),
+                                     m(w - 2 * INSERT_WALL), m(l - 2 * INSERT_WALL),
+                                     m(w - 2 - 2 * INSERT_WALL), m(l - 2 - 2 * INSERT_WALL), m(INSERT_WALL))
+                    meshes[t] = to_mesh(f"mesh.insert.{t}", bm, mats["insert_grey"])
                 loc = (m(x_start + r * row_w + w / 2), m(y + l / 2), m(floor_z))
-                obj = finish(f"insert.{key}.R{r + 1}.{k + 1}.{t}", bm, mats["insert_grey"],
-                             colls["inserts"], parent=box, location=loc)
+                obj = place(f"insert.{key}.R{r + 1}.{k + 1}.{t}", meshes[t], colls["inserts"],
+                            parent=box, location=loc)
                 obj["kind"] = "insert"
                 obj["type"] = t
                 y += l
 
 
 def build_top_plate(mats, colls):
-    tp, out = RACK["top_plate"], RACK["outer"]
-    t = RACK["panels"]["thickness"]
-    x0 = -t - tp["overhang"]
-    y0 = -tp["overhang"]
+    tp = RACK["top_plate"]
+    x0 = -tp["overhang"]
+    y0 = -RACK["frame"]["joint_plate"]["thickness"] - tp["overhang"]
     bm = bmesh.new()
     bm_box(bm, (m(x0), m(y0), m(tp["top"] - tp["thickness"])),
            (m(x0 + tp["width"]), m(y0 + tp["depth"]), m(tp["top"])))
@@ -392,6 +544,37 @@ def camera(scene, coll, name, location, target, ortho_scale=None, lens=50):
     return obj
 
 
+def model_center(exclude=()):
+    """Centre of the bounding box of all visible meshes outside `exclude`."""
+    lo = [float("inf")] * 3
+    hi = [float("-inf")] * 3
+    for obj in bpy.context.scene.objects:
+        if obj.type != "MESH" or not obj.visible_get():
+            continue
+        if any(c.name in exclude for c in obj.users_collection):
+            continue
+        for corner in obj.bound_box:
+            w = obj.matrix_world @ Vector(corner)
+            for i in range(3):
+                lo[i] = min(lo[i], w[i])
+                hi[i] = max(hi[i], w[i])
+    return Vector((l + h) / 2 for l, h in zip(lo, hi))
+
+
+def center_rotation():
+    """Place the 3D cursor and the viewport's rotation pivot at the middle of
+    the model, so opening the file and orbiting turns the rack around itself
+    and not around the floor corner at the world origin."""
+    centre = model_center(exclude=("stage",))
+    bpy.context.scene.cursor.location = centre
+    for window in bpy.context.window_manager.windows:
+        for area in window.screen.areas:
+            if area.type == "VIEW_3D":
+                view = area.spaces.active.region_3d
+                view.view_location = centre
+                view.view_distance = 3.0
+
+
 def render(scene, cam, filename):
     scene.camera = cam
     scene.render.filepath = os.path.join(RENDERS, filename)
@@ -401,19 +584,21 @@ def render(scene, cam, filename):
 
 def main():
     global SECTION
-    SECTION = profile_section()
+    sec = RACK["frame"]["profile"]["section"]
+    SECTION = rect_section(sec, sec)
     scene = reset_scene()
     mats = make_materials()
-    names = ["frame", "angles", "castors", "panels", "boxes", "inserts", "top_plate", "stage"]
+    names = ["frame", "angles", "castors", "boxes", "inserts", "top_plate", "stage"]
     colls = {n: collection(scene, n) for n in names}
 
     frame_root = bpy.data.objects.new("frame", None)
     frame_root["kind"] = "frame"
     colls["frame"].objects.link(frame_root)
     build_frame(mats, colls, frame_root)
+    build_plates(mats, colls, frame_root)
     build_angles(mats, colls, frame_root)
+    build_stops(mats, colls, frame_root)
     build_castors(mats, colls, frame_root)
-    build_panels(mats, colls)
     boxes = build_boxes(mats, colls)
     build_inserts(mats, colls, boxes)
     build_top_plate(mats, colls)
@@ -428,14 +613,17 @@ def main():
     W, D, H = m(out["width"]), m(out["depth"]), m(out["height"])
     cx, cy, cz = m(RACK["frame"]["width"]) / 2, D / 2, H / 2
     cams = colls["stage"]
-    front = camera(scene, cams, "cam.front", (cx, -10, cz), (cx, 0, cz), ortho_scale=W * 1.12)
+    front = camera(scene, cams, "cam.front", (cx, -10, cz), (cx, 0, cz),
+                   ortho_scale=max(W, H * 4 / 3) * 1.12)
     side = camera(scene, cams, "cam.side", (-10, cy, cz), (0, cy, cz), ortho_scale=H * 1.2 * 4 / 3)
-    three = camera(scene, cams, "cam.three_quarter", (cx - 1.6, -2.3, 1.45), (cx, cy, cz * 0.85), lens=42)
-    drawer = camera(scene, cams, "cam.drawer_out", (cx - 1.5, -2.3, 1.45), (cx, cy - 0.2, cz * 0.9), lens=40)
+    three = camera(scene, cams, "cam.three_quarter", (cx - 1.5, -2.2, 1.55), (cx, cy, cz * 0.9), lens=42)
+    drawer = camera(scene, cams, "cam.drawer_out", (cx - 1.4, -2.2, 1.55), (cx, cy - 0.15, cz * 0.95), lens=40)
     top = camera(scene, cams, "cam.inserts_top", (cx, 0, 10), (cx, 0, 0), ortho_scale=W * 1.4)
 
     os.makedirs(RENDERS, exist_ok=True)
     bpy.context.preferences.filepaths.save_version = 0
+    bpy.context.view_layer.update()
+    center_rotation()
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, "rack.blend"), compress=True)
 
     render(scene, front, "front.png")
@@ -448,26 +636,31 @@ def main():
     render(scene, drawer, "drawer_out.png")
     box.location = home
 
-    # Top view: frame and panels hidden, the level 3 boxes taken out in front of level 4.
-    hidden = [colls[n] for n in ("frame", "angles", "castors", "panels")]
+    # Top view: frame hidden, every level with inserts taken out and staged in
+    # its own row, so all twelve 120 boxes and their inserts are visible.
+    hidden = [colls[n] for n in ("frame", "angles", "castors")]
     for coll in hidden:
         coll.hide_render = True
-    lower = [boxes[(3, c)][0] for c in (1, 2, 3)]
-    upper = [boxes[(4, c)][0] for c in (1, 2, 3)]
-    others = [boxes[(l, c)][0] for l in (1, 2) for c in (1, 2, 3)]
-    for b in others:
-        b.hide_render = True
     length = m(RACK["box_models"][RACK["model_boxes"]["120"]]["length"])
-    for b in lower:
-        b.location.y -= length + m(STAGE_GAP)
-    y_mid = (lower[0].location.y + upper[0].location.y + length) / 2
+    step = length + m(STAGE_GAP)
+    staged = [lv["level"] for lv in RACK["levels"] if (lv["level"], 1) in boxes and
+              f"L{lv['level']}.C1" in RACK["inserts"]["boxes"]]
+    moved = {}
+    for i, level in enumerate(reversed(staged)):
+        shift = i * step  # the top level stays, the next ones move forward one row each
+        moved[level] = shift
+        for c in range(1, RACK["frame"]["columns"] + 1):
+            boxes[(level, c)][0].location.y -= shift
+    y_min = -max(moved.values()) if moved else 0.0
+    span = length - y_min  # rows run from y_min (front row) to length (back row)
+    y_mid = y_min + span / 2
     top.location.y = y_mid
+    top.data.ortho_scale = max(W, span / 0.75) * 1.06
     look_at(top, (cx, y_mid, 0))
     render(scene, top, "inserts_top.png")
-    for b in lower:
-        b.location.y += length + m(STAGE_GAP)
-    for b in others:
-        b.hide_render = False
+    for level, shift in moved.items():
+        for c in range(1, RACK["frame"]["columns"] + 1):
+            boxes[(level, c)][0].location.y += shift
     for coll in hidden:
         coll.hide_render = False
 
