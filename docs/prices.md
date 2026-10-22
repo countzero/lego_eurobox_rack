@@ -43,19 +43,15 @@ The cheapest sound way to buy every part of `design/rack.json` (roadmap 0007).
 | `angle.*` (36)                 | profilzuschnitt24     | L-Profil Aluminium 50x50x3 (roh)            | 12.11 €/m + 1.10 € per cut        | metre      | 229.24 €         | DERIVED    | [pz-50]       |
 | `plate.castor` (4)             | Dold                  | Gussplatte EN AW-5083 10 × 90, AGP-10-90-Z  | 51.82 €/m + 1.00 € per cut        | 90 mm cut  | 22.66 €          | DERIVED    | [dold-agp]    |
 | `plate.castor` (4)             | motedis               | Aluminium Plättchen 8x90 mm, 740 mm bar     | 30.63 € per bar                   | bar        | 30.63 €          | VERIFIED   | [mo-agp]      |
-| `plate.joint_l` (8)            | motedis               | Verbinderplatte-L Alu eloxiert 3030 CPL3030 | 2.00 € net + 0.28 € net per line  | piece      | 19.37 €          | DERIVED    | [mo-plate-l]  |
-| `plate.joint_t` (8)            | motedis               | Verbinderplatte-T Alu eloxiert 3030 CPT3030 | 2.00 € net + 0.28 € net per line  | piece      | 19.37 €          | DERIVED    | [mo-plate-t]  |
 | `bracket.inside_30` (28)       | motedis               | Winkel 30 B-Typ Nut 8                       | 7.27 € per 10                     | pack of 10 | 21.81 € (3)      | VERIFIED   | [mo-winkel]   |
 | `bracket.inside_30` (28)       | Dold                  | Winkel 30 B-Typ Nut 8 (66895)               | 1.27 €, 1.09 € from 10            | piece      | 30.52 €          | DERIVED    | [dold-winkel] |
 | `bracket.inside_30` (28)       | profilzuschnitt24     | Winkel 30x30 mm Nut 8                       | 1.59 € from 1                     | piece      | 44.52 €          | DERIVED    | [pz-nut8]     |
-| `tnut.m6` (152)                | Dold                  | Hammermutter M6 B-Typ Nut 8 (66833-1)       | 0.52 €, 0.19 € from 100           | piece      | 28.88 €          | DERIVED    | [dold-hm6]    |
-| `tnut.m6` (152)                | motedis               | Hammermutter B-Typ Nut 8 M6                 | 14.54 € per 100                   | pack 100   | 29.08 € (2)      | DERIVED    | [mo-hm]       |
+| `tnut.m6` (72)                 | Dold                  | Hammermutter M6 B-Typ Nut 8 (66833-1)       | 0.52 €, 0.19 € from 100           | piece      | 19.00 € (100)    | DERIVED    | [dold-hm6]    |
+| `tnut.m6` (72)                 | motedis               | Hammermutter B-Typ Nut 8 M6                 | 14.54 € per 100                   | pack 100   | 14.54 € (1)      | DERIVED    | [mo-hm]       |
 | `tnut.m5` (144)                | motedis               | Hammermutter B-Typ Nut 8 M5                 | 14.54 € per 100                   | pack 100   | 29.08 € (2)      | VERIFIED   | [mo-hm5]      |
 | `tnut.m5` (144)                | Dold                  | Nutenstein schwer M5 B-Typ Nut 8 (DM.2111)  | 0.18 € from 100                   | piece      | 25.92 €          | DERIVED    | [dold-nuts]   |
 | `screw.m6x12_button` (56)      | motedis               | ISO 7380 M6x12, zinc-plated                 | 5.29 € per 100                    | pack 100   | 5.29 €           | VERIFIED   | [mo-7380-6]   |
 | `screw.m6x12_button` (56)      | Dold                  | DIN 7380 10.9 M6x12, zinc-plated            | 0.53 €                            | piece      | 29.68 €          | DERIVED    | [dold-7380]   |
-| `screw.m6x10_socket` (80)      | Dold                  | DIN 912 8.8 M6x10, zinc-plated              | 0.38 €                            | piece      | 30.40 €          | DERIVED    | [dold-912]    |
-| `screw.m6x10_socket` (80)      | motedis               | ISO 4762 M6x10, zinc-plated                 | not read                          | piece      | not priced       | UNVERIFIED |               |
 | `screw.m6x16_countersunk` (16) | motedis               | DIN 7991 M6x16 (= ISO 10642), zinc-plated   | 5.29 € per 100                    | pack 100   | 5.29 €           | VERIFIED   | [mo-7991-6]   |
 | `screw.m6x16_countersunk` (16) | Dold                  | DIN 7991 8.8 M6x16, zinc-plated             | about 0.21 € (0.05 + 0.16)        | piece      | about 3.36 €     | UNVERIFIED | [dold-7991]   |
 | `screw.m5x10_countersunk`      | motedis               | DIN 7991 M5x10 (= ISO 10642), zinc-plated   | 5.29 € per 100                    | pack 100   | 10.58 € (2)      | VERIFIED   | [mo-7991]     |
@@ -84,8 +80,8 @@ Notes:
   at home.
 - The Dold M8 thread prices come from the page JSON, not from the visible
   page, hence `UNVERIFIED`; the 24.00 € is in the Dold total.
-- The motedis plate price is per order line: (8 × 2.00 + 0.28) × 1.19 = 19.37 €
-  per plate type.
+- 100 Dold M6 hammer nuts at 0.19 € cost 19.00 €, less than the 72 needed at
+  0.52 € (37.44 €); the rest are spares.
 - The castor is the same at Dold and motedis: 100 mm PP wheel with PU tread,
   125 mm high, 11 mm back hole, 28 mm offset, 70 kg. Dold has it in stock;
   motedis shows "Derzeit nicht genügend Bestand verfügbar" (both `VERIFIED`
@@ -153,30 +149,30 @@ rate for up to 221.09 € plus the packing charge, 16.33 + 3.89 = 20.22 €
 ## Recommended order split
 
 Four shops: Dold for everything long, the castors, the castor plates, the M6
-hammer nuts and the M8 and M6 socket screws, motedis for connectors and the
+hammer nuts and the M8 socket screws, motedis for connectors and the
 small screws, Amazon for the tape, aidB for boxes, rings and inserts. The
 castors and plates go to Dold because motedis has the castor out of stock and
 its plate is thinner and uncut.
 
 | Shop    | Parts                                                                                                                                                                                                                                   | Subtotal | Shipping | Total    |
 | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | -------- |
-| Dold    | `profile.*` incl. M8 threads, `angle.*`, `plate.castor`, `castor.plain`, `tnut.m6`, `screw.m6x10_socket`, `screw.m8x100_socket`, `screw.m8x50_socket`, `screw.m8x20_socket`, `washer.m8`, `cap.end_30`, `cap.end_30x60`, `cover.slot_8` | 533.60 € | 14.90 €  | 548.50 € |
-| motedis | `plate.joint_l`, `plate.joint_t`, `bracket.inside_30`, `screw.m6x12_button`, `screw.m6x16_countersunk`, `screw.m5x10_countersunk`, `tnut.m5`                                                                                            | 110.79 € | 0.00 €   | 110.79 € |
+| Dold    | `profile.*` incl. M8 threads, `angle.*`, `plate.castor`, `castor.plain`, `tnut.m6`, `screw.m8x100_socket`, `screw.m8x50_socket`, `screw.m8x20_socket`, `washer.m8`, `cap.end_30`, `cap.end_30x60`, `cover.slot_8`                       | 493.32 € | 14.90 €  | 508.22 € |
+| motedis | `bracket.inside_30`, `screw.m6x12_button`, `screw.m6x16_countersunk`, `screw.m5x10_countersunk`, `tnut.m5`                                                                                                                              | 72.05 €  | 0.00 €   | 72.05 €  |
 | Amazon  | `tape.uhmw_25` (2 rolls)                                                                                                                                                                                                                | 15.38 €  | 0.00 €   | 15.38 €  |
 | aidB    | `box.e120` × 12, `box.e220` × 3, `clip.*` × 15, `insert.set_half` × 6, `insert.set_quarter` × 6                                                                                                                                         | 277.68 € | 0.00 €   | 277.68 € |
 
-Dold: 122.49 + 24.00 + 42.58 + 203.44 + 22.66 + 24.00 + 28.88 + 30.40 +
-10.80 + 6.72 + 1.24 + 0.40 + 3.44 + 3.80 + 8.75 = 533.60 €, with the 1.64 €
-estimate for the M8x20 screws and the washers. motedis: 19.37 + 19.37 +
-21.81 + 5.29 + 5.29 + 10.58 + 29.08 = 110.79 €.
+Dold: 122.49 + 24.00 + 42.58 + 203.44 + 22.66 + 24.00 + 19.00 + 10.80 + 6.72 +
+1.24 + 0.40 + 3.44 + 3.80 + 8.75 = 493.32 €, with the 1.64 € estimate for the
+M8x20 screws and the washers. motedis: 21.81 + 5.29 + 5.29 + 10.58 + 29.08 =
+72.05 €.
 
 | Total                           | Amount       |
 | ------------------------------- | ------------ |
-| Rack without boxes              | 674.67 €     |
+| Rack without boxes              | 595.65 €     |
 | Boxes, rings and inserts (aidB) | 277.68 €     |
-| **Overall**                     | **952.35 €** |
+| **Overall**                     | **873.33 €** |
 
-The rack total is 548.50 + 110.79 + 15.38 €. If motedis charges the basic
+The rack total is 508.22 + 72.05 + 15.38 €. If motedis charges the basic
 rate, add 20.22 €.
 
 ## Planned top plate (not in the totals)
@@ -198,7 +194,7 @@ are not priced; the known part is about 48 € (30.48 + 15.10 + ~2).
 - Dold M8 core thread prices (page JSON) and its CNC hole price.
 - Dold DIN 7991 M6x16, DIN 912 M8x20 and DIN 125 A 8.4 prices (base plus
   surcharge, not the cart price).
-- motedis M6x10 socket screw price, its profile cut fee and metre price per
+- motedis profile cut fee and metre price per
   length, and the thread depth of its M8 machining.
 - Whether Dold's shipping table includes VAT.
 - Whether motedis counts every part of this order as an accessory.
@@ -219,7 +215,7 @@ are not priced; the known part is about 48 € (30.48 + 15.10 + ~2).
 ## Panels (dropped)
 
 The side and back panels of 3 mm white aluminium composite are gone with the
-redesign; the joint plates brace the frame and the back stays open
+redesign; the core-bolt joints keep the frames square and the back stays open
 (`docs/design.md`). This saves about 102.69 € for the panels plus 17.45 €
 shipping from plattenzuschnitt24.
 
@@ -240,8 +236,6 @@ shipping from plattenzuschnitt24.
 [ape-cover]: https://www.aluprofile-express.de/Abdeckprofile_5
 [mo-30]: https://www.motedis.com/de/Aluprofil-30x30-B-Typ-Nut-8
 [mo-agp]: https://www.motedis.com/de/Aluminium-Plaettchen-8x90-mm
-[mo-plate-l]: https://www.motedis.com/de/Anschlussplatte-L-Alu-eloxiert-3030
-[mo-plate-t]: https://www.motedis.com/de/Anschlussplatte-T-Alu-elox-3030
 [mo-winkel]: https://www.motedis.com/de/Winkel-30-B-Typ-Nut-8
 [mo-hm]: https://www.motedis.com/de/Hammermutter-B-Typ-Nut-8-M6
 [mo-hm5]: https://www.motedis.com/de/Hammermutter-B-Typ-Nut-8-M5

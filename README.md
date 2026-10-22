@@ -6,7 +6,7 @@ A rolling rack of 30 × 30 aluminium profiles that holds 15 Euroboxes NextGen
 One long bar runs over all three columns front and back, top and bottom; the
 rack stands on 4 plain swivel castors, each under an aluminium plate at a
 corner, and has no panels. The back is open: every box pulls out to the front
-and to the back, so the rack stands free in the room. Outer size 1068 × 443 ×
+and to the back, so the rack stands free in the room. Outer size 1068 × 435 ×
 1016 mm. Its top is prepared for a wooden plate to be fitted later.
 
 **[Open the 3D viewer](https://countzero.github.io/lego_eurobox_rack/)**: turn
