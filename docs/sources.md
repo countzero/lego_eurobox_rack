@@ -103,7 +103,8 @@ short 300 mm side and its handle at the front.
 | DIN 912 M8 × 100 8.8 zinc, Dold       | 1.11 € each (0.05 € base + 1.06 €)                                               | DERIVED    | [aluprofile-express][ape-912]          |
 | DIN 912 M8 × 50 8.8 zinc, Dold        | 0.60 € each                                                                      | DERIVED    | [aluprofile-express][ape-912]          |
 | Shipping Dold, pieces over 1 m        | DPD up to 1.5 m and 30 kg: 14.90 €; VAT basis not stated                         | VERIFIED   | [Dold shipping][dold-ship]             |
-| Joint plates L and T 3030, motedis    | CPL3030, CPT3030; 90 × 90 × 4 mm, 5 holes; 2.00 € net each + 0.28 € net per line | DERIVED    | [motedis L][mo-pl], [motedis T][mo-pt] |
+| Joint plates L and T 3030, motedis    | CPL3030, CPT3030; 90 × 90 × 4 mm, 5 holes; 2.00 € net each; dropped with 0017    | DERIVED    | [motedis L][mo-pl], [motedis T][mo-pt] |
+| Joint plate shape, motedis drawing    | holes Ø6.5, 15 from the edges, 30 apart; corner filled to a chamfer 30–90 mm     | VERIFIED   | [motedis L][mo-pl], [motedis T][mo-pt] |
 | Castor 100 mm solid rubber, Dold      | only a braked swivel (27.83 €) and a fixed castor (23.03 €, 136 mm high)         | VERIFIED   | [Dold 100 rubber][dold-100]            |
 
 [dold-3060]: https://www.dold-mechatronik.de/Aluminiumprofil-30x60L-B-Typ-Nut-8-149kg-m-Zuschnitt-50-6000mm
