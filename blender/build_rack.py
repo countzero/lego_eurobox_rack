@@ -5,8 +5,8 @@ Run headless from the repository root:
 
 Every structural dimension comes from design/rack.json (millimetres); the
 model is in metres. Only visual details (slot depth, castor shape, edge
-rounds, colours, cameras, lights) are set here. rack.blend is saved with
-EEVEE for the live-reload window; the renders use Cycles on the CPU.
+rounds, colours, cameras, lights) are set here. The renders use EEVEE
+without ray tracing, so a second run gives the same files.
 """
 
 import json
@@ -41,7 +41,7 @@ SHARP_ANGLE = math.radians(30)
 # The insert sets fill the published inner top (266 in 265 ± 5), so a tray may
 # overlap the drawn wall by this much.
 INSERT_FIT_TOLERANCE = 1.0
-CYCLES_SAMPLES = 128
+EEVEE_SAMPLES = 64
 # (linear colour, metallic, roughness, IOR); IOR 1.49 for PP, 1.59 for PS.
 COLOURS = {
     "aluminium": ((0.62, 0.64, 0.66, 1), 1.0, 0.55, 1.5),
@@ -840,28 +840,17 @@ def build_stage(scene, mats, colls):
     for prop in scene.render.bl_rna.properties:
         if prop.identifier.startswith("use_stamp"):
             setattr(scene.render, prop.identifier, False)
-    scene.eevee.taa_render_samples = 64
+    # Ray tracing off: with it a second run differs in a few pixels.
+    eevee = scene.eevee
+    eevee.taa_render_samples = EEVEE_SAMPLES
+    eevee.use_raytracing = False
+    eevee.use_fast_gi = True
+    eevee.fast_gi_method = "GLOBAL_ILLUMINATION"
+    eevee.use_shadows = True
+    eevee.shadow_ray_count = 2
+    eevee.shadow_step_count = 8
     scene.view_settings.view_transform = "AgX"
     scene.view_settings.look = "AgX - Punchy"
-
-    cycles = scene.cycles
-    cycles.device = "CPU"
-    cycles.samples = CYCLES_SAMPLES
-    cycles.seed = 0
-    cycles.use_animated_seed = False
-    cycles.use_adaptive_sampling = False
-    cycles.use_denoising = True
-    cycles.denoiser = "OPENIMAGEDENOISE"
-    cycles.denoising_use_gpu = False
-    cycles.denoising_input_passes = "RGB_ALBEDO_NORMAL"
-    cycles.max_bounces = 8
-    cycles.sample_clamp_indirect = 10.0
-    scene.render.threads_mode = "AUTO"
-
-
-def use_cycles(scene):
-    """Switch to Cycles after rack.blend is saved; the file keeps EEVEE."""
-    scene.render.engine = "CYCLES"
 
 
 def camera(scene, coll, name, location, target, ortho_scale=None, lens=50):
@@ -911,8 +900,8 @@ def center_rotation():
 
 
 def strip_png_text(path):
-    """Drop the text chunks Cycles writes even with every stamp off; they hold
-    the render time, so a second run would never give the same file."""
+    """Drop any text chunks the renderer writes even with every stamp off; they
+    can hold the render time, so a second run would not give the same file."""
     data = open(path, "rb").read()
     out, i = [data[:8]], 8
     while i < len(data):
@@ -976,7 +965,6 @@ def main():
     bpy.context.view_layer.update()
     center_rotation()
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, "rack.blend"), compress=True)
-    use_cycles(scene)
 
     render(scene, front, "front.png")
     render(scene, side, "side.png")
