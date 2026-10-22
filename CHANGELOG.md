@@ -3,6 +3,20 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-10-22
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: no profile, angle, box or insert of 0.1.0 carries over. Order and cut from the new parts and cut list._
+
+### Changed
+
+- **Breaking:** change the rack to 15 Euroboxes NextGen 2.0 Cycle 400 × 300, 3 wide and 5 high, with one long bar front and back, 4 castors, no panels and aidB's insert sets ([`37dd16d`](https://github.com/countzero/lego_eurobox_rack/commit/37dd16d))
+
+### Added
+
+- Add the ColorClip picker to the web viewer, with presets and a link that shares the colours of each level ([#10](https://github.com/countzero/lego_eurobox_rack/pull/10))
+
 ## [0.1.0] - 2026-10-20
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and the joints of the width beams clash with the base and guard angles ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
@@ -17,4 +31,5 @@ _Not ready to build: the box dimensions are provisional until the boxes are meas
 - Add the price comparison with the cheapest order split ([#8](https://github.com/countzero/lego_eurobox_rack/pull/8))
 - Add the assembly guide ([#7](https://github.com/countzero/lego_eurobox_rack/pull/7))
 
+[0.2.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.2.0
 [0.1.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.1.0

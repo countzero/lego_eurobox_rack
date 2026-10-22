@@ -65,10 +65,11 @@ function view(name) {
 
 const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 
-function setOut(box, out) {
+// side is +1 (front, along pull_axis) or -1 (back, against it).
+function setOut(box, out, side = 1) {
   box.out = out;
   box.from = box.node.position.clone();
-  box.to = box.home.clone().addScaledVector(box.axis, out ? box.travel : 0);
+  box.to = box.home.clone().addScaledVector(box.axis, out ? side * box.travel : 0);
   box.t = 0;
 }
 
@@ -94,25 +95,34 @@ function pick(event) {
     if (!hit.object.visible) continue;
     for (let o = hit.object; o; o = o.parent) {
       const box = boxes.find((b) => b.node === o);
-      if (box) return box;
+      if (box) return { box, side: sideOf(box, hit.point) };
     }
     return null;
   }
   return null;
 }
 
+// The side of the box's current centre the hit lies on, in the box's parent space.
+function sideOf(box, point) {
+  if (!box.back) return 1;
+  const local = box.node.parent.worldToLocal(point.clone());
+  const centre = box.centre.clone().add(box.node.position).sub(box.home);
+  return local.sub(centre).dot(box.axis) >= 0 ? 1 : -1;
+}
+
 canvas.addEventListener("pointermove", (event) => {
   if (event.pointerType !== "mouse") return;
-  const box = pick(event);
+  const { box, side } = pick(event) ?? {};
   if (box !== hovered) {
     if (hovered) highlight(hovered, false);
     if (box) highlight(box, true);
-    hovered = box;
+    hovered = box ?? null;
   }
   canvas.style.cursor = box ? "pointer" : "";
   label.hidden = !box;
   if (box) {
-    label.textContent = `${box.name}, ${colourOf(box.level)}`;
+    const where = box.out ? "in" : side > 0 ? "front" : "back";
+    label.textContent = `${box.name}, ${colourOf(box.level)}${box.back ? `, ${where}` : ""}`;
     label.style.left = `${event.clientX + 14}px`;
     label.style.top = `${event.clientY + 14}px`;
   }
@@ -130,9 +140,9 @@ canvas.addEventListener("pointerdown", (e) => { down = [e.clientX, e.clientY]; }
 canvas.addEventListener("pointerup", (event) => {
   if (!down || Math.hypot(event.clientX - down[0], event.clientY - down[1]) > 5) return;
   down = null;
-  const box = pick(event);
+  const { box, side } = pick(event) ?? {};
   if (box) {
-    setOut(box, !box.out);
+    setOut(box, !box.out, side);
     updateAllButton();
   }
 });
@@ -198,6 +208,7 @@ async function load() {
         name: `L${x.level} C${x.column}, ${x.class} mm class`,
         axis: new THREE.Vector3(...(x.pull_axis ?? [0, 0, 1])).normalize(),
         travel: x.travel ?? 0.4,
+        back: (x.sides ?? ["front"]).includes("back"),
         home: o.position.clone(),
         materials,
         out: false,
@@ -206,6 +217,11 @@ async function load() {
     }
   });
   toggle("plate", plate ? [plate] : []);
+  root.updateMatrixWorld(true);
+  for (const box of boxes) {
+    const world = new THREE.Box3().setFromObject(box.node).getCenter(new THREE.Vector3());
+    box.centre = box.node.parent.worldToLocal(world);
+  }
 
   const bounds = new THREE.Box3().setFromObject(root);
   const sphere = bounds.getBoundingSphere(new THREE.Sphere());

@@ -50,6 +50,8 @@ sorted by ID; the order of work follows from the status.
 | 0011 | [ColorClip picker](#0011-colorclip-picker)                   | Done                 | [#10](https://github.com/countzero/lego_eurobox_rack/pull/10) |
 | 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | In progress          |                                                               |
 | 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
+| 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | In progress          |                                                               |
+| 0015 | [Tip-over safety](#0015-tip-over-safety)                     | Blocked by 0014      |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -305,3 +307,69 @@ studio light.
 - AgX tone mapping and a `RoomEnvironment` light the model; the page still
   opens offline.
 - The box, ring and insert colours match the renders by eye.
+
+## 0014 Castor plates, open back
+
+**Goal:** a lower rack on four plain 100 mm castors whose heads stay inside the
+frame outline, with no back stop, so every box pulls out to the front and to
+the back, and loads checked against cited rules.
+
+**Delivers:** `design/rack.json` (frame heights, castors, castor plates,
+joints, parts, `box_position`, `pull_out`, schema 3), `docs/design.md` (all but
+*Box shape in the model*), `docs/assembly.md`, `docs/prices.md`, `README.md`,
+`blender/build_rack.py` (frame, castors, stops, box extras), `blender/rack.blend`,
+`renders/*.png`, `web/rack.glb`, `bom/parts.csv`, `web/src/main.js`,
+`web/src/index.html`, `docs/web_viewer.md`.
+
+**Acceptance:**
+
+- Four `castor.plain` (Dold 69483: 100 mm, 125 mm high, 70 kg, back hole
+  11 mm, offset 28 mm), no `castor.brake`. Each is bolted into a
+  `plate.castor` (90 × 90 × 10 EN AW-5083) screwed under the bottom bar and the
+  bottom depth beam, castor centre 45 mm from both outer faces; seen from above
+  the castor head stays inside the frame.
+- The bottom depth beams sit flush with the underside of the bottom bars; every
+  height follows `castor_height` plus the plate: frame 1068 × 435 × 1016,
+  level floors 198, 442, 578, 714, 850; cut lengths unchanged.
+- No connector overlaps another part, and none sits on an upright face that
+  carries an angle (the check of 0010, which this step closes): the bottom
+  depth-beam brackets, the corner M8 bolts in the plates' clearance holes, the
+  castor bolts and the joint plates are drawn in the model and the assembly
+  guide.
+- No `bracket.stop`; the boxes stand centred at `y` 17.5 and pull out 270 mm
+  to the front and to the back; the box envelope of `docs/design.md` is
+  unchanged.
+- `docs/design.md` → *Loads* gives the frame mass, the LEGO density with
+  sources (low 0.25, typical 0.40, design 0.60 kg/l), the castor load by
+  Blickle's rule, the bottom bar sag and the tipping forwards and backwards
+  without brakes against EN 14749 and ASTM F2057-23.
+- The web viewer pulls a box out to the side that was clicked; "All out" pulls
+  to the front; the box extra `sides` and `rack_schema` 3 are documented in
+  `docs/design.md` → *Contracts*.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `build_bom.py` and `npm --prefix web run build` run clean.
+
+**Open:** the castor head diameter (Ø46 from motedis' drawing, `SECONDARY`);
+the thread engagement of M8 in a 10 mm aluminium plate; the castor's
+non-marking tread; the empty rack tips under a 27.2 kg child on an extended box
+(0015). 0012 changes the same model files: the step merged second rebuilds
+`rack.blend`, the renders and `rack.glb`.
+
+## 0015 Tip-over safety
+
+**Goal:** a rack that does not tip, even empty, when a child hangs on a box
+pulled out to the front or to the back.
+
+**Delivers:** `design/rack.json`, `docs/design.md` → *Loads*, `docs/assembly.md`,
+`docs/prices.md`, the model, the parts list and the renders generated to match.
+
+**Acceptance:**
+
+- The empty rack, every box pulled out to one side and the castors in their
+  worst position, stays standing with 27.2 kg (ASTM F2057-23) on the front
+  edge of the worst box, with a margin of at least 1.2, forwards and
+  backwards.
+- The candidates are compared with price and source: ballast low in the frame,
+  wider-set castors on outriggers, braked castors, a wall strap for parking.
+
+**Open:** which measure the user prefers.

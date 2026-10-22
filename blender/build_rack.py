@@ -333,45 +333,84 @@ def build_angles(mats, colls, frame_root):
                   RACK["tip_guard"]["flat_leg_bottom"], True, mats, colls["angles"], frame_root)
 
 
-def build_stops(mats, colls, frame_root):
-    """Back stops: an inside bracket on each back upright face, one leg across the box path."""
-    bs = RACK["back_stop"]
-    yf = bs["face_y"]
-    depth = RACK["frame"]["depth"]
-    for lv in RACK["levels"]:
-        z0, z1 = (lv["floor"] + a for a in bs["above_floor"][lv["class"]])
-        for c in range(RACK["frame"]["columns"]):
-            for x_face, inward, side in bay_faces(c):
-                bm = bmesh.new()
-                mm_box(bm, x_face, x_face + inward * 3, yf, depth, z0, z1)
-                mm_box(bm, x_face, x_face + inward * 30, yf, yf + 3, z0, z1)
-                finish(f"stop.L{lv['level']}.C{c + 1}.{side}", bm, mats["aluminium"],
-                       colls["frame"], frame_root)
+def build_brackets(mats, colls, frame_root):
+    """Inside brackets 30: L of two 30 mm legs, 3 thick, 20 wide, per the joints of rack.json."""
+    fr = RACK["frame"]
+    sec = fr["profile"]["section"]
+    ux, uy = fr["upright_x"], fr["upright_y"]
+    db, tb = fr["depth_beam"], fr["top_bar"]
+    leg, t, w = 30, 3, 20
+    last = len(ux) - 1
+    pieces = []
+    for y_face, dy in ((uy[0] + sec, +1), (uy[1], -1)):
+        ya, yt, yl = y_face, y_face + dy * t, y_face + dy * leg
+        for i, x in enumerate(ux):
+            xm0, xm1 = x + (sec - w) / 2, x + (sec + w) / 2
+            # upright to top depth beam: vertical leg on the upright, flat leg under the beam
+            zt = db["top"]["bottom"]
+            pieces.append([(xm0, xm1, ya, yt, zt - leg, zt), (xm0, xm1, ya, yl, zt - t, zt)])
+            # top depth beam to bar, on the beam's bay side
+            xf, dx = (x, -1) if i == last else (x + sec, +1)
+            z0 = (tb["bottom"] + tb["top"] - w) / 2
+            pieces.append([(xf, xf + dx * leg, ya, yt, z0, z0 + w), (xf, xf + dx * t, ya, yl, z0, z0 + w)])
+            # bottom depth beam's top face to bar
+            zb = db["bottom"]["top"]
+            pieces.append([(xm0, xm1, ya, yl, zb, zb + t), (xm0, xm1, ya, yt, zb, zb + leg)])
+            # bottom depth beam's side to bar, middle uprights only
+            if 0 < i < last:
+                z0 = (db["bottom"]["bottom"] + db["bottom"]["top"] - w) / 2
+                xf = x + sec
+                pieces.append([(xf, xf + leg, ya, yt, z0, z0 + w), (xf, xf + t, ya, yl, z0, z0 + w)])
+    for n, boxes in enumerate(pieces, 1):
+        bm = bmesh.new()
+        for b in boxes:
+            mm_box(bm, *b)
+        bmesh.ops.remove_doubles(bm, verts=bm.verts[:], dist=1e-6)
+        finish(f"bracket.{n}", bm, mats["aluminium"], colls["frame"], frame_root)
+
+
+def corners():
+    """Frame corners in the order front-left, front-right, back-left, back-right: (x sign, y sign)."""
+    return ((+1, +1), (-1, +1), (+1, -1), (-1, -1))
+
+
+def build_castor_plates(mats, colls, frame_root):
+    fr = RACK["frame"]
+    cp = fr["castor_plate"]
+    W, D, s = fr["width"], fr["depth"], cp["size"]
+    for n, (sx, sy) in enumerate(corners(), 1):
+        x0 = 0 if sx > 0 else W
+        y0 = 0 if sy > 0 else D
+        assert min(x0, x0 + sx * s) >= 0 and max(x0, x0 + sx * s) <= W
+        assert min(y0, y0 + sy * s) >= 0 and max(y0, y0 + sy * s) <= D
+        bm = bmesh.new()
+        mm_box(bm, x0, x0 + sx * s, y0, y0 + sy * s, cp["bottom"], cp["top"])
+        finish(f"plate.castor.{n}", bm, mats["aluminium"], colls["frame"], frame_root)
 
 
 def build_castors(mats, colls, frame_root):
+    """Plain swivel castors 1-4 at front-left, front-right, back-left, back-right; wheels trail inward."""
     fr = RACK["frame"]
+    ca = fr["castor"]
     h = fr["castor_height"]
-    half = fr["profile"]["section"] / 2
-    wheel_r = 0.375 * h
-    ux = fr["upright_x"]
-    for i, x in ((1, ux[0]), (len(ux), ux[-1])):
-        for y, kind in zip(fr["upright_y"], ("brake", "plain")):
-            cx, cy = m(x + half), m(y + half)
-            bm = bmesh.new()
-            bm_box(bm, (-m(0.3 * h), -m(0.3 * h), m(0.95 * h)), (m(0.3 * h), m(0.3 * h), m(h)))
-            bm_cylinder(bm, (0, 0, m(0.9 * h)), m(0.2 * h), m(0.1 * h), "z")
-            ox = m(0.12 * h)
-            for sx in (-1, 1):
-                bm_box(bm, (sx * ox - m(0.02 * h), -m(0.15 * h), m(wheel_r)),
-                       (sx * ox + m(0.02 * h), m(0.15 * h), m(0.85 * h)))
-            bm_box(bm, (-ox, -m(0.15 * h), m(0.82 * h)), (ox, m(0.15 * h), m(0.85 * h)))
-            bm_cylinder(bm, (0, -m(0.06 * h), m(wheel_r)), m(wheel_r), m(0.18 * h), "x")
-            if kind == "brake":
-                bm_box(bm, (-m(0.06 * h), -m(0.32 * h), m(0.6 * h)),
-                       (m(0.06 * h), -m(0.15 * h), m(0.65 * h)))
-            obj = finish(f"castor.{kind}.{i}", bm, mats["castor"], colls["castors"], frame_root)
-            obj.location = (cx, cy, 0)
+    W, D, inset = fr["width"], fr["depth"], ca["inset"]
+    head_r, wheel_r = ca["head_diameter"] / 2, ca["wheel"] / 2
+    tw, off = ca["tread_width"], ca["offset"]
+    for n, (sx, sy) in enumerate(corners(), 1):
+        cx = inset if sx > 0 else W - inset
+        cy = inset if sy > 0 else D - inset
+        assert head_r <= cx <= W - head_r and head_r <= cy <= D - head_r, "castor head outside"
+        bm = bmesh.new()
+        bm_cylinder(bm, (0, 0, m(h - 4)), m(head_r), m(8), "z")
+        bm_cylinder(bm, (0, 0, m(h - 12)), m(head_r * 0.7), m(8), "z")
+        ox = tw / 2 + 4
+        mm_box(bm, -ox - 3, ox + 3, -12, sy * off + sy * 12, h - 22, h - 16)
+        for k in (-1, 1):
+            mm_box(bm, k * ox, k * (ox + 3), sy * (off - 18), sy * (off + 12), wheel_r - 8, h - 16)
+        bm_cylinder(bm, (0, m(sy * off), m(wheel_r)), m(wheel_r), m(tw), "x")
+        bm_cylinder(bm, (0, m(sy * off), m(wheel_r)), m(6), m(2 * ox + 8), "x", segments=12)
+        obj = finish(f"castor.plain.{n}", bm, mats["castor"], colls["castors"], frame_root)
+        obj.location = (m(cx), m(cy), 0)
 
 
 # ---------------------------------------------------------------- boxes
@@ -672,6 +711,7 @@ def build_boxes(mats, colls):
             obj["model"] = key
             obj["travel"] = m(RACK["pull_out"]["travel"])
             obj["pull_axis"] = [0, 0, 1]
+            obj["sides"] = list(RACK["pull_out"]["sides"])
             colour = clip_colour(lv["level"])
             ck = (key, colour)
             if ck not in clip_meshes:
@@ -937,7 +977,8 @@ def main():
     build_frame(mats, colls, frame_root)
     build_plates(mats, colls, frame_root)
     build_angles(mats, colls, frame_root)
-    build_stops(mats, colls, frame_root)
+    build_brackets(mats, colls, frame_root)
+    build_castor_plates(mats, colls, frame_root)
     build_castors(mats, colls, frame_root)
     boxes = build_boxes(mats, colls)
     build_inserts(mats, colls, boxes)

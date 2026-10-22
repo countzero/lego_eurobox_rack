@@ -9,13 +9,17 @@ request. The published copy is at
 
 - Orbit, pan and zoom with mouse or touch (three.js `OrbitControls`).
 - Buttons for the Front, Side, Top and Three-quarter views and Reset.
-- A click or tap on one of the 15 boxes pulls it out; a second click pushes it
-  back. The inserts and the ColorClip rings move with the box. "All out" pulls
-  out every box, "All in" pushes every box back.
+- A click or tap on one of the 15 boxes pulls it out to the side that was
+  clicked: on its front half to the front, on its back half to the back (the
+  rack is open at the back). A second click pushes it back. The inserts and
+  the ColorClip rings move with the box. "All out" pulls every box out to the
+  front, "All in" pushes every box back. A model without `sides` pulls to the
+  front only.
 - "Top plate" hides or shows the planned top plate, which is shown by
   default. The rack has no panels, so the inside is always visible.
 - On a pointer device, hovering a box highlights it and names it with its
-  ColorClip colour, for example "L3 C2, 120 mm class, Purpur".
+  ColorClip colour and the side a click pulls it to, for example "L3 C2,
+  120 mm class, Purpur, front".
 - The info line shows the rack's outer size from the model.
 - "Colours" shows or hides the ColorClips panel (*ColorClips* below), open by
   default except on a narrow screen.
@@ -79,14 +83,16 @@ Remove-Item env:RACK_GLB
 The viewer relies only on the node names and extras of `docs/design.md` →
 *Contracts* → *Model objects and the web export*:
 
-| Read from                  | Used for                                    |
-| -------------------------- | ------------------------------------------- |
-| `kind: "box"`              | the clickable boxes                         |
-| `level`, `column`, `class` | the hover label                             |
-| `travel`, `pull_axis`      | how far and in which direction a box moves  |
-| `kind: "plate"`            | the "Top plate" toggle, shown at the start  |
-| `kind: "clip"`             | the rings the ColorClips panel recolours    |
-| scene extras `outer_mm`    | the info line                               |
+| Read from                  | Used for                                                       |
+| -------------------------- | -------------------------------------------------------------- |
+| `kind: "box"`              | the clickable boxes                                            |
+| `level`, `column`, `class` | the hover label                                                |
+| `travel`                   | how far a box moves                                            |
+| `pull_axis`                | the direction towards the front (`[0, 0, 1]`, glTF +z)         |
+| `sides`                    | the sides a box pulls out to, `["front", "back"]` (schema 3)   |
+| `kind: "plate"`            | the "Top plate" toggle, shown at the start                     |
+| `kind: "clip"`             | the rings the ColorClips panel recolours                       |
+| scene extras `outer_mm`    | the info line                                                  |
 
 The inserts and the ColorClip rings are children of their box node, so moving
 the box node moves them too. The viewer clones the materials under every box,

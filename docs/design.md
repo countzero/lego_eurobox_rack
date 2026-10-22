@@ -6,22 +6,24 @@ until the boxes are measured (roadmap 0004).
 
 ## Decisions
 
-| Decision                                        | Reason                                                                                                                      | Source                                                      |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| 3 columns, 5 levels, short side to front        | The user's layout: one level of 220 mm boxes at the bottom, four levels of 120 mm boxes with inserts above, drawer style    | the user                                                    |
-| Eurobox NextGen 2.0 Cycle 400 × 300, anthracite | One vendor (ab-in-die-BOX, aidB) for boxes, inserts and ColorClips; the short 300 side with the open handle faces the front | the user; `sources.md` → *Boxes*                            |
-| Box envelope narrowed to 400 × 300              | The 600 × 400 design is gone; the user agreed that 600 × 400 boxes no longer fit                                            | the user                                                    |
-| Boxes stand on their floor, not the rim         | Floor support takes every 400 × 300 box with a continuous bottom edge                                                       | `sources.md` → *Racks that take every brand*                |
-| 316 mm between the uprights                     | 310 mm between the hanging legs: 2.5 mm play per side for a 305 mm rim                                                      | `DERIVED` below                                             |
-| Angles 50 × 50 × 3, flat leg on top             | One angle carries the box above, guides the rim of the box below sideways and stops it tipping when pulled out              | `DERIVED` below                                             |
-| Levels set for the tallest box per class        | 233 mm for the 220 class, 125 mm for the 120 class, 8 mm gap above                                                          | `sources.md` → *Boxes*                                      |
-| No slides, no pull-out stop                     | The user's choice; a box comes out like from an open shelf                                                                  | the user                                                    |
-| One 1068 mm bar front and back, top and bottom  | One piece over all three columns; the uprights stand between the bars on an M8 through-bolt into their core thread          | the user                                                    |
-| Bottom bars 30 × 60                             | With castors only at the corners the middle uprights hang on the bottom bars; a 30 × 30 bar would sag about 4.7 mm          | `DERIVED` in *Loads*                                        |
-| 4 castors at the corner uprights                | 125 mm, 100 kg each, brakes at the front; enough for the realistic load on three castors                                    | `sources.md` → *Frame additions*; *Loads*                   |
-| No panels                                       | `bracket.stop` on the back uprights is the back stop; 16 joint plates on the front and back faces brace the frame           | the user                                                    |
-| Top plate planned, not built                    | The top frame stays open; brackets swing in later without taking the frame apart                                            | `sources.md` → *Top plate*                                  |
-| Inserts only in the 120 boxes                   | aidB NextGen insert sets made for 400 × 300 × 120; the 220 boxes stay open                                                  | `sources.md` → *Inserts*                                    |
+| Decision                                                  | Reason                                                                                                                                                                                                         | Source                                                                            |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 3 columns, 5 levels, short side to front                  | The user's layout: one level of 220 mm boxes at the bottom, four levels of 120 mm boxes with inserts above, drawer style                                                                                       | the user                                                                          |
+| Eurobox NextGen 2.0 Cycle 400 × 300, anthracite           | One vendor (ab-in-die-BOX, aidB) for boxes, inserts and ColorClips; the short 300 side with the open handle faces the front                                                                                    | the user; `sources.md` → *Boxes*                                                  |
+| Box envelope narrowed to 400 × 300                        | The 600 × 400 design is gone; the user agreed that 600 × 400 boxes no longer fit                                                                                                                               | the user                                                                          |
+| Boxes stand on their floor, not the rim                   | Floor support takes every 400 × 300 box with a continuous bottom edge                                                                                                                                          | `sources.md` → *Racks that take every brand*                                      |
+| 316 mm between the uprights                               | 310 mm between the hanging legs: 2.5 mm play per side for a 305 mm rim                                                                                                                                         | `DERIVED` below                                                                   |
+| Angles 50 × 50 × 3, flat leg on top                       | One angle carries the box above, guides the rim of the box below sideways and stops it tipping when pulled out                                                                                                 | `DERIVED` below                                                                   |
+| Levels set for the tallest box per class                  | 233 mm for the 220 class, 125 mm for the 120 class, 8 mm gap above                                                                                                                                             | `sources.md` → *Boxes*                                                            |
+| No slides, no pull-out stop                               | The user's choice; a box comes out like from an open shelf                                                                                                                                                     | the user                                                                          |
+| No back stop: boxes pull out to the front and to the back | The user's choice; each box sits centred in the depth and pulls out 270 mm at either end; the rack must stand free in the room; the 16 joint plates still brace the frame                                      | the user                                                                          |
+| One 1068 mm bar front and back, top and bottom            | One piece over all three columns; the uprights stand between the bars on an M8 through-bolt into their core thread                                                                                             | the user                                                                          |
+| Bottom bars 30 × 60                                       | With castors only at the corners the middle uprights hang on the bottom bars: 0.67 mm sag; a 30 × 30 bar would sag about 4.8 mm                                                                                | `DERIVED` in *Loads*                                                              |
+| 4 plain castors 100 mm, 70 kg, no brakes                  | Dold 69483, 125 high, back hole 11, offset 28; four suffice for the design load on three castors by Blickle's rule; the braked Dold 69490 has the same height, hole and offset and drops in at the front later | the user; `sources.md` → *Castor plates and open back* (added with 0014); *Loads* |
+| Castor plates 90 × 90 × 10 under the corners              | EN AW-5083 plate under bar and bottom depth beam, castor centre 45 in from both outer faces, so the castor head (Ø46, `SECONDARY`) stays inside the outline; the wheel may swing up to 34 mm out               | the user; `sources.md` → *Castor plates and open back* (added with 0014)          |
+| Bottom depth beams flush with the bars' undersides        | Bar and beam give the castor plate one flat face, 135 above the floor                                                                                                                                          | `DERIVED` below                                                                   |
+| Top plate planned, not built                              | The top frame stays open; brackets swing in later without taking the frame apart                                                                                                                               | `sources.md` → *Top plate*                                                        |
+| Inserts only in the 120 boxes                             | aidB NextGen insert sets made for 400 × 300 × 120; the 220 boxes stay open                                                                                                                                     | `sources.md` → *Inserts*                                                          |
 
 ## Box envelope
 
@@ -39,15 +41,15 @@ is an estimate. 600 × 400 boxes, Wibo and keeeper / OKT Robusto are excluded.
 
 ### Fit check
 
-| Check                                   | Value                                | Result                          |
-| --------------------------------------- | ------------------------------------ | ------------------------------- |
-| Widest rim between the hanging legs     | 305 in 310                           | 2.5 mm play per side            |
-| Narrowest rim sideways travel           | (310 - 296) / 2                      | 7 mm                            |
-| Foot on each leg, box centred           | (260 - 216) / 2                      | 22 mm                           |
-| Foot on each leg, box fully to one side | 22 - 7                               | 15 mm                           |
-| Gap above the tallest box, every level  | next flat leg bottom - (floor + max) | 8 mm                            |
-| Gap above a 220 box in a 220 level      | 8 + 233 - 220                        | 21 mm; the tip guard acts later |
-| Box length in the depth                 | 400 from y 5 to the stop at y 405    | fits; `bracket.stop` stops it   |
+| Check                                   | Value                                                        | Result                                                             |
+| --------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Widest rim between the hanging legs     | 305 in 310                                                   | 2.5 mm play per side                                               |
+| Narrowest rim sideways travel           | (310 - 296) / 2                                              | 7 mm                                                               |
+| Foot on each leg, box centred           | (260 - 216) / 2                                              | 22 mm                                                              |
+| Foot on each leg, box fully to one side | 22 - 7                                                       | 15 mm                                                              |
+| Gap above the tallest box, every level  | next flat leg bottom - (floor + max)                         | 8 mm                                                               |
+| Gap above a 220 box in a 220 level      | 8 + 233 - 220                                                | 21 mm; the tip guard acts later                                    |
+| Box length in the depth                 | 400 centred at y 17.5–417.5 in 435; a 405 rim spans y 15–420 | fits; no stop, the box pulls out at either end; envelope unchanged |
 
 ### Box shape in the model
 
@@ -87,88 +89,96 @@ NextGen 2.0*): outer 400 × 300 × 120 / 220, inner 365 × 265 × 115 / 215,
 
 ## Dimensions
 
-| Item                         | Value                                  |
-| ---------------------------- | -------------------------------------- |
-| Frame width × depth × height | 1068 × 435 × 1041                      |
-| Outer with joint plates      | 1068 × 443 × 1041                      |
-| Clear width per column       | 316 between uprights, 310 between legs |
-| Upright length               | 791 (220 to 1011), x 0, 346, 692, 1038 |
-| Bottom bar                   | 30 × 60, 1068 long, 160 to 220         |
-| Top bar                      | 30 × 30, 1068 long, 1011 to 1041       |
-| Depth beam                   | 375 long, 190 to 220 and 1011 to 1041  |
-| Castor height                | 160                                    |
-| Angle length                 | 435                                    |
-| Pull-out travel, removal     | 270, 400                               |
-| Top plate (planned)          | 1108 × 483 × 18, top at 1059           |
+| Item                         | Value                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------- |
+| Frame width × depth × height | 1068 × 435 × 1016                                                                           |
+| Outer with joint plates      | 1068 × 443 × 1016                                                                           |
+| Clear width per column       | 316 between uprights, 310 between legs                                                      |
+| Upright length               | 791 (195 to 986), x 0, 346, 692, 1038                                                       |
+| Bottom bar                   | 30 × 60, 1068 long, 135 to 195                                                              |
+| Top bar                      | 30 × 30, 1068 long, 986 to 1016                                                             |
+| Depth beam                   | 375 long, 135 to 165 and 986 to 1016                                                        |
+| Castor height                | 125                                                                                         |
+| Castor plate                 | 90 × 90 × 10, 125 to 135, castor centre 45 in from both outer faces (x 45, 1023; y 45, 390) |
+| Angle length                 | 435                                                                                         |
+| Box position                 | front at y 17.5, centred in the depth                                                       |
+| Pull-out travel, removal     | 270, 400, to the front and to the back                                                      |
+| Top plate (planned)          | 1108 × 483 × 18, top at 1034                                                                |
 
 | Level | Class | Floor (flat leg top) | Tallest box top | Next flat leg bottom | Angle           |
 | ----- | ----- | -------------------- | --------------- | -------------------- | --------------- |
-| 1     | 220   | 223                  | 456             | 464                  | `angle.base`    |
-| 2     | 120   | 467                  | 592             | 600                  | `angle.support` |
-| 3     | 120   | 603                  | 728             | 736                  | `angle.support` |
-| 4     | 120   | 739                  | 864             | 872                  | `angle.support` |
-| 5     | 120   | 875                  | 1000            | 1008                 | `angle.support` |
+| 1     | 220   | 198                  | 431             | 439                  | `angle.base`    |
+| 2     | 120   | 442                  | 567             | 575                  | `angle.support` |
+| 3     | 120   | 578                  | 703             | 711                  | `angle.support` |
+| 4     | 120   | 714                  | 839             | 847                  | `angle.support` |
+| 5     | 120   | 850                  | 975             | 983                  | `angle.support` |
 | guard |       |                      |                 |                      | `angle.guard`   |
+
+The frame from bar bottom to top stays 881 (1016 - 135); every cut length is
+unchanged.
 
 ### Front view
 
 ```
          |<------------------------------ 1068 frame ------------------------------->|
-  1041 - ++=======================================================================++
-  1008 - ||#####             #####||#####             #####||#####             #####||
+  1016 - ++=======================================================================++
+   983 - ||#####             #####||#####             #####||#####             #####||
          ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
          ||  |    120, 1/4     |  ||  |    120, 1/4     |  ||  |    120, 1/4     |  ||   L5
-   875 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+   850 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
          ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
          ||  |    120, 1/4     |  ||  |    120, 1/4     |  ||  |    120, 1/4     |  ||   L4
-   739 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+   714 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
          ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
          ||  |    120, 1/2     |  ||  |    120, 1/2     |  ||  |    120, 1/2     |  ||   L3
-   603 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+   578 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
          ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
          ||  |    120, 1/2     |  ||  |    120, 1/2     |  ||  |    120, 1/2     |  ||   L2
-   467 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+   442 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
          ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
          ||  |       220       |  ||  |       220       |  ||  |       220       |  ||   L1
          ||  |                 |  ||  |                 |  ||  |                 |  ||
-   223 - ||L_+-----------------+_J||L_+-----------------+_J||L_+-----------------+_J||
-   220 - ++=======================================================================++
+   198 - ||L_+-----------------+_J||L_+-----------------+_J||L_+-----------------+_J||
+   195 - ++=======================================================================++
          ||                     30 × 60 bottom bar                                ||
-   160 - ++=======================================================================++
-        (O)                                                                       (O)   castors
+   135 - ++=======================================================================++
+   125 - [=====]                                                             [=====]   castor plates
+           (O)                                                                 (O)     castors, 45 in
      0 - ===============================================================================
          30<----- 316 clear ----->30<----- 316 clear ----->30<----- 316 clear ----->30
 ```
 
-`#####` at 1008 is `angle.guard`, `##` at 467-875 `angle.support`, and `L_` and
-`_J` at 223 `angle.base`. The top bar at 1041 and the bottom bar at 160-220 run
-in one piece over all three columns. Castors stand only under the two outer
-uprights; the middle uprights hang on the 30 × 60 bottom bar. The top stays
-open until the top plate is fitted.
+`#####` at 983 is `angle.guard`, `##` at 442-850 `angle.support`, and `L_` and
+`_J` at 198 `angle.base`. The top bar at 1016 and the bottom bar at 135-195 run
+in one piece over all three columns. The castors stand under castor plates at
+the corners, 45 in from the outer faces; the middle uprights hang on the
+30 × 60 bottom bar. The top stays open until the top plate is fitted.
 
 ### Side view from the left
 
 ```
           front                             back
          |<-------------------- 435 ------------------->|
-  1041 - |+--+====================================+--+|   top bar, top depth beam (open top)
-  1008 - |[==========================================]|   angle.guard
+  1016 - |+--+====================================+--+|   top bar, top depth beam (open top)
+   983 - |[==========================================]|   angle.guard
          ||  |                                    |  ||
-   875 - |[==========================================]|   L5  angle.support, 435 long
-         ||  |                                    |##||   bracket.stop
-   739 - |[==========================================]|   L4
-         ||  |                                    |##||
-   603 - |[==========================================]|   L3
-         ||  |                                    |##||
-   467 - |[==========================================]|   L2
-         ||  |                                    |##||
-   223 - |[==========================================]|   L1  angle.base
-   220 - |+--+====================================+--+|   bottom depth beam, 190-220
-   160 - |+--+                                    +--+|   bottom bar 30 × 60
-         |(O)                                     (O) |   castor, M8 through the bar into the upright
+   850 - |[==========================================]|   L5  angle.support, 435 long
+         ||  |                                    |  ||
+   714 - |[==========================================]|   L4
+         ||  |                                    |  ||
+   578 - |[==========================================]|   L3
+         ||  |                                    |  ||
+   442 - |[==========================================]|   L2
+         ||  |                                    |  ||
+   198 - |[==========================================]|   L1  angle.base
+   195 - |+--+                                    +--+|   bottom bar 30 × 60, 135-195
+   165 - ||  |====================================|  ||   bottom depth beam, 135-165
+   135 - |+--+====================================+--+|   flush underside
+   125 - [=====]                                [=====]   castor plate 90 × 90 × 10
+           (O)                                    (O)     castor, centre 45 in
      0 - ===============================================
          ^ joint plate, 4                              ^ joint plate, 4
-         ^ boxes pull out here (front at y 5)    stop face at y 405 ^
+         ^ boxes pull out here (front at y 17.5)  and here (back at y 417.5) ^
 ```
 
 ### One support angle
@@ -187,50 +197,127 @@ open until the top plate is fitted.
 
 The angles are fixed with countersunk M5 screws into T-nuts in the uprights'
 inner slots, two per end, so the hanging leg stays smooth for the rim. Hole
-centres sit 15 and 35 mm from the flat leg (`UNVERIFIED` proposal): base 238,
-258; L2 449, 429; L3 585, 565; L4 721, 701; L5 857, 837; guard 993, 973.
+centres sit 15 and 35 mm from the flat leg (`UNVERIFIED` proposal): base 213,
+233; L2 424, 404; L3 560, 540; L4 696, 676; L5 832, 812; guard 968, 948.
 
 ## Joints
 
-| Joint                                 | Count | Parts each                                                                                                 |
-| ------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------- |
-| Upright to bottom bar (and castor)    | 8     | 1 `screw.m8x100_socket` into the M8 core thread; at a corner 1 `washer.m8_large` in the castor's back hole |
-| Upright to top bar                    | 8     | 1 `screw.m8x50_socket`, head sunk in the counterbore                                                       |
-| Upright to depth beam                 | 16    | 1 `bracket.inside_30`, 2 `screw.m6x12_button`, 2 `tnut.m6`                                                 |
-| Depth beam to bar                     | 16    | 1 `bracket.inside_30`, 2 `screw.m6x12_button`, 2 `tnut.m6`                                                 |
-| Joint plate on the front or back face | 16    | 1 `plate.joint_l` or `plate.joint_t`, 5 `screw.m6x10_socket`, 5 `tnut.m6`                                  |
-| Back stop on a back upright           | 30    | 1 `bracket.stop`, 1 `screw.m6x12_button`, 1 `tnut.m6`                                                      |
-| Angle end to upright                  | 72    | 2 `screw.m5x10_countersunk`, 2 `tnut.m5`                                                                   |
+| Joint                                          | Count | Parts each                                                                                                                    |
+| ---------------------------------------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Upright to bottom bar                          | 8     | 1 `screw.m8x100_socket` from below into the 80 mm core thread; at a corner its head sits in the castor plate's Ø14 hole       |
+| Upright to top bar                             | 8     | 1 `screw.m8x50_socket`, head sunk in the counterbore                                                                          |
+| Upright to top depth beam                      | 8     | 1 `bracket.inside_30` on the upright's inner y face under the top depth beam, 2 `screw.m6x12_button`, 2 `tnut.m6`             |
+| Top depth beam to bar                          | 8     | 1 `bracket.inside_30` above the guard, 2 `screw.m6x12_button`, 2 `tnut.m6`                                                    |
+| Bottom depth beam top face to bar              | 8     | 1 `bracket.inside_30` on the beam's top face (z 165–195) into the bar's upper inner slot, 2 `screw.m6x12_button`, 2 `tnut.m6` |
+| Bottom depth beam side to bar, middle uprights | 4     | 1 `bracket.inside_30` in the corner of beam side and bar inner face (z 135–165), 2 `screw.m6x12_button`, 2 `tnut.m6`          |
+| Castor plate under a corner                    | 4     | 1 `plate.castor`, 4 `screw.m6x16_countersunk`, 4 `tnut.m6`; it joins bar and beam, so the corner needs no side bracket        |
+| Castor to plate                                | 4     | 1 `castor.plain`, 1 `screw.m8x20_socket`, 1 `washer.m8`                                                                       |
+| Joint plate on the front or back face          | 16    | 1 `plate.joint_l` or `plate.joint_t`, 5 `screw.m6x10_socket`, 5 `tnut.m6`                                                     |
+| Angle end to upright                           | 72    | 2 `screw.m5x10_countersunk`, 2 `tnut.m5`                                                                                      |
 
-The bracket between upright and depth beam sits on the upright's y face, above
-the bottom depth beam and below the top one. The bracket between depth beam
-and bar sits under the base angle's flat leg at the bottom and above the guard
-at the top. The angles take the uprights' x faces, so no bracket shares a face
-with an angle: the old bracket/angle collision (roadmap 0010) no longer exists.
+That makes 28 `bracket.inside_30`. The bottom depth beams sit flush with the
+bars' undersides so the castor plate lies flat under both; that leaves a 30 mm
+gap between the beam top (165) and the upright foot (195), so the old bracket
+between upright and bottom depth beam is gone and the beam's top face takes a
+bracket into the bar instead. At a corner a side bracket would stand over the
+castor bolt, and the plate joins bar and beam there anyway. The castor bolt,
+ISO 4762 M8x20 with an ISO 7089 washer, goes from inside the housing up into
+the plate's M8 thread (10 mm engagement, 1.25 d, the low end of the usual rule
+for aluminium, `UNVERIFIED`). No connector sits on an upright's x face, so the
+angles stay clear: the bracket/angle collision of roadmap 0010 no longer
+exists, and 0014 closes it.
 
 The joint plates, L at the four corners and T at the middle uprights, top and
 bottom of the front and the back frame, brace the frame against racking now
-that there is no back panel. Two `bracket.stop` per box on the back uprights,
-stop face at y 405, 20-50 mm above the floor of a 120 level and 60-90 mm above
-the floor of the 220 level, keep the boxes from going through at the back.
+that there is no back panel. There is no back stop: a box pushed on through
+comes out at the other side, and the tip guard holds a pulled box at the back
+exactly as at the front.
 
 ## Loads
 
-All values are `DERIVED` from the stated inputs.
+Values are `DERIVED` from the stated inputs unless marked. Sources in
+`sources.md` → *Castor plates and open back* (added with 0014). Inputs marked
+`UNVERIFIED` (small parts, inserts, top plate, n = 3, the plate's alloy
+strength, the M8 thread engagement) are assumptions; a result that rests on
+them is no more certain than they are.
 
-- **Castor load.** 192 l of boxes at about 0.6 kg/l of LEGO (`UNVERIFIED`;
-  LEGO never reaches the 25 kg box rating) is about 115 kg, plus boxes 13 kg,
-  inserts about 5 kg and frame about 29 kg: about 162 kg. On three castors
-  (uneven floor) that is 54 kg each against 100 kg.
-- **Bottom bar sag.** P = W / 6 = 265 N per middle upright, castor centres
-  1038 apart, each middle upright 346 from its castor:
-  d = P a² (3L - 4a) / (6 E I). With 30 × 60 (I = 19.5 cm⁴, Dold page data,
-  E = 70 GPa) d is about 0.7 mm; a 30 × 30 bar (2.75 cm⁴) would sag about
-  4.7 mm.
-- **Tipping forward.** The empty rack (about 47 kg, worst castor contact at
-  y 56) restores about 7.6 kg·m. A full L5 box pulled out 270 mm tips with
-  about 0.8 kg·m; a 20 kg child hanging on its front edge with about 6.4 kg·m.
-  Keep the brakes on and the rack loaded.
+**Masses.**
+
+| Item                         | Calculation                             | Mass, kg   | Status                       |
+| ---------------------------- | --------------------------------------- | ---------- | ---------------------------- |
+| 30 × 30 profile              | 11.464 m × 0.843 kg/m                   | 9.66       | DERIVED from Dold `VERIFIED` |
+| 30 × 60 profile              | 2.136 m × 1.489 kg/m                    | 3.18       | DERIVED from Dold `VERIFIED` |
+| Angles                       | 15.66 m × 0.809 kg/m                    | 12.67      | DERIVED from Dold `VERIFIED` |
+| Brackets                     | 28 × 0.02 kg (Dold 66895 `VERIFIED`)    | 0.56       | DERIVED                      |
+| Joint plates, screws, nuts   | estimate                                | about 3    | UNVERIFIED                   |
+| Castors                      | 4 × 0.29 kg (Dold `VERIFIED`)           | 1.16       | DERIVED                      |
+| Castor plates                | 4 × 90 mm × 2.43 kg/m (Dold `VERIFIED`) | 0.87       | DERIVED                      |
+| Frame                        | sum                                     | about 31.0 | DERIVED                      |
+| Boxes                        | 12 × 0.80 + 3 × 1.18 (aidB `VERIFIED`)  | 13.14      | DERIVED                      |
+| Inserts                      | estimate                                | about 5    | UNVERIFIED                   |
+| Empty rack without top plate | 31.0 + 13.14 + 5                        | about 49.1 | DERIVED                      |
+| Top plate (planned)          | estimate                                | about 6.5  | UNVERIFIED                   |
+
+**LEGO bulk density.**
+
+| Source                                                                           | Value                                   | Status                         |
+| -------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------ |
+| Brick Architect: "around 250 pieces per liter", "around 700 pieces per kilogram" | 250 / 700 = 0.36 kg/l                   | DERIVED from `VERIFIED` quotes |
+| Eurobricks forum: Pick-a-Brick cup 985 ml, 395 g on average                      | 0.40 kg/l                               | MEASURED                       |
+| Eurobricks forum: 5.68 l tub of random LEGO, 1.72–1.91 kg                        | 0.30–0.34 kg/l                          | MEASURED                       |
+| Eurobricks forum: densely packed cups                                            | about 0.57–0.64 kg/l, volumes estimated | MEASURED                       |
+| Solid ABS (INEOS Terluran GP-35; that LEGO uses it is `UNVERIFIED`)              | 1.04 kg/l, the impossible ceiling       | VERIFIED                       |
+
+The rack uses low 0.25, typical 0.40 and design 0.60 kg/l (sorted drawers of
+small parts). The boxes hold 12 × 11 l + 3 × 20 l = 192 l (aidB's nominal
+volumes, `VERIFIED`; 196 l from the inner dimensions), so 48, 76.8 and
+115.2 kg. With the top
+plate the design total is 49.1 + 6.5 + 115.2 = 170.8 kg, the typical one
+49.1 + 6.5 + 76.8 = 132.4 kg.
+
+**Castor rating.** Blickle's rule T = (E + Z) / n × S, with S = 1.0–1.5 for
+manual transport indoors over obstacles below 5 % of the wheel diameter
+(`VERIFIED`, https://www.blickle.de/ratgeber/tragfaehigkeit), and n = 3 of 4
+castors for an uneven floor (`UNVERIFIED` convention). Design case at S = 1.2:
+170.8 / 3 × 1.2 = 68.3 kg against 70 kg per castor; the castor holds up to
+S = 1.23. Typical case: 53.0 kg at S 1.2, 66.2 kg at S 1.5. Thresholds above
+5 mm lie outside the rule's indoor case: push slowly.
+
+**Bottom bar sag.** Castor centres L = 978 apart, each middle upright
+a = 316 from a castor (x 361 and 707), P = W / 6 = 1675.6 N / 6 = 279 N per
+middle upright, E = 70 GPa. Under two equal loads placed symmetrically the bar
+sags most at mid-span, d = P a (3L² - 4a²) / (24 E I): a 30 × 60 bar
+(I = 19.51 cm⁴, Dold `VERIFIED`) sags 0.67 mm (0.57 mm under the middle
+uprights); a 30 × 30 bar (I = 2.68 cm⁴, `VERIFIED`) would sag 4.8 mm. The
+corner uprights stand 30 mm outside the castors, which lifts the middle
+slightly; that is ignored, so the values are conservative.
+
+**Tipping, forwards and backwards.** Backwards is the mirror image of forwards.
+
+- The worst wheel contact lies at y 45 + 28 = 73 at the front (362 at the
+  back); the centre of mass at y 217.5; lever 0.1445 m.
+- The empty rack, 49.1 kg, restores 49.1 × 0.1445 = 7.09 kg·m. One 120 box with
+  its inserts (about 1.2 kg) pulled 270 mm out shifts 0.33 kg·m, leaving
+  6.76 kg·m.
+- EN 14749 / EN 16122 (`SECONDARY`, via the CPSC rule text): 75 N (7.65 kg) on
+  the front of one extended drawer, drawers empty. The box front at
+  y 17.5 - 270 = -252.5 gives a lever of 0.3255 m: 2.49 kg·m against 6.76,
+  passes with factor 2.7.
+- ASTM F2057-23 / 16 CFR 1261 (`VERIFIED`,
+  https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Clothing-Storage-Units):
+  27.2 kg (60 lb) on the top edge of the extended element. Not binding (the
+  rack is no clothing storage unit), but the only test built for a child. One
+  box out on the empty rack: 27.2 × 0.3255 = 8.85 kg·m against 6.76: the rack
+  tips. All 15 boxes out to the front (about 18.2 kg, 4.90 kg·m) leave
+  2.19 kg·m: it tips.
+- With LEGO spread evenly the one-box case passes from about 15 kg of LEGO:
+  (8.85 + 0.33) / 0.1445 - 49.1 = 14.4 kg. Ballast for the empty rack at
+  factor 1.2, low and central: one box out (1.2 × 8.85 + 0.33) / 0.1445 - 49.1
+  = 26.7 kg; every box out to one side (1.2 × 8.85 + 4.90) / 0.1445 - 49.1
+  = 58.3 kg. 0015 compares ballast with wider-set castors.
+- Without brakes the rack rolls when a box is pulled; rolling resistance of a
+  few per cent of the weight caps the pulling force.
+- Follow-up: roadmap 0015 *Tip-over safety*.
 
 ## Inserts and ColorClips
 
@@ -270,20 +357,21 @@ and `planned` for the top plate and its fixings.
 | `angle.base`              | angle      | 6        | build   |
 | `angle.support`           | angle      | 24       | build   |
 | `angle.guard`             | angle      | 6        | build   |
-| `bracket.inside_30`       | connector  | 32       | build   |
-| `bracket.stop`            | connector  | 30       | build   |
+| `bracket.inside_30`       | connector  | 28       | build   |
+| `plate.castor`            | connector  | 4        | build   |
 | `plate.joint_l`           | connector  | 8        | build   |
 | `plate.joint_t`           | connector  | 8        | build   |
-| `screw.m6x12_button`      | fastener   | 94       | build   |
+| `screw.m6x12_button`      | fastener   | 56       | build   |
 | `screw.m6x10_socket`      | fastener   | 80       | build   |
-| `tnut.m6`                 | fastener   | 174      | build   |
+| `screw.m6x16_countersunk` | fastener   | 16       | build   |
+| `tnut.m6`                 | fastener   | 152      | build   |
 | `screw.m5x10_countersunk` | fastener   | 144      | build   |
 | `tnut.m5`                 | fastener   | 144      | build   |
 | `screw.m8x100_socket`     | fastener   | 8        | build   |
 | `screw.m8x50_socket`      | fastener   | 8        | build   |
-| `washer.m8_large`         | fastener   | 4        | build   |
-| `castor.brake`            | castor     | 2        | build   |
-| `castor.plain`            | castor     | 2        | build   |
+| `screw.m8x20_socket`      | fastener   | 4        | build   |
+| `washer.m8`               | fastener   | 4        | build   |
+| `castor.plain`            | castor     | 4        | build   |
 | `tape.uhmw_25`            | consumable | 13050 mm | build   |
 | `cap.end_30`              | finish     | 4        | build   |
 | `cap.end_30x60`           | finish     | 4        | build   |
@@ -335,22 +423,23 @@ PNG, 1600 × 1200, under `renders/`, top plate hidden:
 
 Blender works in metres (rack millimetres / 1000). `web/rack.glb` is a binary
 glTF in metres, Y up, as Blender's exporter writes it: rack `x` stays glTF `x`,
-rack `z` becomes glTF `y`, rack `y` becomes glTF `-z`. The boxes pull out
-towards the front, rack `-y`, which is glTF `+z`.
+rack `z` becomes glTF `y`, rack `y` becomes glTF `-z`. The front is rack `-y`,
+which is glTF `+z`.
 
-| Node name                                        | Holds                                                                   | glTF extras                                                                                                                                    |
-| ------------------------------------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `frame`                                          | uprights, bars, depth beams, joint plates, angles, back stops, castors  | `{ "kind": "frame" }`                                                                                                                          |
-| `box.L<level>.C<column>`                         | one box and, as children, its inserts and its ColorClip rings; 15 nodes | `{ "kind": "box", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1] }` |
-| `insert.L<level>.C<column>.R<row>.<cell>.<type>` | one insert, child of its box node                                       | `{ "kind": "insert" }`                                                                                                                         |
-| `clip.L<level>.C<column>.<colour>`               | the ColorClip rings of both handles, child of its box node              | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                   |
-| `plate.top`                                      | the planned top plate                                                   | `{ "kind": "plate", "status": "planned" }`                                                                                                     |
+| Node name                                        | Holds                                                                               | glTF extras                                                                                                                                                                |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `frame`                                          | uprights, bars, depth beams, joint plates, castor plates, brackets, angles, castors | `{ "kind": "frame" }`                                                                                                                                                      |
+| `box.L<level>.C<column>`                         | one box and, as children, its inserts and its ColorClip rings; 15 nodes             | `{ "kind": "box", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1], "sides": ["front", "back"] }` |
+| `insert.L<level>.C<column>.R<row>.<cell>.<type>` | one insert, child of its box node                                                   | `{ "kind": "insert" }`                                                                                                                                                     |
+| `clip.L<level>.C<column>.<colour>`               | the ColorClip rings of both handles, child of its box node                          | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                               |
+| `plate.top`                                      | the planned top plate                                                               | `{ "kind": "plate", "status": "planned" }`                                                                                                                                 |
 
-There are no panel nodes. The scene's extras carry
-`{ "rack_schema": 2, "outer_mm": [1068, 443, 1041] }`. Columns count 1-3 from
-the left seen from the front, levels 1-5 from the bottom. Moving a box node by
-`travel` along `pull_axis` pulls the box, its inserts and its rings out
-together.
+There are no panel and no back stop nodes. The scene's extras carry
+`{ "rack_schema": 3, "outer_mm": [1068, 443, 1016] }`. Columns count 1-3 from
+the left seen from the front, levels 1-5 from the bottom. `pull_axis` points to
+the front; moving a box node by `travel` along it pulls the box, its inserts
+and its rings out together. When `sides` contains `"back"`, the viewer pulls
+the box the other way, along `-pull_axis`, for a click on its back half.
 
 Material names: `aluminium`, `box_anthracite`, `insert_grey`, `clip_red`,
 `clip_turquoise`, `clip_purple`, `clip_yellow`, `clip_blue`, `castor`,
