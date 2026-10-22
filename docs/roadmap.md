@@ -51,7 +51,7 @@ sorted by ID; the order of work follows from the status.
 | 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | Done                 | [#13](https://github.com/countzero/lego_eurobox_rack/pull/13) |
 | 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
-| 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | In progress          |                                                               |
+| 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | Done                 | [#16](https://github.com/countzero/lego_eurobox_rack/pull/16) |
 | 0017 | [No joint plates](#0017-no-joint-plates)                     | In progress          |                                                               |
 | 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Blocked by 0017      |                                                               |
 
