@@ -361,31 +361,6 @@ def build_frame(mats, colls, frame_root):
                     uy[0] + sec, uy[1], al, coll, frame_root)
 
 
-def build_plates(mats, colls, frame_root):
-    """Joint plates on the outer faces of the front and the back frame."""
-    fr = RACK["frame"]
-    sec = fr["profile"]["section"]
-    jp = fr["joint_plate"]
-    t, size = jp["thickness"], jp["size"]
-    ux, last = fr["upright_x"], len(fr["upright_x"]) - 1
-    bb, tb = fr["bottom_bar"], fr["top_bar"]
-    joints = (("bottom", bb["top"] - sec, bb["top"], +1), ("top", tb["bottom"], tb["top"], -1))
-    for y0, side in ((-t, "front"), (fr["depth"], "back")):
-        for i, x in enumerate(ux):
-            kind = "l" if i in (0, last) else "t"
-            for lvl, z0, z1, up in joints:
-                bm = bmesh.new()
-                vz = (z0, z0 + size) if up > 0 else (z1 - size, z1)
-                mm_box(bm, x, x + sec, y0, y0 + t, *vz)
-                if kind == "t":
-                    hx = (x - sec, x + 2 * sec)
-                else:
-                    hx = (x, x + size) if i == 0 else (x + sec - size, x + sec)
-                mm_box(bm, *hx, y0, y0 + t, z0, z1)
-                finish(f"plate.{kind}.{side}.{lvl}.{i + 1}", bm, mats["aluminium"],
-                       colls["frame"], frame_root)
-
-
 def angle(name, x_face, inward, z_flat_lo, flat_up, mats, coll, parent):
     """L angle along y. x_face: upright face, inward: +1 or -1.
 
@@ -929,7 +904,7 @@ def build_inserts(mats, colls, boxes):
 def build_top_plate(mats, colls):
     tp = RACK["top_plate"]
     x0 = -tp["overhang"]
-    y0 = -RACK["frame"]["joint_plate"]["thickness"] - tp["overhang"]
+    y0 = -(tp["depth"] - RACK["frame"]["depth"]) / 2
     hx, hy = tp["width"] / 2, tp["depth"] / 2
     # mesh z starts at 0 so the ply pattern reads object z directly
     bm = prism_z(rr_outline(hx, hy, tp["corner_radius"], segments=12), 0, tp["thickness"])
@@ -1143,7 +1118,6 @@ def main():
     frame_root["kind"] = "frame"
     colls["frame"].objects.link(frame_root)
     build_frame(mats, colls, frame_root)
-    build_plates(mats, colls, frame_root)
     build_angles(mats, colls, frame_root)
     build_brackets(mats, colls, frame_root)
     build_castor_plates(mats, colls, frame_root)

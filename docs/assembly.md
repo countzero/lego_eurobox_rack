@@ -4,8 +4,8 @@ How one person builds the rack. Every number is a copy of `design/rack.json`,
 which wins where the two differ, and is provisional until the boxes are
 measured (roadmap 0004). Parts are named by their ID from `design.md` →
 *Contracts*; `x`, `y` and `z` are the rack's coordinates (`x` to the right,
-`y` to the back, `z` up, origin on the floor at the front-left frame corner,
-without the joint plates). Columns count 1-3 from the left seen from the
+`y` to the back, `z` up, origin on the floor at the front-left frame
+corner). Columns count 1-3 from the left seen from the
 front, levels 1-5 from the bottom.
 
 ![Three-quarter view](../renders/three_quarter.png)
@@ -35,12 +35,9 @@ out at the front and at the back.
 | `angle.guard`             | 6        | 3, 9         |
 | `plate.castor`            | 4        | 4, 8         |
 | `tnut.m5`                 | 144      | 5, 9         |
-| `tnut.m6`                 | 152      | 5, 6, 7, 8   |
+| `tnut.m6`                 | 72       | 5, 7, 8      |
 | `screw.m8x100_socket`     | 8        | 6            |
 | `screw.m8x50_socket`      | 8        | 6            |
-| `plate.joint_l`           | 8        | 6            |
-| `plate.joint_t`           | 8        | 6            |
-| `screw.m6x10_socket`      | 80       | 6            |
 | `bracket.inside_30`       | 28       | 7            |
 | `screw.m6x12_button`      | 56       | 7            |
 | `screw.m6x16_countersunk` | 16       | 8            |
@@ -103,6 +100,7 @@ made, and a forgotten one is added later without taking the frame apart.
 | Spirit level, at least 600 mm             | Levels horizontal, uprights plumb                        |
 | Two clamps, a few wooden blocks           | Holding a beam while a bracket is fitted                 |
 | Cutter knife, cloth, isopropyl alcohol    | UHMW tape                                                |
+| Medium threadlocker, optional             | The 16 M8 core bolts of the frames (step 6)              |
 
 Work on a flat, clean floor with a blanket or cardboard under the profiles.
 
@@ -239,7 +237,7 @@ thread by hand; no M6 head stands proud underneath.
 
 ## Step 5: Hammer nuts
 
-**Parts:** `tnut.m5` × 144, `tnut.m6` × 152.
+**Parts:** `tnut.m5` × 144, `tnut.m6` × 72.
 
 All nuts are hammer nuts, so each can go in when its part is fitted; putting
 the ones of a frame in before it stands up just saves bending later. Where
@@ -253,12 +251,10 @@ they go:
 | Each corner bottom depth beam, top face (2)                         | 2 × `tnut.m6`                        |
 | Each middle bottom depth beam, top face and side (2)                | 4 × `tnut.m6`                        |
 | Inner faces of the bars, at each depth beam end (20 brackets)       | 1 × `tnut.m6`                        |
-| Outer face of each joint plate's bar and upright (16 plates)        | 5 × `tnut.m6`                        |
 | Bottom slots of bar and depth beam under each castor plate (4)      | 4 × `tnut.m6`                        |
 
-That is 144 `tnut.m5` for the angles (step 9) and 152 `tnut.m6`: 56 for the
-28 brackets (2 each, step 7), 80 for the 16 joint plates (step 6) and 16 for
-the 4 castor plates (step 8).
+That is 144 `tnut.m5` for the angles (step 9) and 72 `tnut.m6`: 56 for the
+28 brackets (2 each, step 7) and 16 for the 4 castor plates (step 8).
 
 **Check:** count again before each step; a nut missing in a hidden spot is
 added from the slot face.
@@ -267,12 +263,16 @@ added from the slot face.
 
 **Parts:** `profile.bar_bottom` × 2, `profile.bar_top` × 2,
 `profile.upright` × 8, `screw.m8x100_socket` × 8,
-`screw.m8x50_socket` × 8, `plate.joint_l` × 8, `plate.joint_t` × 8,
-`screw.m6x10_socket` × 80.
+`screw.m8x50_socket` × 8.
 
 ![Front](../renders/front.png)
 
-Build each frame flat on the floor, outer face up.
+Build each frame flat on the floor, outer face up. Nothing but the M8 core
+bolts holds a frame square (`design.md` → *Joints*), so the upright ends must
+sit flat and tight on the bars. If you use threadlocker, a medium-strength one
+such as Loctite 243 (blue, can be undone with hand tools; `UNVERIFIED`), put a
+few drops on the thread of each M8 bolt just before it goes in, and square and
+tighten the frame before it sets.
 
 1. **Bottom bar.** Lay a `profile.bar_bottom` (30 × 60, 60 high) with its
    holes' head side down.
@@ -284,17 +284,12 @@ Build each frame flat on the floor, outer face up.
 3. **Top bar.** Lay a `profile.bar_top` on the top ends, counterbores up, and
    bolt all four uprights with a `screw.m8x50_socket` each, head sunk in the
    counterbore.
-4. **Plates.** On the outer face (the front face of the front frame, the back
-   face of the back frame) fit a `plate.joint_l` at each corner joint and a
-   `plate.joint_t` at each middle upright, top and bottom: 8 plates per frame,
-   each with 5 `screw.m6x10_socket` into hammer nuts in the bar and the
-   upright.
-5. Square the frame (diagonals equal within 1 mm), then tighten bolts and
-   plate screws.
+4. Square the frame (diagonals equal within 1 mm), then tighten all eight M8
+   bolts firmly with the hex key, checking the diagonals again after each.
 
 **Check:** each frame 1068 wide and 881 high (`z` 135-1016 once on castors);
 clear width 316 between neighbouring uprights at top and bottom; diagonals
-equal within 1 mm.
+equal within 1 mm; no gap between an upright end and its bar.
 
 ## Step 7: Join the frames
 
@@ -330,7 +325,7 @@ the slot lips ([cnc-zubehoer][cnc-hm]).
 
 **Check:**
 
-- Frame 1068 × 435 × 881; outer 1068 × 443 with the plates.
+- Frame 1068 × 435 × 881, which is also the outer size.
 - Diagonals of the top and the bottom equal within 2 mm.
 - Every upright plumb with the spirit level, both directions.
 
@@ -459,6 +454,9 @@ front or to the back it stays on its legs, and it comes out entirely at
 - Levels horizontal across and along, every column.
 - All 15 boxes in and centred, none rubbing.
 - Every screw tight; check again after the first week of use.
+- **M8 core bolts:** they alone keep the frames square. Check all 16 again
+  after the first few moves and whenever the rack has been rolled far; a frame
+  whose diagonals differ by more than 2 mm has a loose bolt.
 - The rack stands free in the room, so a box can be pulled from both sides.
 - The castors have no brakes: the rack can roll a little when a box is pulled.
 - **Rolling:** take the boxes out or at least the heavy ones, push at the frame
@@ -475,28 +473,29 @@ The top stays open; the plate can be added without taking anything apart,
 because the brackets come with swing-in nuts ([BM Profiles][bm-nuts]).
 
 1. The plate: 1108 × 483 × 18 birch plywood, corners rounded R25. It overhangs
-   the frame by 20 on all four sides (over the plates at front and back); its
-   top is at 1034. Break and sand all edges round; children will lean on it.
+   the frame by 20 at the sides and 24 at the front and the back; its top is
+   at 1034. Break and sand all edges round; children will lean on it.
 2. Take out the slot cover from the inner slot of each top bar, if fitted.
 3. Swing a `bracket.plate` into those slots, 5 at the front and 5 at the back:
    one near each end and one per column, the bracket's free leg flush with the
    top of the bar (`z` 1016). Snug the nuts.
-4. Lay the plate on top, 20 overhang on each side; mark through the bracket
+4. Lay the plate on top, 20 overhang at the sides and 24 at the front and the
+   back; mark through the bracket
    holes from below.
 5. Lift off, pre-drill 2.5 mm, at most 10 mm deep so the tip stays inside the
    18 mm plate; lay it back and screw from below, 2 `screw.wood_4_5x12` per
    bracket.
 6. Tighten the bracket nuts.
 
-**Check:** the plate lies flat, does not rock; the overhang is equal all
-around; no screw tip on top.
+**Check:** the plate lies flat, does not rock; the overhang is equal on
+opposite sides; no screw tip on top.
 
 ## Safety
 
 - A box takes at most 25 kg, the maker's rating ([aidB 120][aidb-12],
   [aidB 220][aidb-22]). Keep the heavy boxes low.
 - Each castor is rated 70 kg ([Dold castor][dold-castor]). The full rack in
-  the design case, about 171 kg with the top plate (`DERIVED`), on three
+  the design case, about 170 kg with the top plate (`DERIVED`), on three
   castors of an uneven floor puts about 57 kg on each, 68 kg with a safety
   factor of 1.2 (`DERIVED`, see `design.md`).
 - **Tipping:** an empty rack can tip forward (or backward) when a child hangs
@@ -517,9 +516,11 @@ around; no screw tip on top.
 3. Through-hole alignment: drilled at home, a hole off the core axis puts the
    upright off its line; drill front and back bars together (step 1).
 4. Counterbore depth in the 30 mm top bar is not yet tried (`UNVERIFIED`).
-5. Prices of `screw.m6x10_socket` and `cap.end_30x60` are not read.
+5. The price of `cap.end_30x60` is not read.
 6. The fit of the M8 head in the castor plate's 14 mm hole and the 10 mm
    thread engagement are not yet tried (`UNVERIFIED`).
+7. The core-bolt joints' clamping force, tightening torque and the sideways
+   load they hold are estimates (`UNVERIFIED`, `design.md` → *Joints*).
 
 [mo-hm]: https://www.motedis.com/de/Hammermutter-B-Typ-Nut-8-M6
 [mo-winkel]: https://www.motedis.com/de/Winkel-30-B-Typ-Nut-8
