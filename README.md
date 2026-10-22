@@ -12,7 +12,7 @@ and to the back, so the rack stands free in the room. Outer size 1068 × 435 ×
 **[Open the 3D viewer](https://countzero.github.io/lego_eurobox_rack/)**: turn
 the rack, pull the boxes out, show the planned top plate.
 
-![The rack, three-quarter view, one box pulled out](renders/drawer_out.png)
+![The rack, three-quarter view, one box pulled out, with the planned birch top plate](renders/drawer_out.png)
 
 > [!WARNING]
 > Not ready to build. The box geometry is provisional until the boxes are

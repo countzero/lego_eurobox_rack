@@ -10,6 +10,9 @@ front, levels 1-5 from the bottom.
 
 ![Three-quarter view](../renders/three_quarter.png)
 
+The renders show the planned top plate on the frame; it is fitted last, if at
+all (*Fitting the top plate later*).
+
 The rack is two flat frames, front (`y` 0-30) and back (`y` 405-435), each a
 bottom bar, a top bar and four uprights, joined by eight depth beams. It
 stands on four castors under castor plates at the corners and holds 15
@@ -48,11 +51,9 @@ out at the front and at the back.
 | `cover.slot_8`            | 3636 mm  | 11           |
 | `box.e220`                | 3        | 12           |
 | `box.e120`                | 12       | 12           |
-| `clip.red`                | 3        | 12           |
-| `clip.turquoise`          | 3        | 12           |
-| `clip.purple`             | 3        | 12           |
-| `clip.yellow`             | 3        | 12           |
 | `clip.blue`               | 3        | 12           |
+| `clip.turquoise`          | 6        | 12           |
+| `clip.lightgreen`         | 6        | 12           |
 | `insert.set_quarter`      | 6        | 12           |
 | `insert.set_half`         | 6        | 12           |
 
@@ -415,14 +416,14 @@ unloaded overnight if the maker says so (`UNVERIFIED`).
 
 ## Step 12: Boxes, ColorClips and inserts
 
-**Parts:** `box.e220` × 3, `box.e120` × 12, `clip.red`, `clip.turquoise`,
-`clip.purple`, `clip.yellow`, `clip.blue` × 3 each, `insert.set_quarter` × 6,
+**Parts:** `box.e220` × 3, `box.e120` × 12, `clip.blue` × 3,
+`clip.turquoise` × 6, `clip.lightgreen` × 6, `insert.set_quarter` × 6,
 `insert.set_half` × 6.
 
 ![Box pulled out](../renders/drawer_out.png)
 
 1. Clip one ColorClip pack (2 rings) per box, one ring on each handle frame,
-   one colour per level (table below).
+   one colour per insert type (table below).
 2. Inserts: two rows across the 300 side, each 133 wide; the cells of a row run
    along the 400 side from the front. A set fills 266 × 365 (quarter
    266 × 364) of the 265 × 365 inner top (box tolerance ±5). The end walls of
@@ -435,13 +436,13 @@ unloaded overnight if the maker says so (`UNVERIFIED`).
 
 ![Inserts from above](../renders/inserts_top.png)
 
-| Box                | Class | Layout  | Inserts                                     | ColorClip        |
-| ------------------ | ----- | ------- | ------------------------------------------- | ---------------- |
-| `L1.C1` to `L1.C3` | 220   | none    | none                                        | `clip.red`       |
-| `L2.C1` to `L2.C3` | 120   | half    | `insert.set_half`: 2 × 3613 (133 × 365)     | `clip.turquoise` |
-| `L3.C1` to `L3.C3` | 120   | half    | `insert.set_half`: 2 × 3613 (133 × 365)     | `clip.purple`    |
-| `L4.C1` to `L4.C3` | 120   | quarter | `insert.set_quarter`: 4 × 1813 (133 × 182)  | `clip.yellow`    |
-| `L5.C1` to `L5.C3` | 120   | quarter | `insert.set_quarter`: 4 × 1813 (133 × 182)  | `clip.blue`      |
+| Box                | Class | Layout  | Inserts                                     | ColorClip         |
+| ------------------ | ----- | ------- | ------------------------------------------- | ----------------- |
+| `L1.C1` to `L1.C3` | 220   | none    | none                                        | `clip.blue`       |
+| `L2.C1` to `L2.C3` | 120   | half    | `insert.set_half`: 2 × 3613 (133 × 365)     | `clip.turquoise`  |
+| `L3.C1` to `L3.C3` | 120   | half    | `insert.set_half`: 2 × 3613 (133 × 365)     | `clip.turquoise`  |
+| `L4.C1` to `L4.C3` | 120   | quarter | `insert.set_quarter`: 4 × 1813 (133 × 182)  | `clip.lightgreen` |
+| `L5.C1` to `L5.C3` | 120   | quarter | `insert.set_quarter`: 4 × 1813 (133 × 182)  | `clip.lightgreen` |
 
 **Check, every box:** it slides in and out without catching, the rim runs
 between the hanging legs; pulled out by 270 mm (`pull_out.travel`) to the

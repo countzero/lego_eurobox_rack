@@ -121,8 +121,8 @@ boxes, rings and inserts.
   boxes more than needed for 23.51 € more.
 - Boxes with rings fitted cost 9.36 € (120) and 12.41 € (220): 149.55 € for
   the 15 boxes against 143.04 € for boxes plus separate ColorClips, which also
-  allow one colour per level (3 packs each of red, turquoise, purple, yellow
-  and blue; `docs/inserts.md`).
+  allow one colour per insert type (3 packs of blue, 6 each of turquoise and
+  light green; `docs/inserts.md`).
 - The sets fit only NextGen 400 × 300 × 120 boxes (`docs/inserts.md`).
 
 ## Shipping

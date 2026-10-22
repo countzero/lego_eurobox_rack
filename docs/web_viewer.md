@@ -16,10 +16,12 @@ request. The published copy is at
   front, "All in" pushes every box back. A model without `sides` pulls to the
   front only.
 - "Top plate" hides or shows the planned top plate, which is shown by
-  default. The rack has no panels, so the inside is always visible.
+  default, in the plain average colour of the `plywood` material (the grain
+  and the plies of the renders are Blender shader nodes the glb does not
+  carry). The rack has no panels, so the inside is always visible.
 - On a pointer device, hovering a box highlights it and names it with its
   ColorClip colour and the side a click pulls it to, for example "L3 C2,
-  120 mm class, Purpur, front".
+  120 mm class, Türkis, front".
 - The info line shows the rack's outer size from the model.
 - "Colours" shows or hides the ColorClips panel (*ColorClips* below), open by
   default except on a narrow screen.

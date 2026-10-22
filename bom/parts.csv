@@ -24,11 +24,9 @@ cap.end_30x60,finish,End cap 30x60 for the ends of the bottom bars,plastic,,,4,p
 cover.slot_8,finish,Slot cover strip for the top faces of the top bars and the top depth beams,"plastic, B-type slot 8",3636,,1,length,build
 box.e120,box,"Eurobox NextGen 2.0 Cycle 400x300x120, open handles, anthracite (C2O43-12)",r-PP,,,12,piece,build
 box.e220,box,"Eurobox NextGen 2.0 Cycle 400x300x220, open handles, anthracite (C2O43-22), no inserts",r-PP,,,3,piece,build
-clip.red,box,"ColorClip set red, 2 rings (R200-00-01-SET), level 1",plastic,,,3,piece,build
-clip.turquoise,box,"ColorClip set turquoise, 2 rings (R200-00-12-SET), level 2",plastic,,,3,piece,build
-clip.purple,box,"ColorClip set purple, 2 rings (R200-00-15-SET), level 3",plastic,,,3,piece,build
-clip.yellow,box,"ColorClip set yellow, 2 rings (R200-00-03-SET), level 4",plastic,,,3,piece,build
-clip.blue,box,"ColorClip set blue, 2 rings (R200-00-02-SET), level 5",plastic,,,3,piece,build
+clip.blue,box,"ColorClip set blue, 2 rings (R200-00-02-SET), level 1",plastic,,,3,piece,build
+clip.turquoise,box,"ColorClip set turquoise, 2 rings (R200-00-12-SET), levels 2 and 3",plastic,,,6,piece,build
+clip.lightgreen,box,"ColorClip set light green, 2 rings (R200-00-13-SET), levels 4 and 5",plastic,,,6,piece,build
 insert.set_half,insert,Insert set 1/2 for 400x300x120 (EES43-01-100-04): 2 x NextGen 3613-100,PS,365,266,6,piece,build
 insert.set_quarter,insert,Insert set 1/4 for 400x300x120 (EES43-02-100-04): 4 x NextGen 1813-100,PS,364,266,6,piece,build
 plate.top,plate,"Top plate, birch plywood, corners rounded R25",18 mm birch plywood,1108,483,1,piece,planned

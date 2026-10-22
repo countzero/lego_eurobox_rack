@@ -60,23 +60,30 @@ values below were read from aidB's product photos by perspective measurement
 and are `UNVERIFIED` until a box is measured (roadmap 0004); the inner floor is
 `SECONDARY` or `DERIVED` as marked.
 
-| Value                | Model value                                                         | Status     |
-| -------------------- | ------------------------------------------------------------------- | ---------- |
-| Rim band             | 6                                                                   | UNVERIFIED |
-| Collar below the rim | 31                                                                  | UNVERIFIED |
-| Ledge                | 5                                                                   | UNVERIFIED |
-| Foot band            | 18                                                                  | UNVERIFIED |
-| Side panel recess    | 3                                                                   | UNVERIFIED |
-| Corner post          | 14                                                                  | UNVERIFIED |
-| Outer corner radius  | 8                                                                   | UNVERIFIED |
-| Inner corner radius  | 6                                                                   | UNVERIFIED |
-| Inner floor, 120 box | 359 × 259; the wall tapers from the 365 × 265 inner top             | SECONDARY  |
-| Inner floor, 220 box | 354 × 254, the same wall slope over 215                             | DERIVED    |
-| Ribs per long side   | 88-110 and 290-312 from the front                                   | UNVERIFIED |
-| Handle frame         | 145 × 50, corner radius 12, from 15 below the rim                   | UNVERIFIED |
-| Handle opening       | 125 × 30, corner radius 8, from 24 below the rim                    | UNVERIFIED |
-| ColorClip ring       | 145 × 50 × 2, radii 12 outside and 6 inside, round the opening      | UNVERIFIED |
-| Colour               | about sRGB #3F3F3F lit in the photo; drawn at linear 0.04, IOR 1.49 | UNVERIFIED |
+| Value                 | Model value                                                                        | Status     |
+| --------------------- | ---------------------------------------------------------------------------------- | ---------- |
+| Rim band              | 6, at the 400 × 300 envelope                                                       | UNVERIFIED |
+| Collar below the rim  | 31, set back 5                                                                     | UNVERIFIED |
+| Ledge lip             | 3 thick, at the envelope, below the collar                                         | UNVERIFIED |
+| Foot band             | 18, set back 1, a 45° chamfer of 4 up to the panel                                 | UNVERIFIED |
+| Side panel recess     | 6                                                                                  | UNVERIFIED |
+| Rib webs              | 2.5 thick, outer face at the envelope, from the foot chamfer to the rim            | UNVERIFIED |
+| Rib pairs, long sides | centres 99 and 301 from the front, 16 wide outside, open pocket between the webs   | UNVERIFIED |
+| Corner webs           | one in each face, centre 18 from the corner, open pocket towards the corner        | UNVERIFIED |
+| Pin blocks            | long sides, collar height, 24 wide, centre 55 from each corner, hole Ø4            | UNVERIFIED |
+| Outer corner radius   | 8                                                                                  | UNVERIFIED |
+| Inner corner radius   | 6                                                                                  | UNVERIFIED |
+| Inner floor, 120 box  | 359 × 259; the wall tapers from the 365 × 265 inner top                            | SECONDARY  |
+| Inner floor, 220 box  | 354 × 254, the same wall slope over 215                                            | DERIVED    |
+| Handle frame          | 145 × 50, corner radius 12, from 15 below the rim; two webs 2.5 wide up to the rim | UNVERIFIED |
+| Handle tray           | inside the frame, 8 deep; a lip 1.5 wide round the opening                         | UNVERIFIED |
+| Handle opening        | 125 × 30, corner radius 8, from 24 below the rim                                   | UNVERIFIED |
+| ColorClip ring        | 145 × 50 × 2, radii 12 outside and 6 inside, round the opening                     | UNVERIFIED |
+| Colour                | about sRGB #3F3F3F lit in the photo; drawn at linear 0.04, IOR 1.49                | UNVERIFIED |
+
+The relief (webs, pockets, lip, chamfer, pin blocks, tray) is read from aidB's
+photos of C2O43-12 and C2O43-22; every piece stays inside the 400 × 300 ×
+height envelope, which the build checks.
 
 The inner floor of the 120 box is that of Bito XL43121 and Utz RAKO
 400 × 300 × 120 (both 359 × 259); aidB's insert sets, 366 × 266 at the top and
@@ -103,7 +110,7 @@ NextGen 2.0*): outer 400 × 300 × 120 / 220, inner 365 × 265 × 115 / 215,
 | Angle length                 | 435                                                                                         |
 | Box position                 | front at y 17.5, centred in the depth                                                       |
 | Pull-out travel, removal     | 270, 400, to the front and to the back                                                      |
-| Top plate (planned)          | 1108 × 483 × 18, top at 1034                                                                |
+| Top plate (planned)          | 1108 × 483 × 18, top at 1034, corners R25, edges broken 1.5                                 |
 
 | Level | Class | Floor (flat leg top) | Tallest box top | Next flat leg bottom | Angle           |
 | ----- | ----- | -------------------- | --------------- | -------------------- | --------------- |
@@ -338,8 +345,10 @@ opening is blocked from inside by the insert walls, so a box is gripped from
 outside (`UNVERIFIED`). Details, drawings and fit in `docs/inserts.md`.
 
 Each box carries a ColorClip ring on both handles, one pack of two per box,
-one colour per level from the bottom: red, turquoise, purple, yellow, blue
-(`rack.json` → `color_clips.levels`, sRGB from aidB's photo, `UNVERIFIED`).
+one colour per insert type in neighbouring cool hues, lighter towards the top:
+blue on L1 (220, no inserts), turquoise on L2 and L3 (set 1/2), light green on
+L4 and L5 (set 1/4) (`rack.json` → `color_clips.levels`, sRGB from aidB's
+photo, `UNVERIFIED`).
 `color_clips.colours` lists all nine colours aidB sells, and
 `color_clips.presets` five alternatives to try in the web viewer
 (`docs/web_viewer.md` → *ColorClips*); the model and the parts list follow
@@ -384,11 +393,9 @@ and `planned` for the top plate and its fixings.
 | `cover.slot_8`            | finish     | 3636 mm  | build   |
 | `box.e120`                | box        | 12       | build   |
 | `box.e220`                | box        | 3        | build   |
-| `clip.red`                | box        | 3        | build   |
-| `clip.turquoise`          | box        | 3        | build   |
-| `clip.purple`             | box        | 3        | build   |
-| `clip.yellow`             | box        | 3        | build   |
 | `clip.blue`               | box        | 3        | build   |
+| `clip.turquoise`          | box        | 6        | build   |
+| `clip.lightgreen`         | box        | 6        | build   |
 | `insert.set_half`         | insert     | 6        | build   |
 | `insert.set_quarter`      | insert     | 6        | build   |
 | `plate.top`               | plate      | 1        | planned |
@@ -414,7 +421,10 @@ kerf included. Lengths are millimetres, empty where they do not apply.
 
 ### Renders
 
-PNG, 1600 × 1200, under `renders/`, top plate hidden:
+PNG, 1600 × 1200, under `renders/`, EEVEE with screen-space ray tracing, AgX.
+The planned top plate is drawn as oiled birch plywood with 13 plies
+(`top_plate`; plies, finish and colour `UNVERIFIED`) and shows in every
+render but `inserts_top`:
 
 | File                        | View                                                                                  |
 | --------------------------- | ------------------------------------------------------------------------------------- |
@@ -447,6 +457,5 @@ the front; moving a box node by `travel` along it pulls the box, its inserts
 and its rings out together. When `sides` contains `"back"`, the viewer pulls
 the box the other way, along `-pull_axis`, for a click on its back half.
 
-Material names: `aluminium`, `box_anthracite`, `insert_grey`, `clip_red`,
-`clip_turquoise`, `clip_purple`, `clip_yellow`, `clip_blue`, `castor`,
-`plywood`.
+Material names: `aluminium`, `box_anthracite`, `insert_grey`, `clip_blue`,
+`clip_turquoise`, `clip_lightgreen`, `castor`, `plywood`.
