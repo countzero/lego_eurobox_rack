@@ -51,6 +51,7 @@ sorted by ID; the order of work follows from the status.
 | 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | Done                 | [#13](https://github.com/countzero/lego_eurobox_rack/pull/13) |
 | 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
+| 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | In progress          |                                                               |
 | 0017 | [No joint plates](#0017-no-joint-plates)                     | In progress          |                                                               |
 | 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Blocked by 0017      |                                                               |
 
@@ -356,6 +357,57 @@ the thread engagement of M8 in a 10 mm aluminium plate; the castor's
 non-marking tread; the empty rack tips under a 27.2 kg child on an extended
 box. 0012 changes the same model files: the step merged second rebuilds
 `rack.blend`, the renders and `rack.glb`.
+
+## 0016 Ribbed boxes, top plate
+
+**Goal:** boxes whose outer walls carry the moulded relief of aidB's photos,
+the planned birch plywood top plate drawn as oiled plywood and shown in the
+renders, studio light that makes the relief readable, and the ColorClips set
+to one colour per insert type (blue, turquoise, turquoise, light green, light
+green from L1 up).
+
+**Delivers:** `blender/build_rack.py`, `blender/export_web.py`,
+`blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `design/rack.json`
+(`box_shape`, `top_plate`, `color_clips.levels`, `color_clips.rule`, the
+preset "Complementary steps" in place of "Harmonious cool", the `clip.*`
+parts), `bom/parts.csv`, `docs/design.md` → *Box shape in the model*,
+*Dimensions* (top plate), *Renders*, *Inserts and ColorClips*, *Part IDs* and
+material names, `docs/inserts.md` → *ColorClips*, `docs/assembly.md` (clip
+parts), `docs/prices.md` (clip note), `docs/web_viewer.md` (example),
+`README.md` (render caption).
+
+**Acceptance:**
+
+- The outer wall shows thin rib webs with open pockets between them, a ledge
+  lip, a recessed collar, pin blocks next to the corners, a
+  chamfer from the foot band to the panel and a handle with a raised frame, a
+  recessed tray and a lip round the opening, as in aidB's photos of C2O43-12
+  and C2O43-22.
+- The build stops unless every box is 400 × 300 × its height outside, the
+  inner top is 365 × 265 and no insert reaches through a box wall; the box
+  envelope of `docs/design.md` is unchanged.
+- The top plate has R25 corners (`top_plate.corner_radius`), broken edges, an
+  oiled birch face and 13 plies on its edges, drawn with built-in shader nodes
+  and no image file; it shows in every render but `inserts_top`.
+- The renders keep their names and views; EEVEE with ray tracing at fixed
+  settings, AgX.
+- `build_rack.py` runs headless; a second run gives the same meshes, objects
+  and materials in `rack.blend` and the same `rack.glb` by hash. The renders
+  differ by at most 1 of 255 in under 2 % of their pixels (screen-space ray
+  tracing); the bytes of `rack.blend` differ between runs on `develop`
+  already.
+- `web/rack.glb` keeps the node names, extras and material names of 0002 and
+  0011, shows the plate in its plain `plywood` colour and stays under 1 MB
+  (708 KB before the step).
+- Model, renders, parts list and documents use the ColorClips of
+  `color_clips.levels`; the web viewer opens with them, the same choice as
+  `#clips=blue,turquoise,turquoise,lightgreen,lightgreen`.
+- Every new `box_shape` and `top_plate` value names its status; the pull
+  request lists the `sources.md` rows to add on merge.
+
+**Open:** the real relief values (0004); the ply count and finish of the plate
+until it is bought. This step supersedes 0003's "top plate hidden in the
+renders" and 0012's "EEVEE without ray tracing".
 
 ## 0017 No joint plates
 
