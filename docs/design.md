@@ -53,24 +53,35 @@ is an estimate. 600 × 400 boxes, Wibo and keeeper / OKT Robusto are excluded.
 
 ### Box shape in the model
 
-The model draws the box from `box_shape` in `design/rack.json`. aidB and
-Müller & Sohn publish no drawing or CAD, so every value below was read from
-the two aidB product photos by perspective measurement and is `UNVERIFIED`
-until a box is measured (roadmap 0004).
+The model draws the box from `box_shape` and `box_models` in
+`design/rack.json`. aidB and Müller & Sohn publish no drawing or CAD, so the
+values below were read from aidB's product photos by perspective measurement
+and are `UNVERIFIED` until a box is measured (roadmap 0004); the inner floor is
+`SECONDARY` or `DERIVED` as marked.
 
-| Value                | Model value                           |
-| -------------------- | ------------------------------------- |
-| Rim band             | 6                                     |
-| Collar below the rim | 31                                    |
-| Ledge                | 5                                     |
-| Foot band            | 18                                    |
-| Side panel recess    | 3                                     |
-| Corner post          | 14                                    |
-| Ribs per long side   | 88-110 and 290-312 from the front     |
-| Handle frame         | 145 × 50, from 15 below the rim       |
-| Handle opening       | 125 × 30, from 24 below the rim       |
-| ColorClip ring       | 145 × 50 × 2, over the handle frame   |
-| Colour               | neutral dark grey, about sRGB #3F3F3F |
+| Value                | Model value                                                         | Status     |
+| -------------------- | ------------------------------------------------------------------- | ---------- |
+| Rim band             | 6                                                                   | UNVERIFIED |
+| Collar below the rim | 31                                                                  | UNVERIFIED |
+| Ledge                | 5                                                                   | UNVERIFIED |
+| Foot band            | 18                                                                  | UNVERIFIED |
+| Side panel recess    | 3                                                                   | UNVERIFIED |
+| Corner post          | 14                                                                  | UNVERIFIED |
+| Outer corner radius  | 8                                                                   | UNVERIFIED |
+| Inner corner radius  | 6                                                                   | UNVERIFIED |
+| Inner floor, 120 box | 359 × 259; the wall tapers from the 365 × 265 inner top             | SECONDARY  |
+| Inner floor, 220 box | 354 × 254, the same wall slope over 215                             | DERIVED    |
+| Ribs per long side   | 88-110 and 290-312 from the front                                   | UNVERIFIED |
+| Handle frame         | 145 × 50, corner radius 12, from 15 below the rim                   | UNVERIFIED |
+| Handle opening       | 125 × 30, corner radius 8, from 24 below the rim                    | UNVERIFIED |
+| ColorClip ring       | 145 × 50 × 2, radii 12 outside and 6 inside, round the opening      | UNVERIFIED |
+| Colour               | about sRGB #3F3F3F lit in the photo; drawn at linear 0.04, IOR 1.49 | UNVERIFIED |
+
+The inner floor of the 120 box is that of Bito XL43121 and Utz RAKO
+400 × 300 × 120 (both 359 × 259); aidB's insert sets, 366 × 266 at the top and
+4 smaller per side at the floor, need at least 358 × 258. aidB says the insert
+sets fit only boxes of their own height "aufgrund der Konizität" (because of
+the taper).
 
 The published facts are `VERIFIED` (`sources.md` → *Boxes: aidB Eurobox
 NextGen 2.0*): outer 400 × 300 × 120 / 220, inner 365 × 265 × 115 / 215,

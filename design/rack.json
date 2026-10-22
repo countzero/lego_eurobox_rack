@@ -20,12 +20,12 @@
         "excluded": ["600 x 400 boxes", "Wibo", "keeeper / OKT Robusto"]
     },
     "box_models": {
-        "cycle_120": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2O43-12", "class": "120", "length": 400, "width": 300, "height": 120, "inner_length": 365, "inner_width": 265, "inner_height": 115, "mass_g": 800 },
-        "cycle_220": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2O43-22", "class": "220", "length": 400, "width": 300, "height": 220, "inner_length": 365, "inner_width": 265, "inner_height": 215, "mass_g": 1180 }
+        "cycle_120": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2O43-12", "class": "120", "length": 400, "width": 300, "height": 120, "inner_length": 365, "inner_width": 265, "inner_height": 115, "inner_floor_length": 359, "inner_floor_width": 259, "mass_g": 800 },
+        "cycle_220": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2O43-22", "class": "220", "length": 400, "width": 300, "height": 220, "inner_length": 365, "inner_width": 265, "inner_height": 215, "inner_floor_length": 354, "inner_floor_width": 254, "mass_g": 1180 }
     },
     "model_boxes": { "120": "cycle_120", "220": "cycle_220" },
     "box_shape": {
-        "status": "UNVERIFIED, read from the aidB product photos; roadmap 0004 measures a box",
+        "status": "UNVERIFIED, read from the aidB product photos; the inner floor is SECONDARY (inner_floor_status); roadmap 0004 measures a box",
         "colour": "neutral dark grey, about sRGB #3F3F3F on the lit faces of the photo",
         "rim_band": 6,
         "collar": 31,
@@ -34,9 +34,12 @@
         "panel_recess": 3,
         "collar_recess": 1.5,
         "corner_post": 14,
+        "corner_radius": 8,
+        "inner_corner_radius": 6,
+        "inner_floor_status": "box_models inner_floor_*: the inner wall tapers from the inner top to the floor. 120: SECONDARY, 359 x 259 is the inner floor of Bito XL43121 and Utz RAKO 400 x 300 x 120, and aidB's insert sets need at least 358 x 258. 220: DERIVED, the same wall slope over 215 instead of 115, 365 - 6 x 215 / 115 = 354",
         "long_side_ribs": [[88, 110], [290, 312]],
-        "handle": { "sides": "both short sides", "opening_width": 125, "opening_height": 30, "opening_top_below_rim": 24, "frame_width": 145, "frame_height": 50, "frame_top_below_rim": 15 },
-        "clip": { "outer_width": 145, "outer_height": 50, "thickness": 2, "covers": "the face of the handle frame" }
+        "handle": { "sides": "both short sides", "opening_width": 125, "opening_height": 30, "opening_top_below_rim": 24, "opening_radius": 8, "frame_width": 145, "frame_height": 50, "frame_top_below_rim": 15, "frame_radius": 12 },
+        "clip": { "outer_width": 145, "outer_height": 50, "thickness": 2, "outer_radius": 12, "inner_radius": 6, "covers": "the face of the handle frame, round the opening" }
     },
     "frame": {
         "profile": { "section": 30, "type": "30x30 B-type slot 8" },
@@ -109,6 +112,9 @@
     "inserts": {
         "system": "NextGen Einsatzkaesten x-100 (aidB), bought as sets",
         "height": 100,
+        "bottom_inset": 4,
+        "floor": 3,
+        "taper_status": "DERIVED from aidB's set tables (EES43-01-100-04, EES43-02-100-04): outer 366 x 266 x 100, inner 355 x 255 x 97; each tray wall moves in (366 - 355) / 2 - 1.5 = 4 from top to bottom, the floor is 100 - 97 = 3; reading the inner size as the floor is UNVERIFIED",
         "types": {
             "3613": { "length": 365, "width": 133 },
             "1813": { "length": 182, "width": 133 }
