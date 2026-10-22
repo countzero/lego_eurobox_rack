@@ -46,12 +46,12 @@ sorted by ID; the order of work follows from the status.
 | 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8)   |
 | 0008 | [Assembly guide](#0008-assembly-guide)                       | Done                 | [#7](https://github.com/countzero/lego_eurobox_rack/pull/7)   |
 | 0009 | [Web viewer](#0009-web-viewer)                               | Done                 | [#5](https://github.com/countzero/lego_eurobox_rack/pull/5)   |
-| 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Planned              |                                                               |
+| 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0011 | [ColorClip picker](#0011-colorclip-picker)                   | Done                 | [#10](https://github.com/countzero/lego_eurobox_rack/pull/10) |
-| 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | In progress          |                                                               |
+| 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | Done                 | [#13](https://github.com/countzero/lego_eurobox_rack/pull/13) |
 | 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
-| 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | In progress          |                                                               |
-| 0015 | [Tip-over safety](#0015-tip-over-safety)                     | Blocked by 0014      |                                                               |
+| 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
+| 0015 | [Tip-over safety](#0015-tip-over-safety)                     | Planned              |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -274,8 +274,8 @@ values are read from its product photos (`UNVERIFIED`).
 **Goal:** boxes and renders that look like the NextGen 2.0 Cycle in aidB's
 photos: rounded corners and bevelled edges, the inner wall tapered towards the
 floor, the rounded handle opening with its frame and the ColorClip ring, the
-insert trays tapered like the box, a plastic material, and Cycles renders with
-studio light.
+insert trays tapered like the box, a plastic material, and renders with studio
+light.
 
 **Delivers:** `blender/build_rack.py`, `blender/rack.blend`, `renders/*.png`,
 `web/rack.glb`, `design/rack.json` (`box_shape` and the insert taper),
@@ -289,8 +289,9 @@ studio light.
   top is 365 × 265 and no insert reaches through a box wall.
 - Every new `box_shape` value names its status; the pull request lists the
   `sources.md` rows to add on merge.
-- The renders keep their names and views; Cycles on the CPU with a fixed seed,
-  AgX; `rack.blend` is saved with EEVEE.
+- The renders keep their names and views; EEVEE without ray tracing, AgX.
+  Cycles on the CPU was tried first and dropped: about 4.5 minutes against
+  about 6 seconds for nearly the same look.
 - `web/rack.glb` keeps the node names, extras and material names of 0002 and
   0011, and stays under twice its size before the step (355 KB).
 
