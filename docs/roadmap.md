@@ -51,7 +51,8 @@ sorted by ID; the order of work follows from the status.
 | 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | Done                 | [#13](https://github.com/countzero/lego_eurobox_rack/pull/13) |
 | 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
-| 0015 | [Tip-over safety](#0015-tip-over-safety)                     | Planned              |                                                               |
+| 0017 | [No joint plates](#0017-no-joint-plates)                     | In progress          |                                                               |
+| 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Blocked by 0017      |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -352,25 +353,68 @@ joints, parts, `box_position`, `pull_out`, schema 3), `docs/design.md` (all but
 
 **Open:** the castor head diameter (Ø46 from motedis' drawing, `SECONDARY`);
 the thread engagement of M8 in a 10 mm aluminium plate; the castor's
-non-marking tread; the empty rack tips under a 27.2 kg child on an extended box
-(0015). 0012 changes the same model files: the step merged second rebuilds
+non-marking tread; the empty rack tips under a 27.2 kg child on an extended
+box. 0012 changes the same model files: the step merged second rebuilds
 `rack.blend`, the renders and `rack.glb`.
 
-## 0015 Tip-over safety
+## 0017 No joint plates
 
-**Goal:** a rack that does not tip, even empty, when a child hangs on a box
-pulled out to the front or to the back.
+**Goal:** front and back frames held square by the M8 core bolts of the
+upright joints alone, without the 16 joint plates, whose real chamfered webs
+would stand in the way of the level 1 and level 5 boxes at the front and the
+back.
 
-**Delivers:** `design/rack.json`, `docs/design.md` → *Loads*, `docs/assembly.md`,
-`docs/prices.md`, the model, the parts list and the renders generated to match.
+**Delivers:** `design/rack.json` (`frame.joint_plate`, `outer`, the parts
+`plate.joint_l`, `plate.joint_t`, `screw.m6x10_socket`, `tnut.m6`),
+`blender/build_rack.py` (joint plates), `blender/rack.blend`, `renders/*.png`,
+`web/rack.glb`, `bom/parts.csv`, `docs/design.md` (*Decisions*, *Dimensions*,
+side view, *Joints*, *Loads*, *Part IDs*, node table), `docs/assembly.md`,
+`docs/prices.md`, `README.md`.
 
 **Acceptance:**
 
-- The empty rack, every box pulled out to one side and the castors in their
-  worst position, stays standing with 27.2 kg (ASTM F2057-23) on the front
-  edge of the worst box, with a margin of at least 1.2, forwards and
-  backwards.
-- The candidates are compared with price and source: ballast low in the frame,
-  wider-set castors on outriggers, braked castors, a wall strap for parking.
+- No `plate.joint_l`, `plate.joint_t` or `screw.m6x10_socket` in `rack.json`,
+  the parts list, the model or `web/rack.glb`; `tnut.m6` is 72 (56 for the
+  brackets, 16 for the castor plates).
+- The outer size is 1068 × 435 × 1016 in `rack.json`, the scene's `outer_mm`,
+  the documents and the README.
+- The top plate keeps its size and place.
+- `docs/design.md` says why the core-bolt joints suffice, with the joint
+  estimate marked `UNVERIFIED`; *Loads* follows the lower mass.
+- The assembly guide squares and tightens the frames without plates, names a
+  medium-strength threadlocker (Loctite 243) on the 16 M8 core bolts as
+  optional and `UNVERIFIED`, and checks the bolts again after the first moves.
+- `build_rack.py` runs headless and a second run gives the same `rack.blend`
+  and `rack.glb`; `build_bom.py` and `npm --prefix web run build` run clean.
 
-**Open:** which measure the user prefers.
+**Open:** the clamping force and tightening torque of an M8 in the core
+thread; whether the frames stay square after rolling. 0016 changes the same
+model files and `rack.json`: the step merged second rebuilds `rack.blend`, the
+renders and `rack.glb`.
+
+## 0018 Every part in the model
+
+**Goal:** the model holds every part ordered for the build at its real shape
+and place, so the renders and the viewer show what is bought.
+
+**Delivers:** `blender/build_rack.py`, `blender/export_web.py`,
+`blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `design/rack.json`
+(shapes of screws, nuts, washers, brackets and caps), `web/src/main.js`,
+`docs/design.md` → *Contracts*, `docs/web_viewer.md`.
+
+**Acceptance:**
+
+- Every `build` part of `rack.json` is drawn; each object names its part ID,
+  and the build stops unless the count per ID, or the length for the tape and
+  the slot cover, equals the parts list.
+- Screws, hammer nuts and washers sit in their holes with the heads where the
+  assembly guide puts them; the castor plates and the angles show their holes,
+  the brackets the shape of motedis S8BBR30.
+- Every shape value names its status; the pull request lists the `sources.md`
+  rows to add on merge.
+- Parts of one kind share one mesh; `web/rack.glb` stays under 1 MB; a click
+  in the viewer passes through fasteners to the boxes.
+- `build_rack.py` runs headless and a second run gives the same files.
+
+**Open:** the brackets' hole offset (motedis CAD); the counterbore depth of the
+top bars; whether the planned top-plate parts are drawn with the top plate.

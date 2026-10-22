@@ -314,10 +314,9 @@ slightly; that is ignored, so the values are conservative.
   (8.85 + 0.33) / 0.1445 - 49.1 = 14.4 kg. Ballast for the empty rack at
   factor 1.2, low and central: one box out (1.2 × 8.85 + 0.33) / 0.1445 - 49.1
   = 26.7 kg; every box out to one side (1.2 × 8.85 + 4.90) / 0.1445 - 49.1
-  = 58.3 kg. 0015 compares ballast with wider-set castors.
+  = 58.3 kg.
 - Without brakes the rack rolls when a box is pulled; rolling resistance of a
   few per cent of the weight caps the pulling force.
-- Follow-up: roadmap 0015 *Tip-over safety*.
 
 ## Inserts and ColorClips
 
