@@ -503,7 +503,7 @@ around; no screw tip on top.
   on a pulled-out box: the ASTM F2057-23 test load of 27.2 kg on the edge of
   one extended box tips it ([CPSC][cpsc-csu]; `DERIVED`, see `design.md`).
   Fill the bottom level first and keep the rack loaded, pull one box at a
-  time, never more than its 270 mm travel. Roadmap 0015 plans the remedy.
+  time, never more than its 270 mm travel.
 - The braked castor Dold 69490 has the same height, hole and offset
   (`VERIFIED`) and fits the front corners later without any other change.
 - The rack is not made to be climbed or stood on, top plate or not.
