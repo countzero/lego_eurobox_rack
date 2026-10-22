@@ -3,6 +3,17 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-10-22
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: the castors, the castor plates and the brackets change, and the back stops are gone. The cut lengths of 0.2.0 still hold. Order the hardware from the new parts list._
+
+### Changed
+
+- **Breaking:** put four plain 100 mm castors under 90 × 90 corner plates inside the frame outline, lower the frame by 25 mm and open the back, so every box pulls out to the front and to the back ([#12](https://github.com/countzero/lego_eurobox_rack/pull/12))
+- Model the boxes and inserts with rounded edges, the inner taper and plastic materials, and render them in studio light ([#13](https://github.com/countzero/lego_eurobox_rack/pull/13))
+
 ## [0.2.0] - 2026-10-22
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
@@ -31,5 +42,6 @@ _Not ready to build: the box dimensions are provisional until the boxes are meas
 - Add the price comparison with the cheapest order split ([#8](https://github.com/countzero/lego_eurobox_rack/pull/8))
 - Add the assembly guide ([#7](https://github.com/countzero/lego_eurobox_rack/pull/7))
 
+[0.3.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.3.0
 [0.2.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.2.0
 [0.1.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.1.0
