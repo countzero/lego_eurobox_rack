@@ -13,10 +13,9 @@ The cheapest sound way to buy every part of `design/rack.json` (roadmap 0007).
   `UNVERIFIED` is an estimate and is not a fact; it is in a total only where
   the row says so.
 - Quantities and lengths come from `parts` in `design/rack.json`. Profiles
-  30 × 30: 8 × 791 + 2 × 1068 + 8 × 375 = 11.464 m in 18 pieces, 0.843 kg/m.
-  Profiles 30 × 60: 2 × 1068 = 2.136 m in 2 pieces, 1.489 kg/m. Angles:
-  36 × 435 = 15.660 m in 36 pieces, 0.809 kg/m. Weights per metre `VERIFIED`
-  at Dold. No panels.
+  30 × 30: 8 × 791 + 4 × 1068 + 8 × 375 = 13.600 m in 20 pieces, 0.843 kg/m
+  (11.46 kg). Angles: 36 × 435 = 15.660 m in 36 pieces, 0.809 kg/m. Weights
+  per metre `VERIFIED` at Dold. Top plate 1108 × 483 mm = 0.535 m². No panels.
 - aluprofile-express.de is run by Dold Mechatronik GmbH (same imprint, same
   shipping table, same products and prices), so it is not a second supplier;
   it is listed once as Dold.
@@ -32,12 +31,11 @@ The cheapest sound way to buy every part of `design/rack.json` (roadmap 0007).
 
 | Part                           | Supplier              | Product                                     | Price incl. VAT                   | Unit       | For the quantity | Status     | Source        |
 | ------------------------------ | --------------------- | ------------------------------------------- | --------------------------------- | ---------- | ---------------- | ---------- | ------------- |
-| `profile.*` 30 × 30 (18)       | Dold                  | Aluminiumprofil 30x30L B-Typ Nut 8, cut     | 9.90 €/m + 0.50 € per piece       | metre      | 122.49 €         | DERIVED    | [dold-30]     |
+| `profile.*` 30 × 30 (20)       | Dold                  | Aluminiumprofil 30x30L B-Typ Nut 8, cut     | 9.90 €/m + 0.50 € per piece       | metre      | 144.64 €         | DERIVED    | [dold-30]     |
 | `profile.upright` M8           | Dold                  | M8 thread: 8 ends + 8 ends 80 mm deep       | 1.00 € per end, 2.00 € extra deep | end        | 24.00 €          | UNVERIFIED | [dold-30]     |
-| `profile.*` 30 × 30 (18)       | motedis               | Aluprofil 30x30 B-Typ Nut 8, Zuschnitt      | 7.89–9.87 €/m; cut fee not read   | metre      | 90.45–113.15 €   | DERIVED    | [mo-30]       |
+| `profile.*` 30 × 30 (20)       | motedis               | Aluprofil 30x30 B-Typ Nut 8, Zuschnitt      | 7.89–9.87 €/m; cut fee not read   | metre      | 107.30–134.23 €  | DERIVED    | [mo-30]       |
 | `profile.upright` M8           | motedis               | machining "M8", depth not read              | 1.00 € net, 1.19 € per end        | end        | 19.04 €          | DERIVED    | [mo-30]       |
 | `profile.upright` M8           | myaluprofil           | Processing "M8", depth not read             | 2.00 € per end                    | end        | 32.00 €          | DERIVED    | [mya-30]      |
-| `profile.bar_bottom` (2)       | Dold                  | Aluminiumprofil 30x60L B-Typ Nut 8, cut     | 19.00 €/m + 1.00 € per cut        | metre      | 42.58 €          | VERIFIED   | [dold-3060]   |
 | `angle.*` (36)                 | Dold                  | Winkelprofil 50x50x3 EN AW-6060 T66, cut    | 11.65 €/m + 0.50 €/cut + 3.00 €   | metre      | 203.44 €         | DERIVED    | [dold-50]     |
 | `angle.*` (36)                 | alu-profile-zuschnitt | Alu Winkel 50x50x3 AlMgSi0,5                | 12.02 €/m; cut fee not shown      | metre      | 188.23 € + cuts  | DERIVED    | [apz-50]      |
 | `angle.*` (36)                 | profilzuschnitt24     | L-Profil Aluminium 50x50x3 (roh)            | 12.11 €/m + 1.10 € per cut        | metre      | 229.24 €         | DERIVED    | [pz-50]       |
@@ -56,15 +54,14 @@ The cheapest sound way to buy every part of `design/rack.json` (roadmap 0007).
 | `screw.m6x16_countersunk` (16) | Dold                  | DIN 7991 8.8 M6x16, zinc-plated             | about 0.21 € (0.05 + 0.16)        | piece      | about 3.36 €     | UNVERIFIED | [dold-7991]   |
 | `screw.m5x10_countersunk`      | motedis               | DIN 7991 M5x10 (= ISO 10642), zinc-plated   | 5.29 € per 100                    | pack 100   | 10.58 € (2)      | VERIFIED   | [mo-7991]     |
 | `screw.m5x10_countersunk`      | Dold                  | DIN 7991 8.8 M5x10, zinc-plated             | 0.47 €                            | piece      | 67.68 €          | DERIVED    | [dold-7991]   |
-| `screw.m8x100_socket` (8)      | Dold                  | DIN 912 8.8 M8x100, zinc-plated             | 1.35 €                            | piece      | 10.80 €          | DERIVED    | [dold-912]    |
+| `screw.m8x70_socket` (8)       | Dold                  | DIN 912 8.8 M8x70, zinc-plated              | about 2.79 € (0.05 + 2.74)        | piece      | about 22.32 €    | UNVERIFIED | [dold-912]    |
 | `screw.m8x50_socket` (8)       | Dold                  | DIN 912 8.8 M8x50, zinc-plated              | 0.84 €                            | piece      | 6.72 €           | DERIVED    | [dold-912]    |
 | `screw.m8x20_socket` (4)       | Dold                  | DIN 912 8.8 M8x20, zinc-plated              | about 0.31 € (0.05 + 0.26)        | piece      | about 1.24 €     | UNVERIFIED | [dold-912]    |
 | `washer.m8` (4)                | Dold                  | DIN 125 A 8.4 × 16, zinc-plated             | about 0.10 € (0.05 + 0.05)        | piece      | about 0.40 €     | UNVERIFIED | [dold-125]    |
 | `castor.plain` (4)             | Dold                  | Lenkrolle 100 Rückenloch ohne Bremse 69483  | 6.00 €                            | piece      | 24.00 €          | VERIFIED   | [dold-100]    |
 | `castor.plain` (4)             | motedis               | Rolle 100 Rückenloch ohne Bremse (995)      | 22.31 € per 4, out of stock       | pack of 4  | 22.31 €          | VERIFIED   | [mo-100]      |
-| `cap.end_30` (4)               | Dold                  | Profilabdeckkappe 30 B-Typ Nut 8            | 0.86 €                            | piece      | 3.44 €           | DERIVED    | [dold-caps]   |
-| `cap.end_30` (4)               | profilzuschnitt24     | Profilabdeckkappe Schwarz Nut 8 30x30       | 0.62 €                            | piece      | 2.48 €           | DERIVED    | [pz-cap]      |
-| `cap.end_30x60` (4)            | Dold                  | Abdeckkappe 30x60 B-Typ Nut 8 (67489)       | 0.95 €                            | piece      | 3.80 €           | DERIVED    | [dold-caps]   |
+| `cap.end_30` (8)               | Dold                  | Profilabdeckkappe 30 B-Typ Nut 8            | 0.86 €                            | piece      | 6.88 €           | DERIVED    | [dold-caps]   |
+| `cap.end_30` (8)               | profilzuschnitt24     | Profilabdeckkappe Schwarz Nut 8 30x30       | 0.62 €                            | piece      | 4.96 €           | DERIVED    | [pz-cap]      |
 | `cover.slot_8` (3636 mm)       | Dold                  | Abdeckprofil grau B-Typ Nut 8, 1 m, VPE 5   | 8.75 € per 5 m                    | pack of 5  | 8.75 €           | VERIFIED   | [dold-caps]   |
 | `cover.slot_8` (3636 mm)       | Dold (ape shop)       | Abdeckprofil Natur B-Typ Nut 8, 1 m         | 2.19 €                            | piece      | 8.76 € (4)       | DERIVED    | [ape-cover]   |
 
@@ -92,6 +89,28 @@ Notes:
 - The Dold angle carries a 3.00 € logistics fee per order line.
 - Dold's DM.2111 M5 nut is 3.16 € cheaper than the motedis M5 hammer nut; the
   split keeps the motedis nut, the one the angles were planned with.
+- The M8x70 price is Dold's base plus variant surcharge (0.05 + 2.74 €), not
+  the cart price, hence `UNVERIFIED`. The surcharge is above the M8x100's
+  (1.06 €, 1.35 € in the cart), so the Dold total takes the higher 22.32 €; at
+  the M8x100's 1.35 € it would be 10.80 €.
+
+### Top plate
+
+| Part                     | Supplier           | Product                                    | Price incl. VAT     | For the quantity   | Status     | Source        |
+| ------------------------ | ------------------ | ------------------------------------------ | ------------------- | ------------------ | ---------- | ------------- |
+| `plate.top`              | Holz-Speckmann     | Multiplex Birke BB/CP 21 mm, Zuschnitt     | 66.95 €/m²          | 35.82 € (0.535 m²) | DERIVED    | [hs-mpx]      |
+| `plate.top`              | plattenzuschnitt24 | Birke Multiplex 21 mm, BB/BB               | 91.40 €/m²          | 48.90 € (0.535 m²) | DERIVED    | [pz-mpx]      |
+| `bracket.plate` (20)     | Dold               | Winkel 30 B-Typ Nut 8 mit Befestigungssatz | 1.51 € from 10      | 30.20 €            | DERIVED    | [dold-winkel] |
+| `bracket.plate` (20)     | motedis            | Winkel 30 B-Typ Nut 8 + hammer nut + screw | 7.27 € per 10 + set | about 20 €         | UNVERIFIED | [mo-winkel]   |
+| `screw.wood_4_5x16` (20) | any hardware store | wood screw 4.5 × 16 pan head               | not read            | about 2 €          | UNVERIFIED |               |
+
+The plate is structural and is fitted before the rack is loaded
+(`docs/assembly.md`, step 12), so it is in the totals: Holz-Speckmann's plate
+for 35.82 €, the Dold brackets for 20 × 1.51 = 30.20 € in the Dold order, and
+about 2 € of wood screws, an `UNVERIFIED` estimate counted in the totals. The
+plate is 1108 × 483 mm = 0.535 m²; the square-metre prices are from the
+2026-10-22 reading. The R10 corners, the edge finish and the plate's shipping
+are not priced.
 
 ### Slide tape
 
@@ -109,15 +128,15 @@ movet as the durable option (+105.48 €).
 All from ab-in-die-BOX (aidB), private shop: the user wants one vendor for
 boxes, rings and inserts.
 
-| Part                 | Product                                            | Price incl. VAT     | Qty | For the quantity | Status   | Source         |
-| -------------------- | -------------------------------------------------- | ------------------- | --- | ---------------- | -------- | -------------- |
-| `box.e120`           | NextGen 2.0 Cycle C2O43-12, open handles, no rings | 8.08 €              | 12  | 96.96 €          | VERIFIED | [aidb-12]      |
-| `box.e220`           | NextGen 2.0 Cycle C2O43-22, open handles, no rings | 11.26 €             | 3   | 33.78 €          | VERIFIED | [aidb-22]      |
-| `clip.*`             | ColorClip set R200-00-xx-SET, 2 rings              | 0.82 € per pack     | 15  | 12.30 €          | VERIFIED | [aidb-12]      |
-| `insert.set_half`    | Set 1/2 EES43-01-100-04, 2 × 3613-100              | 9.95 € (8.36 net)   | 6   | 59.70 €          | VERIFIED | [aidb-half]    |
-| `insert.set_quarter` | Set 1/4 EES43-02-100-04, 4 × 1813-100              | 12.49 € (10.50 net) | 6   | 74.94 €          | VERIFIED | [aidb-quarter] |
+| Part                 | Product                                              | Price incl. VAT     | Qty | For the quantity | Status   | Source         |
+| -------------------- | ---------------------------------------------------- | ------------------- | --- | ---------------- | -------- | -------------- |
+| `box.e120`           | NextGen 2.0 Cycle C2G43-12, closed handles, no rings | 8.08 €              | 12  | 96.96 €          | VERIFIED | [aidb-12]      |
+| `box.e220`           | NextGen 2.0 Cycle C2G43-22, closed handles, no rings | 11.26 €             | 3   | 33.78 €          | VERIFIED | [aidb-22]      |
+| `clip.*`             | ColorClip set R200-00-xx-SET, 2 rings                | 0.82 € per pack     | 15  | 12.30 €          | VERIFIED | [aidb-12]      |
+| `insert.set_half`    | Set 1/2 EES43-01-100-04, 2 × 3613-100                | 9.95 € (8.36 net)   | 6   | 59.70 €          | VERIFIED | [aidb-half]    |
+| `insert.set_quarter` | Set 1/4 EES43-02-100-04, 4 × 1813-100                | 12.49 € (10.50 net) | 6   | 74.94 €          | VERIFIED | [aidb-quarter] |
 
-- A carton of 16 C2O43-12 costs 7.53 € each, 120.47 € for 16; it buys four
+- A carton of 16 C2G43-12 costs 7.53 € each, 120.47 € for 16; it buys four
   boxes more than needed for 23.51 € more.
 - Boxes with rings fitted cost 9.36 € (120) and 12.41 € (220): 149.55 € for
   the 15 boxes against 143.04 € for boxes plus separate ColorClips, which also
@@ -129,7 +148,7 @@ boxes, rings and inserts.
 
 | Supplier | This order                                                  | Cost    | Free from   | Status    | Source      |
 | -------- | ----------------------------------------------------------- | ------- | ----------- | --------- | ----------- |
-| Dold     | DPD, pieces over 1 m up to 1.5 m, about 28 kg (up to 30 kg) | 14.90 € | none        | VERIFIED  | [dold-ship] |
+| Dold     | DPD, pieces over 1 m up to 1.5 m, about 29 kg (up to 30 kg) | 14.90 € | none        | VERIFIED  | [dold-ship] |
 | motedis  | accessories only, above 16.66 €                             | 0.00 €  | 16.66 €     | DERIVED   | [mo-ship]   |
 | Amazon   | with Prime or above the threshold                           | 0.00 €  | seller rule | SECONDARY | [tape-amz]  |
 | aidB     | free in Germany from 150 €                                  | 0.00 €  | 150 €       | VERIFIED  | [aidb-12]   |
@@ -137,8 +156,9 @@ boxes, rings and inserts.
 Dold's DPD class up to 1.5 m costs 14.90 € up to 30 kg and 23.90 € up to
 60 kg; the table does not say whether its prices include VAT. The 1068 mm
 bars put the order in that class. The weight is DERIVED: profiles and angles
-9.66 + 3.18 + 12.67 = 25.51 kg, castors 1.16 kg, castor plates 0.87 kg, plus
-caps, covers and screws.
+11.46 + 12.67 = 24.13 kg, castors 1.16 kg, castor plates 0.87 kg, plus
+brackets, caps, covers and screws. Holz-Speckmann's shipping for the plate is
+not read and not in the totals.
 
 The motedis order no longer holds a profile, so it ships at the accessory
 rate, free above 16.66 € (`VERIFIED` 2026-10-22). That every part in it counts
@@ -148,59 +168,51 @@ rate for up to 221.09 € plus the packing charge, 16.33 + 3.89 = 20.22 €
 
 ## Recommended order split
 
-Four shops: Dold for everything long, the castors, the castor plates, the M6
-hammer nuts and the M8 socket screws, motedis for connectors and the
-small screws, Amazon for the tape, aidB for boxes, rings and inserts. The
+Five shops and a hardware store: Dold for everything long, the castors, the
+castor plates, the M6 hammer nuts, the M8 socket screws and the plate
+brackets, motedis for connectors and the small screws, Amazon for the tape,
+Holz-Speckmann for the top plate, a hardware store for the wood screws, aidB
+for boxes, rings and inserts. The
 castors and plates go to Dold because motedis has the castor out of stock and
 its plate is thinner and uncut.
 
-| Shop    | Parts                                                                                                                                                                                                                                   | Subtotal | Shipping | Total    |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | -------- |
-| Dold    | `profile.*` incl. M8 threads, `angle.*`, `plate.castor`, `castor.plain`, `tnut.m6`, `screw.m8x100_socket`, `screw.m8x50_socket`, `screw.m8x20_socket`, `washer.m8`, `cap.end_30`, `cap.end_30x60`, `cover.slot_8`                       | 493.32 € | 14.90 €  | 508.22 € |
-| motedis | `bracket.inside_30`, `screw.m6x12_button`, `screw.m6x16_countersunk`, `screw.m5x10_countersunk`, `tnut.m5`                                                                                                                              | 72.05 €  | 0.00 €   | 72.05 €  |
-| Amazon  | `tape.uhmw_25` (2 rolls)                                                                                                                                                                                                                | 15.38 €  | 0.00 €   | 15.38 €  |
-| aidB    | `box.e120` × 12, `box.e220` × 3, `clip.*` × 15, `insert.set_half` × 6, `insert.set_quarter` × 6                                                                                                                                         | 277.68 € | 0.00 €   | 277.68 € |
+| Shop           | Parts                                                                                                                                                                                                            | Subtotal     | Shipping | Total        |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | -------- | ------------ |
+| Dold           | `profile.*` incl. M8 threads, `angle.*`, `plate.castor`, `castor.plain`, `tnut.m6`, `screw.m8x70_socket`, `screw.m8x50_socket`, `screw.m8x20_socket`, `washer.m8`, `cap.end_30`, `cover.slot_8`, `bracket.plate` | 514.25 €     | 14.90 €  | 529.15 €     |
+| motedis        | `bracket.inside_30`, `screw.m6x12_button`, `screw.m6x16_countersunk`, `screw.m5x10_countersunk`, `tnut.m5`                                                                                                       | 72.05 €      | 0.00 €   | 72.05 €      |
+| Amazon         | `tape.uhmw_25` (2 rolls)                                                                                                                                                                                         | 15.38 €      | 0.00 €   | 15.38 €      |
+| Holz-Speckmann | `plate.top`, cut to 1108 × 483                                                                                                                                                                                   | 35.82 €      | not read | 35.82 €      |
+| Hardware store | `screw.wood_4_5x16` × 20                                                                                                                                                                                         | about 2.00 € | 0.00 €   | about 2.00 € |
+| aidB           | `box.e120` × 12, `box.e220` × 3, `clip.*` × 15, `insert.set_half` × 6, `insert.set_quarter` × 6                                                                                                                  | 277.68 €     | 0.00 €   | 277.68 €     |
 
-Dold: 122.49 + 24.00 + 42.58 + 203.44 + 22.66 + 24.00 + 19.00 + 10.80 + 6.72 +
-1.24 + 0.40 + 3.44 + 3.80 + 8.75 = 493.32 €, with the 1.64 € estimate for the
-M8x20 screws and the washers. motedis: 21.81 + 5.29 + 5.29 + 10.58 + 29.08 =
-72.05 €.
+Dold: 144.64 + 24.00 + 203.44 + 22.66 + 24.00 + 19.00 + 22.32 + 6.72 + 1.24 +
+0.40 + 6.88 + 8.75 + 30.20 = 514.25 €, with the 23.96 € estimate for the
+M8x70 and M8x20 screws and the washers (22.32 + 1.24 + 0.40). motedis:
+21.81 + 5.29 + 5.29 + 10.58 + 29.08 = 72.05 €.
 
 | Total                           | Amount       |
 | ------------------------------- | ------------ |
-| Rack without boxes              | 595.65 €     |
+| Rack without boxes              | 654.40 €     |
 | Boxes, rings and inserts (aidB) | 277.68 €     |
-| **Overall**                     | **873.33 €** |
+| **Overall**                     | **932.08 €** |
 
-The rack total is 508.22 + 72.05 + 15.38 €. If motedis charges the basic
-rate, add 20.22 €.
-
-## Planned top plate (not in the totals)
-
-| Part                | Supplier           | Product                                    | Price incl. VAT     | For the quantity   | Status     | Source        |
-| ------------------- | ------------------ | ------------------------------------------ | ------------------- | ------------------ | ---------- | ------------- |
-| `plate.top`         | Holz-Speckmann     | Multiplex Birke BB/CP 18 mm, Zuschnitt     | 56.95 €/m²          | 30.48 € (0.535 m²) | DERIVED    | [hs-mpx]      |
-| `plate.top`         | plattenzuschnitt24 | Birke Multiplex 18 mm, BB/BB               | 67.30 €/m²          | 36.02 € (0.535 m²) | DERIVED    | [pz-mpx]      |
-| `bracket.plate`     | Dold               | Winkel 30 B-Typ Nut 8 mit Befestigungssatz | 1.51 € from 10      | 15.10 €            | VERIFIED   | [dold-winkel] |
-| `bracket.plate`     | motedis            | Winkel 30 B-Typ Nut 8 + hammer nut + screw | 7.27 € per 10 + set | about 10 €         | UNVERIFIED | [mo-winkel]   |
-| `screw.wood_4_5x12` | any hardware store | wood screw 4.5 × 12 pan head               | not read            | about 2 €          | UNVERIFIED |               |
-
-The plate is 1108 × 483 mm = 0.535 m². The square-metre prices are from the
-2026-10-20 reading. The R25 corners, the edge finish and the plate's shipping
-are not priced; the known part is about 48 € (30.48 + 15.10 + ~2).
+The rack total is 529.15 + 72.05 + 15.38 + 35.82 + 2.00 €, without the plate's
+shipping. If motedis charges the basic rate, add 20.22 €. If Dold's M8x70
+costs what its M8x100 costs (1.35 €), the Dold subtotal falls by 11.52 € to
+502.73 €.
 
 ## Not verified
 
 - Dold M8 core thread prices (page JSON) and its CNC hole price.
-- Dold DIN 7991 M6x16, DIN 912 M8x20 and DIN 125 A 8.4 prices (base plus
-  surcharge, not the cart price).
+- Dold DIN 7991 M6x16, DIN 912 M8x70 and M8x20 and DIN 125 A 8.4 prices (base
+  plus surcharge, not the cart price).
+- Holz-Speckmann's shipping for the plate and the price of the wood screws.
 - motedis profile cut fee and metre price per
   length, and the thread depth of its M8 machining.
 - Whether Dold's shipping table includes VAT.
 - Whether motedis counts every part of this order as an accessory.
 - Whether the castor tread is non-marking.
 - Amazon tape thickness and seller shipping.
-- Whether the inserts block the handle openings (`docs/inserts.md`).
 
 ## Rejected castors
 
@@ -220,7 +232,6 @@ redesign; the core-bolt joints keep the frames square and the back stays open
 shipping from plattenzuschnitt24.
 
 [dold-30]: https://www.dold-mechatronik.de/Aluminiumprofil-30x30L-B-Typ-Nut-8-084kg-m-Zuschnitt-50-6000mm
-[dold-3060]: https://www.dold-mechatronik.de/Aluminiumprofil-30x60L-B-Typ-Nut-8-149kg-m-Zuschnitt-50-6000mm
 [dold-50]: https://www.dold-mechatronik.de/Winkelprofile-gleichschenklig-50x50x3mm-Aluminium-EN-AW-6060-T66-AlMgSi05-0809kg-m-Zuschnitt-20-6000mm
 [dold-agp]: https://www.dold-mechatronik.de/Plangefraeste-Gussplatte-Aluminium-EN-AW-5083-foliert-Dicke-10mm-Breite-90mm-243kg-m-Zuschnitt-20-3000mm
 [dold-winkel]: https://www.dold-mechatronik.de/Winkel-und-Verbinder-30-B-Typ-Nut-8
@@ -251,9 +262,9 @@ shipping from plattenzuschnitt24.
 [pz-cap]: https://www.profilzuschnitt24.de/Profilabdeckkappe-Schwarz-Nut-8-30x30-mm.html
 [tape-amz]: https://www.amazon.de/dp/B0CPT2NR3N
 [tape-movet]: https://www.movet.eu/en/conveyor-wear-strips/movet-fix-adhesive-wear-strips/7333/movet-sliding-strip-pe-uhmw-color-natural-fda-25-x-0.8-mm-15-m.-1roll
-[aidb-12]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-offen-400-x-300-x-120-mm-anthrazit.html
-[aidb-22]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-offen-400-x-300-x-220-mm-anthrazit.html
+[aidb-12]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-geschlossen-400-x-300-x-120-mm-anthrazit.html
+[aidb-22]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-geschlossen-400-x-300-x-220-mm-anthrazit.html
 [aidb-half]: https://www.ab-in-die-box.de/b2cde/einsatzkaesten-set-1-2-unterteilung-fuer-400x300x120.html
 [aidb-quarter]: https://www.ab-in-die-box.de/b2cde/einsatzkaesten-set-1-4-unterteilung-fuer-400x300x120.html
-[hs-mpx]: https://www.holz-speckmann.de/Multiplexplatte-Birke-E1-BB-CP-im-Zuschnitt-18-mm/MULBIZ-18MM
-[pz-mpx]: https://www.plattenzuschnitt24.de/Multiplexplatten-Zuschnitt/Multiplexplatte-Birke/
+[hs-mpx]: https://www.holz-speckmann.de/Multiplexplatte-Birke-E1-BB-CP-im-Zuschnitt-21-mm/MULBIZ-21MM
+[pz-mpx]: https://www.plattenzuschnitt24.de/Multiplexplatte-Zuschnitt-21mm.html

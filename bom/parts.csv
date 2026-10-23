@@ -1,34 +1,33 @@
 id,category,description,material,length,width,quantity,unit,status
 profile.upright,profile,"Upright between the bars, M8 core thread at both ends, the bottom one extra deep (80 mm)",30x30 B-type slot 8,791,,8,piece,build
 profile.bar_top,profile,"Top bar, front and back, one piece over all three columns; 4 through holes 8.5 with 14 mm counterbore",30x30 B-type slot 8,1068,,2,piece,build
-profile.bar_bottom,profile,"Bottom bar, 60 high, front and back, one piece over all three columns; carries the middle uprights between the corner castors; 4 through holes 8.5",30x60 B-type slot 8,1068,,2,piece,build
+profile.bar_bottom,profile,"Bottom bar, front and back, one piece over all three columns, flush with the bottom depth beams; shares the middle uprights' load with the top plate and top bar; 4 through holes 8.5",30x30 B-type slot 8,1068,,2,piece,build
 profile.beam_depth,profile,"Depth beam between the front and the back bar at each upright, the top one flush with the top bars, the bottom one flush with the underside of the bottom bars",30x30 B-type slot 8,375,,8,piece,build
 angle.base,angle,"Level 1 support, flat leg at the bottom on the bottom bars",50x50x3 EN AW-6060,435,,6,piece,build
 angle.support,angle,"Level 2-5 support, flat leg on top, hanging leg guides the box below",50x50x3 EN AW-6060,435,,24,piece,build
 angle.guard,angle,"Tip guard above level 5, same section and orientation as angle.support",50x50x3 EN AW-6060,435,,6,piece,build
-bracket.inside_30,connector,"Inside angle bracket 30 for B-type slot 8: upright to top depth beam (8), top depth beam to bar (8), bottom depth beam's top face to bar (8), bottom depth beam's side to bar at the middle uprights (4)",die-cast zinc or aluminium,,,28,piece,build
+bracket.inside_30,connector,"Inside angle bracket 30 for B-type slot 8: upright to top depth beam (8), top depth beam to bar (8), bottom depth beam to bar on the beam's bay side (8), a second one on the other side at the middle uprights (4)",die-cast zinc or aluminium,,,28,piece,build
 plate.castor,connector,"Castor plate 90x90x10 under each corner, screwed into the bottom slots of the bottom bar and the bottom depth beam; M8 thread at 45/45 for the castor, 14 mm hole at 15/15 for the corner bolt head, 4 countersunk holes for M6",EN AW-5083 milled cast plate,90,90,4,piece,build
 screw.m6x12_button,fastener,"ISO 7380 M6x12 for the brackets, 2 per bracket.inside_30","steel, zinc-plated",,,56,piece,build
 screw.m6x16_countersunk,fastener,"ISO 10642 M6x16 from below through the castor plates into the bottom slots, 4 per plate","steel, zinc-plated",,,16,piece,build
 tnut.m6,fastener,Hammer nut M6 B-type slot 8 for the brackets (56) and the castor plates (16),"steel, zinc-plated",,,72,piece,build
 screw.m5x10_countersunk,fastener,"ISO 10642 M5x10 for the angles, flush in a countersunk hole so the hanging leg stays smooth","steel, zinc-plated",,,144,piece,build
 tnut.m5,fastener,Hammer nut M5 B-type slot 8 for the angles,"steel, zinc-plated",,,144,piece,build
-screw.m8x100_socket,fastener,ISO 4762 (DIN 912) M8x100 from below through the bottom bar into an upright's 80 mm core thread; at a corner its head sits in the castor plate's 14 mm hole,"steel 8.8, zinc-plated",,,8,piece,build
+screw.m8x70_socket,fastener,"ISO 4762 (DIN 912) M8x70 from below through the bottom bar into an upright's 80 mm core thread, 40 mm engaged; at a corner its head sits in the castor plate's 14 mm hole","steel 8.8, zinc-plated",,,8,piece,build
 screw.m8x50_socket,fastener,"ISO 4762 (DIN 912) M8x50 through the top bar into an upright, head sunk in the counterbore","steel 8.8, zinc-plated",,,8,piece,build
 screw.m8x20_socket,fastener,ISO 4762 (DIN 912) M8x20 from inside the castor housing up through the back hole into the castor plate's M8 thread,"steel 8.8, zinc-plated",,,4,piece,build
 washer.m8,fastener,ISO 7089 (DIN 125 A) washer 8.4 under the castor bolt's head inside the housing,"steel, zinc-plated",,,4,piece,build
 castor.plain,castor,"Swivel castor 100 mm without brake, 125 high, back hole 11, offset 28, 70 kg, under a castor plate at each corner",PU tread on PP,,,4,piece,build
 tape.uhmw_25,consumable,Self-adhesive UHMW-PE slide tape on the flat legs that carry boxes,"UHMW-PE, 25 mm wide",13050,,1,length,build
-cap.end_30,finish,End cap 30x30 for the ends of the top bars,plastic,,,4,piece,build
-cap.end_30x60,finish,End cap 30x60 for the ends of the bottom bars,plastic,,,4,piece,build
+cap.end_30,finish,End cap 30x30 for the ends of the top and the bottom bars,plastic,,,8,piece,build
 cover.slot_8,finish,Slot cover strip for the top faces of the top bars and the top depth beams,"plastic, B-type slot 8",3636,,1,length,build
-box.e120,box,"Eurobox NextGen 2.0 Cycle 400x300x120, open handles, anthracite (C2O43-12)",r-PP,,,12,piece,build
-box.e220,box,"Eurobox NextGen 2.0 Cycle 400x300x220, open handles, anthracite (C2O43-22), no inserts",r-PP,,,3,piece,build
+box.e120,box,"Eurobox NextGen 2.0 Cycle 400x300x120, closed handles, anthracite (C2G43-12)",r-PP,,,12,piece,build
+box.e220,box,"Eurobox NextGen 2.0 Cycle 400x300x220, closed handles, anthracite (C2G43-22), no inserts",r-PP,,,3,piece,build
 clip.blue,box,"ColorClip set blue, 2 rings (R200-00-02-SET), level 1",plastic,,,3,piece,build
 clip.turquoise,box,"ColorClip set turquoise, 2 rings (R200-00-12-SET), levels 2 and 3",plastic,,,6,piece,build
 clip.lightgreen,box,"ColorClip set light green, 2 rings (R200-00-13-SET), levels 4 and 5",plastic,,,6,piece,build
 insert.set_half,insert,Insert set 1/2 for 400x300x120 (EES43-01-100-04): 2 x NextGen 3613-100,PS,365,266,6,piece,build
 insert.set_quarter,insert,Insert set 1/4 for 400x300x120 (EES43-02-100-04): 4 x NextGen 1813-100,PS,364,266,6,piece,build
-plate.top,plate,"Top plate, birch plywood, corners rounded R25",18 mm birch plywood,1108,483,1,piece,planned
-bracket.plate,connector,"Angle bracket 30 with fixing set, swung into the top bars' inner slots",steel,,,10,piece,planned
-screw.wood_4_5x12,fastener,"Wood screw 4.5x12, pan head, from below through the brackets",steel,,,20,piece,planned
+plate.top,plate,"Top plate, birch plywood, grain along the 1108 length, corners rounded R10; structural, screwed to the top bars from below",21 mm birch plywood,1108,483,1,piece,build
+bracket.plate,connector,"Angle bracket 30 with fixing set, swung into the top bars' inner slots, 10 per bar at top_plate.mounts.x",die-cast zinc,,,20,piece,build
+screw.wood_4_5x16,fastener,"Wood screw 4.5x16, pan head, from below through a bracket into a pre-drilled hole in the plate, 1 per bracket; at least 5 mm of wood stays above the tip","steel, zinc-plated",,,20,piece,build

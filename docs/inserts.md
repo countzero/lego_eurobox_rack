@@ -88,10 +88,12 @@ The three 220 boxes on L1 have no inserts.
 
 ## Handles
 
-The end walls of two inserts stand right behind each handle opening. With the
-handle geometry read from the product photos (opening 24 to 54 mm below the
-rim, insert top 15 mm below the rim) the opening is blocked from inside, so the
-handle is gripped from outside only. `UNVERIFIED` until a box is measured.
+The boxes have closed handles (C2G43-12, C2G43-22): a grip pocket 116 × 24 mm,
+12 mm deep, 28 to 52 mm below the rim, in a tray 145 × 50 mm whose top is
+15 mm below the rim. There is no opening, so the end walls of two inserts stand
+behind a closed wall and the handle is gripped from outside. The pocket
+geometry is read from the product photo and `UNVERIFIED` until a box is
+measured (`docs/sources.md`).
 
 ## ColorClips
 

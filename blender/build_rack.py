@@ -48,7 +48,7 @@ COLOURS = {
     "box_anthracite": ((0.040, 0.041, 0.043, 1), 0.0, 0.5, 1.49),
     "insert_grey": ((0.22, 0.23, 0.24, 1), 0.0, 0.4, 1.59),
     "castor": ((0.06, 0.06, 0.07, 1), 0.0, 0.6, 1.5),
-    "plywood": ((0.743, 0.542, 0.290, 1), 0.0, 0.55, 1.5),  # linear mean of PLY_FACE
+    "plywood": ((0.609, 0.331, 0.117, 1), 0.0, 0.55, 1.5),  # linear mean of PLY_FACE
     "floor": ((0.45, 0.45, 0.45, 1), 0.0, 0.85, 1.5),
 }
 CLIP_ROUGHNESS = 0.35
@@ -91,15 +91,20 @@ def add_grain(mat, bsdf):
     links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
 
 
-PLY_FACE = ("#D9B886", "#E6CC9E")  # oiled birch face, darker and lighter figure
-PLY_CROSS = "#C9A472"  # cross-grain ply on the edge
-PLY_GLUE = "#7A5A38"
+PLY_FACE = ("#C38E52", "#D6A86C")  # oiled birch face, darker and lighter figure
+PLY_GRAIN = "#9A6A3A"  # grain lines on the face
+PLY_LONG = "#E4CDA0"  # long-grain ply on the edge
+PLY_CROSS = "#CDA977"  # cross-grain ply on the edge
+PLY_GLUE = "#3E2A1C"
+PLY_GRAIN_SCALE = 90.0  # wave texture scale; grain lines about 5 mm apart
+PLY_GLUE_WIDTH = 0.15  # half the glue line as a fraction of one ply
 
 
 def add_plywood(mat, bsdf):
     """Oiled birch plywood from object coordinates (metres, z from the plate's
-    bottom): soft rotary-cut figure on the faces, alternating plies with glue
-    lines on the edges. Base Color and Roughness default values stay for the glb."""
+    bottom): soft figure with fine wandering grain lines along x on the faces,
+    pale plies split by thin dark glue lines on the edges. Base Color and
+    Roughness default values stay for the glb."""
     tp = RACK["top_plate"]
     nodes, links = mat.node_tree.nodes, mat.node_tree.links
 
@@ -133,37 +138,60 @@ def add_plywood(mat, bsdf):
                 links.new(v, sock)
         return n.outputs[2]
 
+    def band(v, lo, hi):
+        n = nodes.new("ShaderNodeMapRange")
+        n.interpolation_type = "SMOOTHSTEP"
+        links.new(v, n.inputs["Value"])
+        n.inputs["From Min"].default_value = lo
+        n.inputs["From Max"].default_value = hi
+        return n.outputs["Result"]
+
+    def stretched(scale, tex):
+        mp = node("ShaderNodeMapping")
+        mp.inputs["Scale"].default_value = scale
+        links.new(coords, mp.inputs["Vector"])
+        links.new(mp.outputs[0], tex.inputs["Vector"])
+        return tex
+
     coords = nodes.new("ShaderNodeTexCoord").outputs["Object"]
-    # face figure: long waves along x
-    stretch = node("ShaderNodeMapping")
-    stretch.inputs["Scale"].default_value = (1.5, 25.0, 25.0)
-    links.new(coords, stretch.inputs["Vector"])
-    figure = node("ShaderNodeTexNoise", Scale=1.0, Detail=6.0, Roughness=0.55, Distortion=0.6)
-    links.new(stretch.outputs[0], figure.inputs["Vector"])
-    figure_fac = math_node("MULTIPLY_ADD", figure.outputs["Fac"], 2.2, clamp=True)
-    figure_fac.node.inputs[2].default_value = -0.6
-    fleck_map = node("ShaderNodeMapping")
-    fleck_map.inputs["Scale"].default_value = (300.0, 3000.0, 3000.0)
-    links.new(coords, fleck_map.inputs["Vector"])
-    fleck = node("ShaderNodeTexNoise", Scale=1.0, Detail=1.0)
-    links.new(fleck_map.outputs[0], fleck.inputs["Vector"])
-    # only the darkest noise valleys become pores
-    fleck_fac = math_node("MULTIPLY_ADD", fleck.outputs["Fac"], -12.0, clamp=True)
-    fleck_fac.node.inputs[2].default_value = 4.0
+    # face: soft figure, wandering grain lines and fine fibres, all along x
+    figure = stretched((1.5, 25.0, 25.0),
+                       node("ShaderNodeTexNoise", Scale=1.0, Detail=6.0, Roughness=0.55, Distortion=0.6))
+    figure_fac = band(figure.outputs["Fac"], 0.3, 0.7)
+    grain = stretched((0.06, 1.0, 1.0), nodes.new("ShaderNodeTexWave"))
+    grain.wave_type, grain.bands_direction, grain.wave_profile = "BANDS", "Y", "SIN"
+    for k, v in (("Scale", PLY_GRAIN_SCALE), ("Distortion", 10.0), ("Detail", 3.0),
+                 ("Detail Scale", 0.8), ("Detail Roughness", 0.6)):
+        grain.inputs[k].default_value = v
+    lines = band(grain.outputs["Fac"], 0.9, 0.99)
+    fibre = stretched((25.0, 2500.0, 2500.0), node("ShaderNodeTexNoise", Scale=1.0, Detail=2.0))
+    fibre_fac = band(fibre.outputs["Fac"], 0.35, 0.7)
     face = mix(figure_fac, srgb_to_linear(PLY_FACE[0]), srgb_to_linear(PLY_FACE[1]))
-    face = mix(math_node("MULTIPLY", fleck_fac, 0.25), face, srgb_to_linear(PLY_GLUE))
-    # edge plies from object z
+    face = mix(math_node("MULTIPLY", fibre_fac, 0.18), face, srgb_to_linear(PLY_FACE[1]))
+    face = mix(math_node("MULTIPLY", lines, 0.25), face, srgb_to_linear(PLY_GRAIN))
+    # edge: plies from object z, wavering a little along the edge
+    wobble = stretched((40.0, 40.0, 0.0), node("ShaderNodeTexNoise", Scale=1.0, Detail=3.0))
     sep = node("ShaderNodeSeparateXYZ")
     links.new(coords, sep.inputs[0])
-    ply = math_node("DIVIDE", sep.outputs["Z"], m(tp["thickness"]) / tp["plies"])
-    parity = math_node("MODULO", math_node("FLOOR", ply), 2.0)
+    ply_t = m(tp["thickness"]) / tp["plies"]
+    z = math_node("MULTIPLY_ADD", math_node("SUBTRACT", wobble.outputs["Fac"], 0.5), 0.3 * ply_t, sep.outputs["Z"])
+    ply = math_node("DIVIDE", z, ply_t)
+    index = math_node("FLOOR", ply)
+    parity = math_node("MODULO", index, 2.0)
     frac = math_node("FRACT", ply)
-    glue = math_node("GREATER_THAN", math_node("ABSOLUTE", math_node("SUBTRACT", frac, 0.5)), 0.45)
-    edge = mix(parity, srgb_to_linear(PLY_FACE[0]), srgb_to_linear(PLY_CROSS))
-    edge_noise = node("ShaderNodeTexNoise", Scale=4000.0, Detail=2.0)
-    links.new(coords, edge_noise.inputs["Vector"])
-    edge = mix(math_node("MULTIPLY", math_node("MULTIPLY", edge_noise.outputs["Fac"], parity), 0.5), edge,
-               srgb_to_linear(PLY_GLUE))
+    # glue line at each ply boundary, its width varying along the edge
+    width = stretched((80.0, 80.0, 0.0), node("ShaderNodeTexNoise", Scale=1.0, Detail=2.0))
+    half = math_node("MULTIPLY_ADD", width.outputs["Fac"], PLY_GLUE_WIDTH, PLY_GLUE_WIDTH * 0.25)
+    dist = math_node("ABSOLUTE", math_node("SUBTRACT", frac, 0.5))
+    glue = band(math_node("SUBTRACT", dist, math_node("SUBTRACT", 0.5, half)), -0.03, 0.03)
+    tone = nodes.new("ShaderNodeTexWhiteNoise")
+    tone.noise_dimensions = "1D"
+    links.new(index, tone.inputs["W"])
+    edge = mix(parity, srgb_to_linear(PLY_LONG), srgb_to_linear(PLY_CROSS))
+    edge = mix(math_node("MULTIPLY", tone.outputs["Value"], 0.35), edge, srgb_to_linear(PLY_CROSS))
+    end_grain = stretched((2000.0, 2000.0, 600.0), node("ShaderNodeTexNoise", Scale=1.0, Detail=2.0))
+    speck = math_node("MULTIPLY", band(end_grain.outputs["Fac"], 0.5, 0.75), parity)
+    edge = mix(math_node("MULTIPLY", speck, 0.12), edge, srgb_to_linear(PLY_GLUE))
     edge = mix(glue, edge, srgb_to_linear(PLY_GLUE))
     # face vs edge by the geometry normal
     geo = nodes.new("ShaderNodeNewGeometry")
@@ -174,10 +202,11 @@ def add_plywood(mat, bsdf):
     links.new(vt.outputs[0], nsep.inputs[0])
     is_face = math_node("GREATER_THAN", math_node("ABSOLUTE", nsep.outputs["Z"]), 0.9)
     links.new(mix(is_face, edge, face), bsdf.inputs["Base Color"])
-    # bump: figure on the face, glue grooves on the edge
-    height = math_node("MULTIPLY_ADD", is_face, figure_fac, math_node("MULTIPLY", math_node("SUBTRACT", 1.0, is_face),
-                                                                       math_node("SUBTRACT", 1.0, glue)))
-    bump = node("ShaderNodeBump", Strength=0.15, Distance=0.0003)
+    # bump: grain lines and fibres on the face, glue grooves on the edge
+    face_height = math_node("SUBTRACT", math_node("MULTIPLY", fibre_fac, 0.3), lines)
+    height = math_node("MULTIPLY_ADD", is_face, face_height, math_node("MULTIPLY", math_node("SUBTRACT", 1.0, is_face),
+                                                                        math_node("SUBTRACT", 1.0, glue)))
+    bump = node("ShaderNodeBump", Strength=0.12, Distance=0.0002)
     links.new(height, bump.inputs["Height"])
     links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
 
@@ -421,14 +450,19 @@ def build_brackets(mats, colls, frame_root):
             xf, dx = (x, -1) if i == last else (x + sec, +1)
             z0 = (tb["bottom"] + tb["top"] - w) / 2
             pieces.append([(xf, xf + dx * leg, ya, yt, z0, z0 + w), (xf, xf + dx * t, ya, yl, z0, z0 + w)])
-            # bottom depth beam's top face to bar
-            zb = db["bottom"]["top"]
-            pieces.append([(xm0, xm1, ya, yl, zb, zb + t), (xm0, xm1, ya, yt, zb, zb + leg)])
-            # bottom depth beam's side to bar, middle uprights only
-            if 0 < i < last:
-                z0 = (db["bottom"]["bottom"] + db["bottom"]["top"] - w) / 2
-                xf = x + sec
-                pieces.append([(xf, xf + leg, ya, yt, z0, z0 + w), (xf, xf + t, ya, yl, z0, z0 + w)])
+            # bottom depth beam to bar, flush like the top pair: on the beam's bay
+            # side, and at the middle uprights a second one on the other side
+            z0 = (db["bottom"]["bottom"] + db["bottom"]["top"] - w) / 2
+            sides = [(xf, dx)] + ([(x, -1)] if 0 < i < last else [])
+            for xs, ds in sides:
+                pieces.append([(xs, xs + ds * leg, ya, yt, z0, z0 + w), (xs, xs + ds * t, ya, yl, z0, z0 + w)])
+        # plate brackets in the bar's inner slot, the free leg flush with the bar
+        # top under the top plate
+        mounts = RACK["top_plate"]["mounts"]
+        zt = tb["top"]
+        for xc in mounts["x"]:
+            x0, x1 = xc - w / 2, xc + w / 2
+            pieces.append([(x0, x1, ya, yt, zt - leg, zt), (x0, x1, ya, yl, zt - t, zt)])
     for n, boxes in enumerate(pieces, 1):
         bm = bmesh.new()
         for b in boxes:
@@ -600,9 +634,9 @@ def shell(outers, inner_at, grow=0.0):
     return bm
 
 
-def manifold_cut(body, cutter):
-    """body minus cutter with the manifold solver, as a new bmesh; overlapping
-    pieces of body are united."""
+def boolean_cut(body, cutter):
+    """body minus cutter with the exact boolean solver, as a new bmesh; use_self
+    makes it unite the closed pieces of body even where they interpenetrate."""
     scene = bpy.context.scene
     objs = []
     for label, bm in (("body", body), ("cutter", cutter)):
@@ -617,7 +651,7 @@ def manifold_cut(body, cutter):
     mod = body_obj.modifiers.new("cut", "BOOLEAN")
     mod.operation = "DIFFERENCE"
     mod.object = cutter_obj
-    mod.solver = "MANIFOLD"
+    mod.solver = "EXACT"
     mod.use_self = True
     depsgraph = bpy.context.evaluated_depsgraph_get()
     result = bpy.data.meshes.new_from_object(body_obj.evaluated_get(depsgraph))
@@ -751,39 +785,44 @@ def cycle_box(bx, mat, name):
     # The ledge lip steps round the frame: a shoulder one ledge wide, cut back to the frame face.
     shoulder = offset_outline(rr_outline(fw + lip, fh + lip, hd["frame_radius"] + lip), 0, fz)
     cl = s["clip"]
-    band_w = (cl["outer_height"] - hd["opening_height"]) / 2 - 2  # as clip_ring
+    band_w = (cl["outer_height"] - hd["pocket_height"]) / 2 - hd["clip_clearance"]  # as clip_ring
     tw, th = cl["outer_width"] / 2 - band_w, cl["outer_height"] / 2 - band_w
     tray = offset_outline(rr_outline(tw, th, cl["inner_radius"]), 0, fz)
+    ow, oh = hd["pocket_width"] / 2, hd["pocket_height"] / 2
+    oz = H - hd["pocket_top_below_rim"] - oh
+    pocket = offset_outline(rr_outline(ow, oh, hd["pocket_radius"]), 0, oz)
     for sy in (-1, 1):
         merge(body, prism_y(frame, sy * Y, sy * iy), 0)
         for sx in (-1, 1):
             y_web(sx * (fw - rw["from_frame_edge"]), sy, fz, H - 1)
         merge(body, prism_y(shoulder, sy * Y, sy * (Y - deep)), 0)
         merge(cutters, prism_y(frame, sy * (Y + FRAME_PROUD), sy * (Y + 5)), 0)
-        merge(cutters, prism_y(tray, sy * (Y - hd["tray_recess"]), sy * (Y + 5)), 0)
-    body = manifold_cut(body, cutters)
-    ow, oh = hd["opening_width"] / 2, hd["opening_height"] / 2
-    oz = H - hd["opening_top_below_rim"] - oh
-    opening = offset_outline(rr_outline(ow, oh, hd["opening_radius"]), 0, oz)
-    rolled = offset_outline(rr_outline(ow + hd["lip"], oh + hd["lip"], hd["opening_radius"] + hd["lip"]), 0, oz)
+        merge(cutters, prism_y(tray, sy * (Y - hd["tray_recess"]), sy * (Y + 4)), 0)
+    body = boolean_cut(body, cutters)
+    # Raised lip round the grip: a solid block standing on the tray floor, its
+    # front 0.5 behind the frame face; the grip cut below hollows it to a rim.
+    lw = hd["lip_width"]
+    rolled = offset_outline(rr_outline(ow + lw, oh + lw, hd["pocket_radius"] + lw), 0, oz)
     for sy in (-1, 1):
-        # Rolled lip round the opening, its front 0.5 behind the frame face.
         merge(body, prism_y(rolled, sy * (Y - hd["tray_recess"] - 1), sy * (Y + FRAME_PROUD - 0.5)), 0)
-    cutter = prism_y(opening, -(Y + 20), Y + 20)
-    mesh = rounded_mesh(manifold_cut(body, cutter), name, mat, BOX_EDGE_ROUND)
+    # The grip is a closed pocket, not a hole: it stops short of the inner wall.
+    grip = bmesh.new()
+    for sy in (-1, 1):
+        merge(grip, prism_y(pocket, sy * (Y + FRAME_PROUD - hd["pocket_depth"]), sy * (Y + 3)), 0)
+    mesh = rounded_mesh(boolean_cut(body, grip), name, mat, BOX_EDGE_ROUND)
     shift = Matrix.Translation((0, m(Y), 0))
     mesh.transform(shift)
     return mesh
 
 
 def clip_ring(bx):
-    """ColorClip round the handle opening on the face of the handle frame, both
+    """ColorClip round the grip pocket on the face of the handle frame, both
     short sides; origin as the box."""
     s = RACK["box_shape"]
     hd, cl = s["handle"], s["clip"]
     H, Y = bx["height"], bx["length"] / 2
     zc = H - hd["frame_top_below_rim"] - hd["frame_height"] / 2
-    band_w = (cl["outer_height"] - hd["opening_height"]) / 2 - 2
+    band_w = (cl["outer_height"] - hd["pocket_height"]) / 2 - hd["clip_clearance"]
     ow, oh = cl["outer_width"] / 2, cl["outer_height"] / 2
     outer = offset_outline(rr_outline(ow, oh, cl["outer_radius"]), 0, zc)
     hole = offset_outline(rr_outline(ow - band_w, oh - band_w, cl["inner_radius"]), 0, zc)
@@ -915,6 +954,14 @@ def build_top_plate(mats, colls):
                 location=(m(x0 + hx), m(y0 + hy), m(tp["top"] - tp["thickness"])))
     obj["kind"] = "plate"
     obj["status"] = tp["status"]
+    # The procedural plywood does not survive the glb; the viewer redraws it
+    # from these values (mesh z from the plate's bottom, sRGB colours).
+    obj["plywood"] = {
+        "thickness": tp["thickness"], "plies": tp["plies"],
+        "face_dark": PLY_FACE[0], "face_light": PLY_FACE[1], "grain": PLY_GRAIN,
+        "ply_long": PLY_LONG, "ply_cross": PLY_CROSS, "glue": PLY_GLUE,
+        "grain_spacing_mm": 5.0, "glue_width": PLY_GLUE_WIDTH,
+    }
     return obj
 
 
@@ -1082,6 +1129,17 @@ def center_rotation():
                 view.view_distance = 3.0
 
 
+def shaded_viewports():
+    """Open every 3D view of the saved file in Material Preview (EEVEE), so the
+    window shows the shaders (the plywood plies, the grain) and not the flat
+    viewport colours of Solid shading. Rendered shading would be closer to the
+    renders, but Blender resets a saved Rendered view to Solid on loading."""
+    for screen in bpy.data.screens:
+        for area in screen.areas:
+            if area.type == "VIEW_3D":
+                area.spaces.active.shading.type = "MATERIAL"
+
+
 def strip_png_text(path):
     """Drop any text chunks the renderer writes even with every stamp off; they
     can hold the render time, so a second run would not give the same file."""
@@ -1146,6 +1204,7 @@ def main():
     bpy.context.preferences.filepaths.save_version = 0
     bpy.context.view_layer.update()
     center_rotation()
+    shaded_viewports()
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, "rack.blend"), compress=True)
 
     render(scene, front, "front.png")

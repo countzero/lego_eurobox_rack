@@ -52,8 +52,7 @@ is not guaranteed optimal, but for these cuts it reaches the lower bound.
 
 | Material            | Bars        | Cut length | Waste           |
 | ------------------- | ----------- | ---------- | --------------- |
-| 30x30 B-type slot 8 | 6 x 2000 mm | 11464 mm   | 536 mm, 4.5 %   |
-| 30x60 B-type slot 8 | 1 x 3000 mm | 2136 mm    | 864 mm, 28.8 %  |
+| 30x30 B-type slot 8 | 5 x 3000 mm | 13600 mm   | 1400 mm, 9.3 %  |
 | 50x50x3 EN AW-6060  | 3 x 6000 mm | 15660 mm   | 2340 mm, 13.0 % |
 
 Waste includes the kerfs and the offcut at the end of each bar.
@@ -65,10 +64,9 @@ list does not matter. It matters when you buy stock bars or cut yourself.
 
 | Material            | Pieces      | Part IDs                                     |
 | ------------------- | ----------- | -------------------------------------------- |
-| 30x30 B-type slot 8 | 2 x 1068 mm | `profile.bar_top`                            |
+| 30x30 B-type slot 8 | 4 x 1068 mm | `profile.bar_top`, `profile.bar_bottom`      |
 | 30x30 B-type slot 8 | 8 x 791 mm  | `profile.upright`                            |
 | 30x30 B-type slot 8 | 8 x 375 mm  | `profile.beam_depth`                         |
-| 30x60 B-type slot 8 | 2 x 1068 mm | `profile.bar_bottom`                         |
 | 50x50x3 EN AW-6060  | 36 x 435 mm | `angle.base`, `angle.support`, `angle.guard` |
 
 The uprights also need an M8 core thread at both ends (the bottom one 80 mm

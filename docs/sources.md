@@ -10,55 +10,61 @@ reference link, defined at the end of its section.
 ## Boxes: aidB Eurobox NextGen 2.0 Cycle 400 × 300
 
 Sold by ab-in-die-BOX (aidB) in its private shop, made by Müller & Sohn. The
-rack holds 12 × C2O43-12 and 3 × C2O43-22, open handles, anthracite, with the
-short 300 mm side and its handle at the front.
+rack holds 12 × C2G43-12 and 3 × C2G43-22, closed handles, anthracite, with the
+short 300 mm side and its handle at the front. The closed-handle articles
+replace the open-handle [C2O43-12][aidb-o12] and [C2O43-22][aidb-o22] of the
+same mould; the body geometry below was read from their photos.
 
 | Fact                             | Value                                                                                                                | Status     | Source                                                                        |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------- |
-| C2O43-12 outer L × W × H         | 400 × 300 × 120 mm                                                                                                   | VERIFIED   | [aidB C120][aidb-c12]                                                         |
-| C2O43-12 inner L × W × H (top)   | 365 × 265 × 115 mm; 105 mm usable when stacked                                                                       | VERIFIED   | [aidB C120][aidb-c12]                                                         |
-| C2O43-12 volume, weight          | 11 l, 800 g                                                                                                          | VERIFIED   | [aidB C120][aidb-c12]                                                         |
-| C2O43-22 outer L × W × H         | 400 × 300 × 220 mm                                                                                                   | VERIFIED   | [aidB C220][aidb-c22]                                                         |
-| C2O43-22 inner L × W × H (top)   | 365 × 265 × 215 mm; 205 mm usable when stacked                                                                       | VERIFIED   | [aidB C220][aidb-c22]                                                         |
-| C2O43-22 volume, weight          | 20 l, 1180 g                                                                                                         | VERIFIED   | [aidB C220][aidb-c22]                                                         |
+| C2G43-12 outer L × W × H         | 400 × 300 × 120 mm                                                                                                   | VERIFIED   | [aidB C120][aidb-c12]                                                         |
+| C2G43-12 inner L × W × H (top)   | 365 × 265 × 115 mm; 105 mm usable when stacked                                                                       | VERIFIED   | [aidB C120][aidb-c12]                                                         |
+| C2G43-12 volume, weight          | 11 l, 800 g                                                                                                          | VERIFIED   | [aidB C120][aidb-c12]                                                         |
+| C2G43-22 outer L × W × H         | 400 × 300 × 220 mm                                                                                                   | VERIFIED   | [aidB C220][aidb-c22]                                                         |
+| C2G43-22 inner L × W × H (top)   | 365 × 265 × 215 mm; 205 mm usable when stacked                                                                       | VERIFIED   | [aidB C220][aidb-c22]                                                         |
+| C2G43-22 volume, weight          | 20 l, 1180 g                                                                                                         | VERIFIED   | [aidB C220][aidb-c22]                                                         |
 | Material                         | r-PP, 100 % PCR                                                                                                      | VERIFIED   | [aidB C120][aidb-c12]                                                         |
 | Load, stack load                 | 25 kg, 300 kg                                                                                                        | VERIFIED   | [aidB C120][aidb-c12]                                                         |
 | Floor, tolerance, temperature    | smooth; ± 5 mm; -10 to +60 °C                                                                                        | VERIFIED   | [aidB C120][aidb-c12]                                                         |
-| C2O43-12 price                   | 8.08 € each without rings; 7.53 € each in a carton of 16; 9.36 € with rings                                          | VERIFIED   | [aidB C120][aidb-c12]                                                         |
-| C2O43-22 price                   | 11.26 € each without rings; 12.41 € with rings                                                                       | VERIFIED   | [aidB C220][aidb-c22]                                                         |
+| C2G43-12 price                   | 8.08 € each without rings; 7.53 € each in a carton of 16; 9.36 € with rings                                          | VERIFIED   | [aidB C120][aidb-c12]                                                         |
+| C2G43-22 price                   | 11.26 € each without rings; 10.49 € each in a carton of 8; 12.41 € with rings                                        | VERIFIED   | [aidB C220][aidb-c22]                                                         |
 | Shipping                         | free in DE from 150 €                                                                                                | VERIFIED   | [aidB C120][aidb-c12]                                                         |
 | Cycle uses the NextGen 2.0 mould | stated by a retailer                                                                                                 | SECONDARY  | kersten-sicherheitstechnik.de                                                 |
 | Drawing, RAL code, CAD           | none published by aidB or Müller & Sohn; searched, not found                                                         | UNVERIFIED | roadmap 0004                                                                  |
 | Inner floor, model of the 120    | 359 × 259 mm: Bito XL43121 floor 359 × 259 (top 368 × 268, 117 high); Utz RAKO 358 × 258                             | SECONDARY  | [Bito XL43121][bito-43121], [Utz 400x300x120][utz-43-12]                      |
 | Inner floor, model of the 220    | 354 × 254 mm: the 120 slope over 215, 365 - 6 × 215 / 115 = 354 (265 - 6 × 215 / 115 = 254)                          | DERIVED    | [Bito XL43121][bito-43121]                                                    |
 | Box geometry in the model        | rim 6, collar 31 set back 5, ledge lip 3, foot 18 with a 4 mm chamfer, panel set back 6; read from the photos by eye | UNVERIFIED | [aidB C120 photo 14][aidb-c12-img14], `rack.json` → `box_shape`, roadmap 0004 |
-| Ribs in the model                | web pairs 2.5 thick and 16 wide at 99 and 301 mm; a corner web 18 mm in; pin blocks 24 wide, 55 mm in, hole Ø4       | UNVERIFIED | [aidB C120 photo 14][aidb-c12-img14], [aidB C220 photo 14][aidb-c22-img14]    |
-| Handle tray in the model         | 8 mm deep inside the frame, a 1.5 mm lip round the opening, two webs from the frame up to the rim                    | UNVERIFIED | [aidB C120 photo 14][aidb-c12-img14]                                          |
+| Ribs in the model                | web pairs 2.5 thick, 16 wide outside, at 103 and 297 mm; a corner web 24 mm in                                       | UNVERIFIED | [aidB C2G43-12 photo 14][aidb-g12-img14]                                      |
+| Pin blocks in the model          | 30 wide, centre 49 mm in, hole Ø4                                                                                    | UNVERIFIED | [aidB C2G43-12 photo 14][aidb-g12-img14]                                      |
+| Handle tray in the model         | 8 mm deep inside the frame 145 × 50 mm, radius 12, top 15 mm below the rim; two webs from the frame up to the rim    | UNVERIFIED | [aidB C2G43-22 photo 14][aidb-g22-img14]                                      |
 | Photo URLs                       | the cached `[aidb-c12-img]` URL returns a 1 KB placeholder on 2026-10-22; the uncached media path serves the photo   | VERIFIED   | [aidB C120 photo 14][aidb-c12-img14]                                          |
 | Corner radii in the model        | outer 8 mm, inner 6 mm, edge rounds 0.8 mm; read from the product photo                                              | UNVERIFIED | [aidB C120 photo][aidb-c12-img]                                               |
-| Handle in the model              | opening 125 × 30 mm, radius 8; frame 145 × 50 mm, radius 12; read from the photos                                    | UNVERIFIED | [aidB C120 photo][aidb-c12-img], [ColorClip photo][aidb-r200-img]             |
+| Handle in the model              | closed grip pocket 116 × 24 mm, radius 6, 12 mm deep, its top 28 mm below the rim; no lip, no opening                | UNVERIFIED | [aidB C2G43-12 photo 14][aidb-g12-img14], [ColorClip photo][aidb-r200-img]    |
 | Colour                           | neutral dark grey, about sRGB #3F3F3F on the lit faces of the photo; no RAL                                          | UNVERIFIED | [aidB C120][aidb-c12]                                                         |
 | Colour in the model              | linear 0.04 grey (about sRGB #383838), an estimate                                                                   | UNVERIFIED | `rack.json` → `box_shape`                                                     |
 
-[aidb-c12]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-offen-400-x-300-x-120-mm-anthrazit.html
-[aidb-c22]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-offen-400-x-300-x-220-mm-anthrazit.html
+[aidb-c12]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-geschlossen-400-x-300-x-120-mm-anthrazit.html
+[aidb-c22]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-geschlossen-400-x-300-x-220-mm-anthrazit.html
+[aidb-o12]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-offen-400-x-300-x-120-mm-anthrazit.html
+[aidb-o22]: https://www.ab-in-die-box.de/b2cde/euroboxen/nextgen/nextgen-2-0-cycle/eurobox-nextgen-2-0-cycle-griffe-offen-400-x-300-x-220-mm-anthrazit.html
 [bito-43121]: https://shop.bito.com/de-de/p/eurostapelbehaelter-xl-grundmodell-pv_6160/44900/188010
 [utz-43-12]: https://www.utzgroup.de/geschlossener-eurobehaelter-400-300-120-mm/
 [aidb-c12-img]: https://www.ab-in-die-box.de/media/catalog/product/cache/79731d4e47734d79fc5e92bea48c2a75/c/2/c2o43-12-12-1600x1600-shop_3575_1600x1600.jpg
 [aidb-r200-img]: https://www.ab-in-die-box.de/media/catalog/product/cache/79731d4e47734d79fc5e92bea48c2a75/r/2/r200-00-01-set-1600x1600-shop_3179_1600x1600.jpg
 [aidb-c12-img14]: https://www.ab-in-die-box.de/media/catalog/product/c/2/c2o43-12-14-1600x1600-shop_3149_1600x1600.jpg
-[aidb-c22-img14]: https://www.ab-in-die-box.de/media/catalog/product/c/2/c2o43-22-14-1600x1600-shop_3147_1600x1600.jpg
+[aidb-g12-img14]: https://www.ab-in-die-box.de/media/catalog/product/c/2/c2g43-12-14-1600x1600-shop_3154_1600x1600.jpg
+[aidb-g22-img14]: https://www.ab-in-die-box.de/media/catalog/product/c/2/c2g43-22-14-1600x1600-shop_3152_1600x1600.jpg
 
 ## ColorClips
 
-| Fact              | Value                                                                                                                                           | Status     | Source                                                            |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------- |
-| Article, contents | R200-00-xx-SET, 2 rings per pack, one pack per box (both handles)                                                                               | VERIFIED   | [aidB C120][aidb-c12]                                             |
-| Colours           | 9: Rot -01, Blau -02, Gelb -03, Schwarz -06, Grün -08, Magenta -11, Türkis -12, Hellgrün -13, Purpur -15                                        | VERIFIED   | [aidB C120][aidb-c12]                                             |
-| Price             | 0.82 € per pack of 2                                                                                                                            | VERIFIED   | [aidB C120][aidb-c12]                                             |
-| Colour codes      | no RAL, Pantone or sRGB code published for the rings; searched, not found                                                                       | UNVERIFIED | [aidB][aidb-home]                                                 |
-| sRGB              | `rack.json` → `color_clips.colours`; a median read of aidB's nine ColorClip photos agrees within CIE76 8 and gives black #242424                | UNVERIFIED | [aidB C120][aidb-c12], ColorClip photos                           |
-| Size              | not published; the model uses a ring 145 × 50 × 2 mm round the opening on the handle frame, radii 12 outside and 6 inside, read from the photos | UNVERIFIED | [ColorClip photo][aidb-r200-img], [aidB C120 photo][aidb-c12-img] |
+| Fact              | Value                                                                                                                                               | Status     | Source                                                            |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------- |
+| Article, contents | R200-00-xx-SET, 2 rings per pack, one pack per box (both handles)                                                                                   | VERIFIED   | [aidB C120][aidb-c12]                                             |
+| Colours           | 9: Rot -01, Blau -02, Gelb -03, Schwarz -06, Grün -08, Magenta -11, Türkis -12, Hellgrün -13, Purpur -15                                            | VERIFIED   | [aidB C120][aidb-c12]                                             |
+| Price             | 0.82 € per pack of 2                                                                                                                                | VERIFIED   | [aidB C120][aidb-c12]                                             |
+| Colour codes      | no RAL, Pantone or sRGB code published for the rings; searched, not found                                                                           | UNVERIFIED | [aidB][aidb-home]                                                 |
+| sRGB              | `rack.json` → `color_clips.colours`; a median read of aidB's nine ColorClip photos agrees within CIE76 8 and gives black #242424                    | UNVERIFIED | [aidB C120][aidb-c12], ColorClip photos                           |
+| Size              | not published; the model uses a ring 145 × 50 × 2 mm round the grip pocket on the handle frame, radii 12 outside and 6 inside, read from the photos | UNVERIFIED | [ColorClip photo][aidb-r200-img], [aidB C120 photo][aidb-c12-img] |
 
 [aidb-home]: https://www.ab-in-die-box.de/
 
@@ -77,7 +83,7 @@ short 300 mm side and its handle at the front.
 | Insert taper in the model    | 4 mm per side from top to bottom: (366 - 355) / 2 - 1.5 mm wall = 4                                           | DERIVED    | [aidB set 1/2][aidb-s43-2]                             |
 | Insert floor in the model    | 3 mm: 100 - 97 = 3; reading the inner size as the floor is UNVERIFIED                                         | DERIVED    | [aidB set 1/2][aidb-s43-2]                             |
 | Fill of the inner top        | 266 × 365 mm (1/4: 266 × 364) in 265 × 365 mm ± 5 mm                                                          | DERIVED    | [aidB set 1/2][aidb-s43-2]                             |
-| Handle opening from inside   | blocked by the insert end walls; gripped from outside only                                                    | UNVERIFIED | roadmap 0004                                           |
+| Handle from inside           | closed wall; the insert end walls stand behind it, the grip pocket is reached from outside                    | UNVERIFIED | roadmap 0004                                           |
 
 [aidb-s43-2]: https://www.ab-in-die-box.de/b2cde/einsatzkaesten-set-1-2-unterteilung-fuer-400x300x120.html
 [aidb-s43-4]: https://www.ab-in-die-box.de/b2cde/einsatzkaesten-set-1-4-unterteilung-fuer-400x300x120.html
@@ -96,11 +102,12 @@ short 300 mm side and its handle at the front.
 
 | Fact                                  | Value                                                                            | Status     | Source                                 |
 | ------------------------------------- | -------------------------------------------------------------------------------- | ---------- | -------------------------------------- |
-| Profile 30 × 60L B-type slot 8, Dold  | 19.00 €/m + 1.00 € per cut; 1.489 kg/m                                           | VERIFIED   | [Dold 30x60][dold-3060]                |
-| Profile 30 × 60L moment of inertia Iy | 19.5 cm⁴, from the page data                                                     | SECONDARY  | [Dold 30x60][dold-3060]                |
+| Profile 30 × 60L B-type slot 8, Dold  | 19.00 €/m + 1.00 € per cut; 1.489 kg/m; dropped with the 30 × 30 bottom bar      | VERIFIED   | [Dold 30x60][dold-3060]                |
+| Profile 30 × 60L moment of inertia Iy | 19.5 cm⁴, from the page data; dropped with the 30 × 30 bottom bar                | SECONDARY  | [Dold 30x60][dold-3060]                |
 | M8 core thread surcharges, Dold       | 1.00 € per end; 2.00 € extra for 80 mm deep; from the page JSON                  | UNVERIFIED | [Dold 30x30][dold-30]                  |
 | CNC holes, Dold                       | at least 2.00 € per hole, only in the configurator                               | UNVERIFIED | [Dold 30x60][dold-3060]                |
 | DIN 912 M8 × 100 8.8 zinc, Dold       | 1.11 € each (0.05 € base + 1.06 €)                                               | DERIVED    | [aluprofile-express][ape-912]          |
+| DIN 912 M8 × 70 8.8 zinc, Dold        | about 2.79 € each (0.05 € base + 2.74 €), not the cart price                     | UNVERIFIED | [aluprofile-express][ape-912]          |
 | DIN 912 M8 × 50 8.8 zinc, Dold        | 0.60 € each                                                                      | DERIVED    | [aluprofile-express][ape-912]          |
 | Shipping Dold, pieces over 1 m        | DPD up to 1.5 m and 30 kg: 14.90 €; VAT basis not stated                         | VERIFIED   | [Dold shipping][dold-ship]             |
 | Joint plates L and T 3030, motedis    | CPL3030, CPT3030; 90 × 90 × 4 mm, 5 holes; 2.00 € net each; dropped with 0017    | DERIVED    | [motedis L][mo-pl], [motedis T][mo-pt] |
@@ -175,7 +182,7 @@ Facts of roadmap 0014, read on 2026-10-22. The loads built on them are in
 | M8 thread in the 10 mm plate                | 10 mm engagement, 1.25 d, the low end of the usual rule for aluminium                           | UNVERIFIED | roadmap 0014                                    |
 | Inside bracket 30 B-type slot 8, Dold       | 66895: 0.02 kg; 1.27 €, 1.09 € from 10                                                          | VERIFIED   | [Dold brackets][dold-winkel]                    |
 | Profile 30 × 30 B-type slot 8, Dold         | 0.843 kg/m; I = 2.68 cm⁴                                                                        | VERIFIED   | [Dold 30x30L][dold-30l]                         |
-| Profile 30 × 60L B-type slot 8, Dold        | 1.489 kg/m; Iy = 19.51 cm⁴                                                                      | VERIFIED   | [Dold 30x60][dold-3060]                         |
+| Profile 30 × 60L B-type slot 8, Dold        | 1.489 kg/m; Iy = 19.51 cm⁴; dropped with the 30 × 30 bottom bar                                 | VERIFIED   | [Dold 30x60][dold-3060]                         |
 | Castor load rule, Blickle                   | T = (E + Z) / n × S; S = 1.0-1.5 for manual transport indoors, obstacles below 5 % of the wheel | VERIFIED   | [Blickle][blickle]                              |
 | Castors that carry on an uneven floor       | n = 3 of 4                                                                                      | UNVERIFIED | convention, roadmap 0014                        |
 | LEGO bulk density, Brick Architect          | "around 250 pieces per liter", "around 700 pieces per kilogram"                                 | VERIFIED   | [Brick Architect collection][ba-coll]           |
@@ -201,22 +208,29 @@ Facts of roadmap 0014, read on 2026-10-22. The loads built on them are in
 
 ## Top plate
 
-| Fact                                   | Value                                                                                                                  | Status     | Source                                                 |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------ |
-| Swing-in T-nuts fit an assembled frame | hammer nuts and spring T-nuts go in from the open slot face                                                            | VERIFIED   | [BM Profiles][bm-nuts]                                 |
-| Bracket with fixing set, B-type slot 8 | Winkel 30 with screw and nut, 1.93 €                                                                                   | SECONDARY  | [aluprofile-express][ape-acc]                          |
-| Threaded insert Rampa SK M6            | about 2.46 € each, stainless                                                                                           | SECONDARY  | [schraubenking][rampa]                                 |
-| Slot cover B-type slot 8               | about 0.42 € per unit; unit length to be checked                                                                       | SECONDARY  | [motedis cover][mo-cover]                              |
-| Birch plywood 18 mm, cut to size       | 56.95–78.30 €/m²                                                                                                       | SECONDARY  | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
-| Multiplex build                        | crosswise glued veneers, at least 5, often 7 or more layers                                                            | VERIFIED   | [plattenzuschnitt24][pz-mpx]                           |
-| Plate in the model                     | 13 plies of about 1.4 mm, oiled, face sRGB #D9B886 to #E6CC9E; R25 corners and 1.5 mm edge break are the user's choice | UNVERIFIED | `rack.json` → `top_plate`                              |
+| Fact                                   | Value                                                                                                                    | Status     | Source                                                 |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------- | ------------------------------------------------------ |
+| Swing-in T-nuts fit an assembled frame | hammer nuts and spring T-nuts go in from the open slot face                                                              | VERIFIED   | [BM Profiles][bm-nuts]                                 |
+| Bracket with fixing set, B-type slot 8 | Winkel 30 with screw and nut, 1.93 €                                                                                     | SECONDARY  | [aluprofile-express][ape-acc]                          |
+| Threaded insert Rampa SK M6            | about 2.46 € each, stainless                                                                                             | SECONDARY  | [schraubenking][rampa]                                 |
+| Slot cover B-type slot 8               | about 0.42 € per unit; unit length to be checked                                                                         | SECONDARY  | [motedis cover][mo-cover]                              |
+| Birch plywood 21 mm, cut to size       | 66.95 €/m² BB/CP, 15 plies (Holz-Speckmann); 91.40 €/m² BB/BB, 20.0–22.4 mm, 14.3 kg/m² (plattenzuschnitt24); 2026-10-22 | VERIFIED   | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
+| Birch plywood 20 mm                    | not sold by either shop; they step from 18 mm (13 plies) to 21 mm                                                        | VERIFIED   | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
+| Multiplex build                        | crosswise glued veneers, at least 5, often 7 or more layers                                                              | VERIFIED   | [plattenzuschnitt24][pz-mpx]                           |
+| Plate in the model                     | 21 mm, 15 plies of 1.4 mm, oiled, face sRGB #C38E52 to #D6A86C; R10 corners and 1.5 mm edge break are the user's choice  | UNVERIFIED | `rack.json` → `top_plate`                              |
+| Bracket with fixing set, Dold          | Winkel 30 B-Typ Nut 8 mit Befestigungssatz: 1.51 € from 10                                                               | VERIFIED   | [Dold brackets][dold-winkel]                           |
+| Birch plywood 21 mm, E∥, Metsä DoP     | E∥ in bending 9 858 N/mm² for 21 mm birch plywood; taken for our generic 21 mm birch plywood, whose maker is not known   | SECONDARY  | [Metsä Wood DoP][metsa-dop]                            |
+| EN 1995-1-1 Annex B, γ method          | mechanically jointed beams: (EI)ef = Σ (Ei Ii + γi Ei Ai ai²), γi = 1 / (1 + π² Ei Ai si / (Ki l²))                      | SECONDARY  | EN 1995-1-1:2004 + A1:2008                             |
+| EN 1995-1-1 Table 7.1, slip modulus    | Kser = ρm^1.5 d / 23 N/mm per shear plane for screws in pre-drilled holes, doubled for a steel or aluminium side         | SECONDARY  | EN 1995-1-1:2004 + A1:2008                             |
+| EN 1995-1-1 kdef for plywood           | kdef 0.8 for EN 636-1 plywood in service class 1; creep raises the plate's deflection by 1 + kdef                        | SECONDARY  | EN 1995-1-1:2004 + A1:2008                             |
 
 [bm-nuts]: https://www.bm-profile.com/de/ratgeber/nutensteine/
 [ape-acc]: https://www.aluprofile-express.de/Zubehoer-B-Typ-Nut-8
 [rampa]: https://www.schraubenking-shop.de/M6-x-15-x-AD12mm-Rampa-Muffe-Typ-SK-Edelstahl-14305-P009199
 [mo-cover]: https://www.motedis.com/de/Abdeckprofil-schwarz-B-Typ-Nut-8-1-Meter-X
-[hs-mpx]: https://www.holz-speckmann.de/Multiplexplatte-Birke-E1-BB-CP-im-Zuschnitt-18-mm/MULBIZ-18MM
-[pz-mpx]: https://www.plattenzuschnitt24.de/Multiplexplatten-Zuschnitt/Multiplexplatte-Birke/
+[hs-mpx]: https://www.holz-speckmann.de/Multiplexplatte-Birke-E1-BB-CP-im-Zuschnitt-21-mm/MULBIZ-21MM
+[pz-mpx]: https://www.plattenzuschnitt24.de/Multiplexplatte-Zuschnitt-21mm.html
+[metsa-dop]: https://www.metsagroup.com/contentassets/2e9ddda886f04453825068d3b37afcdc/uk_doc_metsawood_birch_plywood_pf_2022-11-07.pdf
 
 ## LEGO sorting
 

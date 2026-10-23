@@ -6,7 +6,7 @@ A rolling rack that holds 15 Euroboxes NextGen 2.0 Cycle 400 × 300
 (ab-in-die-BOX) as LEGO drawers, the short side with the handle at the front:
 3 columns, one level of 220 mm boxes at the bottom and four levels of 120 mm
 boxes with inserts above, one long bar front and back, on 4 castors, without
-panels, with a wooden top plate prepared for later. It takes any 400 × 300
+panels, under a structural birch plywood top plate. It takes any 400 × 300
 Eurobox with a continuous bottom edge.
 Everything needed to buy the parts and build it is in this repository, and a
 web viewer on GitHub Pages shows the rack in 3D with boxes that pull out.
@@ -301,7 +301,12 @@ light.
 
 ## 0013 Viewer lighting
 
-**Goal:** the web viewer shows the plastic as the Blender renders do.
+**Goal:** the web viewer shows the plastic and the aluminium as the Blender
+renders do.
+
+**Started:** AgX tone mapping and a `RoomEnvironment` are in `web/src/main.js`
+(work no step owned, on `develop`), so the aluminium no longer renders black;
+the colour match by eye is still open.
 
 **Delivers:** `web/src/*`, `docs/web_viewer.md`.
 
@@ -469,4 +474,4 @@ and place, so the renders and the viewer show what is bought.
 - `build_rack.py` runs headless and a second run gives the same files.
 
 **Open:** the brackets' hole offset (motedis CAD); the counterbore depth of the
-top bars; whether the planned top-plate parts are drawn with the top plate.
+top bars.

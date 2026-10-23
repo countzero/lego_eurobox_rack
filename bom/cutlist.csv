@@ -1,24 +1,24 @@
 material,bar,stock_length,part_id,cut_length,start
-30x30 B-type slot 8,1,2000,profile.bar_top,1068,0
-30x30 B-type slot 8,1,2000,profile.upright,791,1071
-30x30 B-type slot 8,2,2000,profile.bar_top,1068,0
-30x30 B-type slot 8,2,2000,profile.upright,791,1071
-30x30 B-type slot 8,3,2000,profile.upright,791,0
-30x30 B-type slot 8,3,2000,profile.upright,791,794
-30x30 B-type slot 8,3,2000,profile.beam_depth,375,1588
-30x30 B-type slot 8,4,2000,profile.upright,791,0
-30x30 B-type slot 8,4,2000,profile.upright,791,794
-30x30 B-type slot 8,4,2000,profile.beam_depth,375,1588
-30x30 B-type slot 8,5,2000,profile.upright,791,0
-30x30 B-type slot 8,5,2000,profile.upright,791,794
-30x30 B-type slot 8,5,2000,profile.beam_depth,375,1588
-30x30 B-type slot 8,6,2000,profile.beam_depth,375,0
-30x30 B-type slot 8,6,2000,profile.beam_depth,375,378
-30x30 B-type slot 8,6,2000,profile.beam_depth,375,756
-30x30 B-type slot 8,6,2000,profile.beam_depth,375,1134
-30x30 B-type slot 8,6,2000,profile.beam_depth,375,1512
-30x60 B-type slot 8,1,3000,profile.bar_bottom,1068,0
-30x60 B-type slot 8,1,3000,profile.bar_bottom,1068,1071
+30x30 B-type slot 8,1,3000,profile.bar_bottom,1068,0
+30x30 B-type slot 8,1,3000,profile.bar_bottom,1068,1071
+30x30 B-type slot 8,1,3000,profile.upright,791,2142
+30x30 B-type slot 8,2,3000,profile.bar_top,1068,0
+30x30 B-type slot 8,2,3000,profile.bar_top,1068,1071
+30x30 B-type slot 8,2,3000,profile.upright,791,2142
+30x30 B-type slot 8,3,3000,profile.upright,791,0
+30x30 B-type slot 8,3,3000,profile.upright,791,794
+30x30 B-type slot 8,3,3000,profile.upright,791,1588
+30x30 B-type slot 8,3,3000,profile.beam_depth,375,2382
+30x30 B-type slot 8,4,3000,profile.upright,791,0
+30x30 B-type slot 8,4,3000,profile.upright,791,794
+30x30 B-type slot 8,4,3000,profile.upright,791,1588
+30x30 B-type slot 8,4,3000,profile.beam_depth,375,2382
+30x30 B-type slot 8,5,3000,profile.beam_depth,375,0
+30x30 B-type slot 8,5,3000,profile.beam_depth,375,378
+30x30 B-type slot 8,5,3000,profile.beam_depth,375,756
+30x30 B-type slot 8,5,3000,profile.beam_depth,375,1134
+30x30 B-type slot 8,5,3000,profile.beam_depth,375,1512
+30x30 B-type slot 8,5,3000,profile.beam_depth,375,1890
 50x50x3 EN AW-6060,1,6000,angle.base,435,0
 50x50x3 EN AW-6060,1,6000,angle.base,435,438
 50x50x3 EN AW-6060,1,6000,angle.base,435,876

@@ -6,13 +6,14 @@ A rolling rack of 30 × 30 aluminium profiles that holds 15 Euroboxes NextGen
 One long bar runs over all three columns front and back, top and bottom; the
 rack stands on 4 plain swivel castors, each under an aluminium plate at a
 corner, and has no panels. The back is open: every box pulls out to the front
-and to the back, so the rack stands free in the room. Outer size 1068 × 435 ×
-1016 mm. Its top is prepared for a wooden plate to be fitted later.
+and to the back, so the rack stands free in the room. Frame 1068 × 435 ×
+986 mm under a structural 21 mm birch plywood top plate, 1108 × 483 mm, its
+top at 1007 mm.
 
 **[Open the 3D viewer](https://countzero.github.io/lego_eurobox_rack/)**: turn
-the rack, pull the boxes out, show the planned top plate.
+the rack, pull the boxes out, pick the ColorClip colours.
 
-![The rack, three-quarter view, one box pulled out, with the planned birch top plate](renders/drawer_out.png)
+![The rack, three-quarter view, one box pulled out, with the birch top plate](renders/drawer_out.png)
 
 > [!WARNING]
 > Not ready to build. The box geometry is provisional until the boxes are
@@ -22,33 +23,34 @@ the rack, pull the boxes out, show the planned top plate.
 ## Front view
 
 Heights in mm, not to scale. One bar runs across all three columns at the top
-and at the bottom (30 × 60). Each box stands on a 50 × 50 × 3 angle, whose
+and at the bottom; the top plate (21 mm, top at 1007) is screwed to the top
+bars from below and stiffens them. Each box stands on a 50 × 50 × 3 angle, whose
 hanging leg guides the rim of the box below and keeps it from tipping when it
 is pulled out. The castors (125 high) sit under 10 mm castor plates at the
 corners.
 
 ```
         |<------------------------------ 1068 frame ------------------------------->|
- 1016 - =============================================================================  top bar
-  983 - ||#####             #####||#####             #####||#####             #####||
+  986 - =============================================================================  top bar
+  953 - ||#####             #####||#####             #####||#####             #####||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||   L5
-  850 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  820 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||   L4
-  714 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  684 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||   L3
-  578 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  548 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||   L2
-  442 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  412 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 220             |  ||  | 220             |  ||  | 220             |  ||   L1
         ||  |                 |  ||  |                 |  ||  |                 |  ||
         ||  |                 |  ||  |                 |  ||  |                 |  ||
-  198 - ||L_+-----------------+_J||L_+-----------------+_J||L_+-----------------+_J||
-  195 - =============================================================================  bottom bar
+  168 - ||L_+-----------------+_J||L_+-----------------+_J||L_+-----------------+_J||
+  165 - =============================================================================  bottom bar
   135 - =============================================================================
   125 - [==]                                                                     [==]  castor plates
        (O)                                                                        (O)  castors
