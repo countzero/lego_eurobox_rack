@@ -3,6 +3,14 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2026-10-23
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+### Changed
+
+- Link the web viewer's title to the repository, drop the storage volume line, soften the title and the buttons, keep Web Awesome's typography and turn the view about the middle of the rack ([`4755856`](https://github.com/countzero/lego_eurobox_rack/commit/4755856))
+
 ## [0.4.1] - 2026-10-23
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
