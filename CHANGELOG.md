@@ -3,6 +3,15 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-10-23
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+### Changed
+
+- Draw the web viewer with Blender's AgX Punchy like the renders, smooth its edges with MSAA while moving and TAA at rest, and draw nothing while idle ([#18](https://github.com/countzero/lego_eurobox_rack/pull/18))
+- Turn the web viewer's buttons into icons with keys (Esc resets, C shows the colours), add full screen on touch screens, and make the viewer meet WCAG 2.2 AA: every box opens by keyboard, the view turns and zooms without dragging, and the title sits on a panel ([#19](https://github.com/countzero/lego_eurobox_rack/pull/19))
+
 ## [0.4.0] - 2026-10-23
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
