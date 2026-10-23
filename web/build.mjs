@@ -15,7 +15,7 @@ if (!existsSync(glb)) {
   process.exit(1);
 }
 
-const licences = [["three", "LICENSE"], ["@awesome.me/webawesome", "LICENSE.md"]].map(([name, file]) => {
+const licences = [["three", "LICENSE"], ["@awesome.me/webawesome", "LICENSE.md"], ["@fortawesome/fontawesome-free", "LICENSE.txt"]].map(([name, file]) => {
   const pkg = JSON.parse(readFileSync(join(here, "node_modules", name, "package.json"), "utf8"));
   const text = readFileSync(join(here, "node_modules", name, file), "utf8").trim();
   return `${name} ${pkg.version}\n\n${text}`;
@@ -51,6 +51,7 @@ const model = {
 const options = {
   entryPoints: [join(here, "src", "main.js")],
   plugins: [model],
+  loader: { ".svg": "text" },
   bundle: true,
   minify: true,
   format: "iife",
