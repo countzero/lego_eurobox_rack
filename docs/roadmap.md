@@ -49,12 +49,12 @@ sorted by ID; the order of work follows from the status.
 | 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0011 | [ColorClip picker](#0011-colorclip-picker)                   | Done                 | [#10](https://github.com/countzero/lego_eurobox_rack/pull/10) |
 | 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | Done                 | [#13](https://github.com/countzero/lego_eurobox_rack/pull/13) |
-| 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
+| 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Done                 | [#18](https://github.com/countzero/lego_eurobox_rack/pull/18) |
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | Done                 | [#16](https://github.com/countzero/lego_eurobox_rack/pull/16) |
 | 0017 | [No joint plates](#0017-no-joint-plates)                     | Done                 | [#15](https://github.com/countzero/lego_eurobox_rack/pull/15) |
 | 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Planned              |                                                               |
-| 0019 | [Viewer controls](#0019-viewer-controls)                     | Planned              |                                                               |
+| 0019 | [Viewer controls](#0019-viewer-controls)                     | Done                 | [#19](https://github.com/countzero/lego_eurobox_rack/pull/19) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
