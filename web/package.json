@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "@awesome.me/webawesome": "^3.14.0",
+    "@fortawesome/fontawesome-free": "7.3.1",
     "esbuild": "0.28.2",
     "three": "0.186.1"
   }

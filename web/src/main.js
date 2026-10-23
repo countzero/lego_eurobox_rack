@@ -6,7 +6,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import packed from "rack-model";
 import { frame, levels, model_boxes, box_models } from "../../design/rack.json";
-import { addClipMaterials, initClips } from "./clips.js";
+import { addClipMaterials, initClips, isPanelOpen, openPanel } from "./clips.js";
+import { announce, createHint, inViewer } from "./a11y.js";
+import { initUi, dismissTooltip } from "./ui.js";
+import { redraw } from "./redraw.js";
 import { applyPlywood } from "./plywood.js";
 import "./style.css";
 
@@ -129,29 +132,184 @@ canvas.addEventListener("pointermove", (event) => {
     hovered = box ?? null;
   }
   canvas.style.cursor = box ? "pointer" : "";
-  label.hidden = !box;
   if (box) {
-    label.textContent = box.out ? "Close" : "Open";
-    label.style.left = `${event.clientX + 14}px`;
-    label.style.top = `${event.clientY + 14}px`;
-  }
+    clearCursor();
+    hint.show(box, box.out ? "Close" : "Open", event.clientX, event.clientY);
+  } else hint.hide();
 });
 
 canvas.addEventListener("pointerleave", () => {
   if (hovered) highlight(hovered, false);
   hovered = null;
-  label.hidden = true;
+  hint.hide();
 });
 
 // A click is a press and release without dragging, so orbiting never toggles a box.
+// A click beside the boxes turns the view; a double click there zooms to the point.
 let down = null;
-canvas.addEventListener("pointerdown", (e) => { down = [e.clientX, e.clientY]; });
+let single = null;
+canvas.addEventListener("pointerdown", (e) => {
+  down = [e.clientX, e.clientY];
+  canvas.focus({ preventScroll: true, focusVisible: false });
+});
 canvas.addEventListener("pointerup", (event) => {
   if (!down || Math.hypot(event.clientX - down[0], event.clientY - down[1]) > 5) return;
   down = null;
   const { box, side } = pick(event) ?? {};
   if (box) {
+    clearTimeout(single?.timer);
+    single = null;
     setOut(box, !box.out, side);
+    return;
+  }
+  if (single) {
+    clearTimeout(single.timer);
+    single = null;
+    zoomTo(event);
+    return;
+  }
+  const r = canvas.getBoundingClientRect();
+  const third = Math.floor(((event.clientX - r.left) / r.width) * 3);
+  single = { timer: setTimeout(() => {
+    single = null;
+    if (third !== 1) turn(third < 1 ? 1 : -1);
+  }, 300) };
+});
+
+const hint = createHint(label);
+
+// The model's root is the scene child that holds the boxes.
+function model() {
+  let o = boxes[0]?.node;
+  while (o?.parent && o.parent !== scene) o = o.parent;
+  return o;
+}
+
+function zoomTo(event) {
+  const r = canvas.getBoundingClientRect();
+  pointer.set(((event.clientX - r.left) / r.width) * 2 - 1, -((event.clientY - r.top) / r.height) * 2 + 1);
+  raycaster.setFromCamera(pointer, camera);
+  const root = model();
+  const hit = root && raycaster.intersectObject(root, true).find((h) => h.object.visible);
+  const target = hit ? hit.point.clone() : controls.target.clone();
+  const fromTarget = controls.target.clone();
+  const from = camera.position.clone();
+  const to = target.clone().addScaledVector(from.clone().sub(fromTarget), 1 / 1.5);
+  tween = { t: 0, step: (k) => {
+    camera.position.lerpVectors(from, to, k);
+    controls.target.lerpVectors(fromTarget, target, k);
+  } };
+  redraw();
+}
+
+// dir +1 turns the view to the left, like rotateLeft.
+function turn(dir) {
+  const target = controls.target.clone();
+  const offset = camera.position.clone().sub(target);
+  const up = new THREE.Vector3(0, 1, 0);
+  const angle = -dir * Math.PI / 4;
+  tween = { t: 0, step: (k) => {
+    camera.position.copy(target).add(offset.clone().applyAxisAngle(up, angle * k));
+  } };
+  redraw();
+}
+
+// The keyboard cursor over the boxes.
+let cursor = null;
+
+function clearCursor() {
+  if (!cursor) return;
+  if (cursor !== hovered) highlight(cursor, false);
+  cursor = null;
+  redraw();
+}
+
+function setCursor(box) {
+  if (cursor && cursor !== box) highlight(cursor, false);
+  cursor = box;
+  highlight(box, true);
+  redraw();
+}
+
+const levelList = () => [...new Set(boxes.map((b) => b.level))].sort((a, b) => a - b);
+const screenX = (box) => new THREE.Box3().setFromObject(box.node).getCenter(new THREE.Vector3()).project(camera).x;
+const stateOf = (box) => {
+  if (!box.out) return "closed";
+  const d = box.to.clone().sub(box.home).dot(box.axis);
+  return d < 0 ? "out to the back" : "out to the front";
+};
+const where = (box) => `Level ${box.level}, column ${box.column}`;
+
+function moveCursor(key) {
+  const lv = levelList();
+  if (!lv.length) return;
+  if (!cursor) {
+    const row = boxes.filter((b) => b.level === lv[Math.floor((lv.length - 1) / 2)]).sort((a, b) => screenX(a) - screenX(b));
+    setCursor(row[Math.floor((row.length - 1) / 2)]);
+  } else if (key === "ArrowUp" || key === "ArrowDown") {
+    const i = lv.indexOf(cursor.level) + (key === "ArrowUp" ? 1 : -1);
+    if (i < 0 || i >= lv.length) return announce(`${where(cursor)}, ${stateOf(cursor)}`);
+    const next = boxes.find((b) => b.level === lv[i] && b.column === cursor.column)
+      ?? boxes.find((b) => b.level === lv[i]);
+    setCursor(next);
+  } else {
+    // Left and right follow the screen, so they flip when the rack is seen from behind.
+    const row = boxes.filter((b) => b.level === cursor.level).sort((a, b) => screenX(a) - screenX(b));
+    const i = row.indexOf(cursor) + (key === "ArrowRight" ? 1 : -1);
+    if (i >= 0 && i < row.length) setCursor(row[i]);
+  }
+  announce(`${where(cursor)}, ${stateOf(cursor)}`);
+}
+
+canvas.addEventListener("blur", clearCursor);
+
+canvas.addEventListener("keydown", (ev) => {
+  if (ev.ctrlKey || ev.altKey || ev.metaKey) return;
+  const step = THREE.MathUtils.degToRad(15);
+  const arrows = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  if (arrows.includes(ev.key) && ev.shiftKey) {
+    if (ev.key === "ArrowLeft") controls.rotateLeft(step);
+    if (ev.key === "ArrowRight") controls.rotateLeft(-step);
+    if (ev.key === "ArrowUp") controls.rotateUp(step);
+    if (ev.key === "ArrowDown") controls.rotateUp(-step);
+  } else if (arrows.includes(ev.key)) {
+    moveCursor(ev.key);
+  } else if (["+", "="].includes(ev.key) || ev.code === "NumpadAdd") {
+    controls.dollyIn(1.25);
+  } else if (ev.key === "-" || ev.code === "NumpadSubtract") {
+    controls.dollyOut(1.25);
+  } else if ((ev.key === "Enter" || ev.key === " ") && cursor) {
+    if (ev.repeat) return ev.preventDefault();
+    const back = ev.key === "Enter" && ev.shiftKey;
+    if (back && !cursor.back) return;
+    if (ev.shiftKey && !back) return;
+    if (cursor.out) setOut(cursor, false);
+    else setOut(cursor, true, back ? -1 : 1);
+    announce(`${where(cursor)}, ${cursor.out ? stateOf(cursor) : "pushed in"}`);
+  } else return;
+  ev.preventDefault();
+  redraw();
+});
+
+window.addEventListener("keydown", (ev) => {
+  if (ev.defaultPrevented || ev.ctrlKey || ev.altKey || ev.metaKey) return;
+  if (ev.key === "Escape") {
+    ev.preventDefault();
+    if (dismissTooltip() || hint.dismiss()) return;
+    const panel = document.getElementById("clips");
+    if (isPanelOpen() && panel.contains(document.activeElement)) {
+      openPanel(false);
+      document.getElementById("colours").focus();
+      return;
+    }
+    document.getElementById("reset").click();
+    announce("View reset");
+    return;
+  }
+  if ((ev.key === "c" || ev.key === "C") && inViewer(ev) && !ev.repeat) {
+    ev.preventDefault();
+    document.getElementById("colours").click();
+    announce(isPanelOpen() ? "Colours shown" : "Colours hidden");
   }
 });
 
@@ -205,6 +363,7 @@ async function load() {
       boxes.push({
         node: o,
         level: x.level,
+        column: x.column,
         axis: new THREE.Vector3(...(x.pull_axis ?? [0, 0, 1])).normalize(),
         travel: x.travel ?? 0.4,
         back: (x.sides ?? ["front"]).includes("back"),
@@ -253,7 +412,10 @@ async function load() {
 }
 
 initClips();
-load().catch((error) => {
+initUi();
+load().then(() => {
+  canvas.focus({ preventScroll: true, focusVisible: false });
+}).catch((error) => {
   info.textContent = `The model could not be loaded: ${error.message}`;
   console.error(error);
 });

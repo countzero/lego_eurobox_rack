@@ -9,22 +9,28 @@
 <style>/* CSS */</style>
 </head>
 <body>
-<canvas id="view"></canvas>
-<header>
+<header id="title">
   <h1>LEGO Eurobox rack</h1>
-  <p id="info">Loading the model…</p>
+  <p id="info" role="status">Loading the model…</p>
 </header>
-<nav id="views" aria-label="View">
-  <button class="wa-neutral wa-outlined wa-size-s" data-view="reset">Reset</button>
-  <button id="colours" class="wa-neutral wa-outlined wa-size-s" aria-pressed="false" aria-controls="clips">Colours</button>
-</nav>
+<main>
+<canvas id="view" tabindex="0" role="application" aria-roledescription="3D view" aria-label="The rack" aria-describedby="view-desc" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space Shift+Enter Shift+ArrowUp Shift+ArrowDown Shift+ArrowLeft Shift+ArrowRight + - C Escape"></canvas>
+<p id="view-desc" class="visually-hidden">Arrow keys choose a box, Enter or Space pulls it out to the front or pushes it back, Shift+Enter pulls it out to the back. Shift with the arrow keys turns the view, plus and minus zoom. C shows the colours, Escape resets.</p>
+<div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
+<div id="views" role="group" aria-label="View">
+  <button id="reset" type="button" class="tool" data-view="reset" aria-label="Reset" aria-keyshortcuts="Escape"><span data-icon="reset"></span></button>
+  <button id="colours" type="button" class="tool" aria-label="Colours" aria-expanded="false" aria-controls="clips" aria-keyshortcuts="C"><span data-icon="palette"></span></button>
+  <button id="fullscreen" type="button" class="tool" aria-label="Full screen" aria-pressed="false" hidden><span data-icon="expand"></span></button>
+</div>
+<div id="tooltip" aria-hidden="true" hidden></div>
+<div id="label" hidden></div>
+</main>
 <aside id="clips" aria-label="ColorClips" hidden>
   <h2>ColorClips</h2>
   <div id="levels"></div>
   <p id="step"></p>
   <ul id="order" aria-label="Packs to order"></ul>
 </aside>
-<div id="label" hidden></div>
 <script>/* JS */</script>
 </body>
 </html>

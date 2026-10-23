@@ -8,10 +8,13 @@ request. The published copy is at
 ## What it does
 
 - Orbit, pan and zoom with mouse or touch (three.js `OrbitControls`).
-- Two buttons at the top right: "Reset" returns the view and sets the
-  ColorClips back to the current colours of `design/rack.json`; "Colours"
+- A toolbar of icon buttons at the top right, in this order: Reset
+  (`rotate-left`) returns the view, closes the boxes and sets the ColorClips
+  back to the current colours of `design/rack.json`; Colours (`palette`)
   shows or hides the ColorClips panel (*ColorClips* below), which is hidden at
-  the start on every screen.
+  the start on every screen; Full screen (`expand`, `compress` while full
+  screen) is shown only on a touch screen (*Controls* below).
+- The title and the storage volume sit on a white panel at the top left.
 - Hovering a box shows "Open" or "Close". A click or tap pulls the box out to
   the side that was clicked: on its front half to the front, on its back half
   to the back (the rack is open at the back). A second click pushes it back.
@@ -66,6 +69,43 @@ take it, on both handles.
   screen colours are read from aidB's photos (`UNVERIFIED`), so the real rings
   may differ.
 
+## Controls
+
+The buttons are native `<button>` elements with Font Awesome Free icons,
+named by `aria-label`; Colours carries `aria-expanded` and `aria-controls`,
+Full screen `aria-pressed` under a constant name. A tooltip on hover and on
+keyboard focus shows the name and key ("Reset Esc", "Colours C"). Each button
+is 2.75rem (about 44 px) square.
+
+| Input                         | Where                                | Does                                             |
+| ----------------------------- | ------------------------------------ | ------------------------------------------------ |
+| Esc                           | anywhere                             | hides a hint, closes the panel or resets (below) |
+| C                             | the view or a toolbar button focused | shows or hides the ColorClips panel              |
+| Arrow keys                    | the view focused                     | move the box cursor over levels and columns      |
+| Enter or Space                | the view focused                     | pulls the box out to the front or pushes it back |
+| Shift+Enter                   | the view focused                     | pulls the box out to the back                    |
+| Shift+arrow keys              | the view focused                     | turn the view by 15°                             |
+| `+` and `−`                   | the view focused                     | zoom in or out by a factor of 1.25               |
+| Click or tap on a box         | the view                             | opens or closes it at once                       |
+| Click or tap off the boxes    | left or right third of the view      | turns the view 45° to that side, after 300 ms    |
+| Double click or tap off a box | the view                             | centres the view on that point and zooms in      |
+
+- Esc first hides a shown tooltip or box hint; else, with the focus in the
+  ColorClips panel, closes it and returns the focus to Colours; else resets.
+- The box cursor is the hover highlight; Left and Right follow the screen, also
+  when the rack is seen from behind. Each step is announced ("Level 3,
+  column 2, closed").
+- In full screen the browser takes the first Esc to leave full screen.
+- Full screen shows only where the screen is touch (`pointer: coarse`) and the
+  browser grants full screen to the page (`document.fullscreenEnabled`).
+  iPhone Safari grants it only to video, so the button is not shown there; a
+  desktop has F11.
+- The single click waits 300 ms so that it is not the first half of a double
+  tap; Reset zooms back out.
+
+How the page meets WCAG 2.2 Level AA, and how that is checked, is in
+`docs/accessibility.md`.
+
 ## Building
 
 ```powershell
@@ -85,7 +125,10 @@ esbuild inlines, so a change there needs a rebuild:
   `native.css` from `node_modules`; esbuild inlines them. They reference no
   remote font or icon (their icons are inline SVG data URIs).
 - The favicon is inlined as a data URI.
-- The licences of three.js and Web Awesome go into an HTML comment.
+- The toolbar icons are Font Awesome Free 7.3.1 SVGs (icons CC BY 4.0),
+  inlined through esbuild's `text` loader for `.svg`.
+- The licences of three.js, Web Awesome and Font Awesome Free go into an HTML
+  comment.
 - A literal `</script` in the bundle is escaped.
 
 The model is `web/rack.glb`, exported by `blender/build_rack.py` (step 0003).
