@@ -3,7 +3,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import packed from "rack-model";
-import { frame, levels, model_boxes, box_models } from "../../design/rack.json";
 import { addClipMaterials, initClips, isPanelOpen, openPanel } from "./clips.js";
 import { announce, createHint, inViewer } from "./a11y.js";
 import { initUi, dismissTooltip } from "./ui.js";
@@ -392,9 +391,12 @@ async function load() {
   }
 
   const bounds = new THREE.Box3().setFromObject(root);
-  const sphere = bounds.getBoundingSphere(new THREE.Sphere());
-  centre = sphere.center;
-  radius = sphere.radius;
+  radius = bounds.getBoundingSphere(new THREE.Sphere()).radius;
+  // The view turns about the middle of the rack: the frame from the floor to
+  // the top of the plate, whatever else the model holds.
+  const rack = new THREE.Box3();
+  root.traverse((o) => { if (["frame", "plate"].includes(o.userData.kind)) rack.expandByObject(o); });
+  centre = (rack.isEmpty() ? bounds : rack).getCenter(new THREE.Vector3());
 
   const floorY = bounds.min.y;
   const ground = new THREE.Mesh(
@@ -413,9 +415,8 @@ async function load() {
   cam.far = 10;
   cam.updateProjectionMatrix();
 
-  const litres = levels.reduce((sum, l) => sum + frame.columns * box_models[model_boxes[l.class]].volume_l, 0);
-  const count = levels.length * frame.columns;
-  info.textContent = `Storage volume ${litres} l in ${count} boxes`;
+  info.textContent = "";
+  info.hidden = true;
   resize();
   view("three");
   tween.step(1);
@@ -428,6 +429,7 @@ initUi();
 load().then(() => {
   canvas.focus({ preventScroll: true, focusVisible: false });
 }).catch((error) => {
+  info.hidden = false;
   info.textContent = `The model could not be loaded: ${error.message}`;
   console.error(error);
 });
