@@ -1,5 +1,5 @@
 // The ColorClips panel: one colour per level from rack.json → color_clips, kept
-// in the URL fragment as #clips=<L1>,…,<L5> (docs/web_viewer.md → *ColorClips*).
+// in the URL fragment as #c=<3 base64url chars> (docs/web_viewer.md → *ColorClips*).
 import { color_clips as clips, levels, inserts, frame } from "../../design/rack.json";
 import { deltaE2000 } from "./colour.js";
 
@@ -7,19 +7,17 @@ const keys = Object.keys(clips.colours);
 const levelNumbers = levels.map((l) => l.level);
 const layoutNames = { half: "set 1/2", quarter: "set 1/4" };
 const current = levelNumbers.map((n) => clips.levels[String(n)]);
-const presets = [
-  { name: "Current", why: "the colours in design/rack.json", colours: current },
-  ...clips.presets.map((p) => ({ ...p, colours: levelNumbers.map((n) => p.levels[String(n)]) })),
-];
+const B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+const width = Math.ceil(Math.log(keys.length ** levelNumbers.length) / Math.log(64));
 
 const materials = new Map(levelNumbers.map((n) => [n, []]));
 let choice = [...current];
 
-const label = (key) => clips.colours[key].label;
+const name = (key) => clips.colours[key].name;
 const same = (a, b) => a.every((k, i) => k === b[i]);
 
 export function colourOf(level) {
-  return label(choice[levelNumbers.indexOf(level)]);
+  return name(choice[levelNumbers.indexOf(level)]);
 }
 
 export function addClipMaterials(level, list) {
@@ -27,10 +25,31 @@ export function addClipMaterials(level, list) {
   paint();
 }
 
+// L1 is the least significant base-9 digit; the number is written big-endian in base64url.
+function encode(list) {
+  let n = list.reduceRight((acc, key) => acc * keys.length + keys.indexOf(key), 0);
+  let s = "";
+  for (let i = 0; i < width; i++, n = Math.floor(n / 64)) s = B64[n % 64] + s;
+  return s;
+}
+
+function decode(s) {
+  if (s.length !== width || [...s].some((c) => !B64.includes(c))) return null;
+  let n = [...s].reduce((acc, c) => acc * 64 + B64.indexOf(c), 0);
+  if (n >= keys.length ** levelNumbers.length) return null;
+  return levelNumbers.map(() => {
+    const key = keys[n % keys.length];
+    n = Math.floor(n / keys.length);
+    return key;
+  });
+}
+
 function parse(hash) {
-  const match = /(?:^#|&)clips=([^&]*)/.exec(hash);
-  if (!match) return null;
-  const list = decodeURIComponent(match[1]).split(",");
+  const compact = /(?:^#|&)c=([^&]*)/.exec(hash);
+  if (compact) return decode(compact[1]);
+  const legacy = /(?:^#|&)clips=([^&]*)/.exec(hash);
+  if (!legacy) return null;
+  const list = decodeURIComponent(legacy[1]).split(",");
   return list.length === levelNumbers.length && list.every((k) => keys.includes(k)) ? list : null;
 }
 
@@ -46,21 +65,18 @@ function levelName(lv) {
 }
 
 function render() {
-  for (const button of document.querySelectorAll("#presets button")) {
-    button.setAttribute("aria-pressed", String(same(presets[button.dataset.preset].colours, choice)));
-  }
   for (const button of document.querySelectorAll("#levels button")) {
     const i = levelNumbers.indexOf(Number(button.dataset.level));
     button.setAttribute("aria-pressed", String(choice[i] === button.dataset.colour));
   }
-  for (const name of document.querySelectorAll("#levels [data-name]")) {
-    name.textContent = label(choice[levelNumbers.indexOf(Number(name.dataset.name))]);
+  for (const el of document.querySelectorAll("#levels [data-name]")) {
+    el.textContent = name(choice[levelNumbers.indexOf(Number(el.dataset.name))]);
   }
 
   const counts = new Map();
   for (const key of choice) counts.set(key, (counts.get(key) ?? 0) + frame.columns);
   document.getElementById("order").innerHTML = [...counts]
-    .map(([key, n]) => `<li><i style="background:${clips.colours[key].srgb}"></i>${n} × ${label(key)} <code>${clips.colours[key].article}</code></li>`)
+    .map(([key, n]) => `<li><i style="background:${clips.colours[key].srgb}"></i>${n} × ${name(key)} <code>${clips.colours[key].article}</code></li>`)
     .join("");
 
   let weakest = null;
@@ -76,7 +92,8 @@ function render() {
     : "All levels share one colour";
 }
 
-const link = () => `${location.href.split("#")[0]}#clips=${choice.join(",")}`;
+// The current colours of rack.json write no fragment, so a plain link shows them.
+const link = () => location.href.split("#")[0] + (same(choice, current) ? "" : `#c=${encode(choice)}`);
 
 function set(list, write = true) {
   choice = [...list];
@@ -86,21 +103,14 @@ function set(list, write = true) {
 }
 
 function build() {
-  document.getElementById("presets").innerHTML = presets
-    .map((p, i) => `<button data-preset="${i}" title="${p.why}">${p.name}</button>`)
-    .join("");
   document.getElementById("levels").innerHTML = [...levels].reverse()
     .map((lv) => `<div class="level"><span class="level-name">${levelName(lv)}: <b data-name="${lv.level}"></b></span>`
       + `<div class="swatches" role="group" aria-label="L${lv.level} colour">`
       + keys.map((k) => `<button class="swatch" data-level="${lv.level}" data-colour="${k}" style="background:${clips.colours[k].srgb}"`
-        + ` title="${label(k)} (${clips.colours[k].article})" aria-label="${label(k)}"></button>`).join("")
+        + ` title="${name(k)}" aria-label="${name(k)}"></button>`).join("")
       + "</div></div>")
     .join("");
 
-  document.getElementById("presets").addEventListener("click", (event) => {
-    const button = event.target.closest("button");
-    if (button) set(presets[button.dataset.preset].colours);
-  });
   document.getElementById("levels").addEventListener("click", (event) => {
     const button = event.target.closest("button");
     if (!button) return;
@@ -108,6 +118,7 @@ function build() {
     next[levelNumbers.indexOf(Number(button.dataset.level))] = button.dataset.colour;
     set(next);
   });
+  document.querySelector('[data-view="reset"]')?.addEventListener("click", () => set(current));
 
   const panel = document.getElementById("clips");
   const toggle = document.getElementById("colours");
@@ -115,16 +126,18 @@ function build() {
     panel.hidden = !on;
     toggle.setAttribute("aria-pressed", String(on));
   };
-  show(!window.matchMedia("(max-width: 600px)").matches);
+  show(false);
   toggle.addEventListener("click", () => show(panel.hidden));
 
   window.addEventListener("hashchange", () => {
-    const list = parse(location.hash);
-    if (list && !same(list, choice)) set(list, false);
+    const list = parse(location.hash) ?? current;
+    if (!same(list, choice)) set(list, false);
   });
 }
 
 export function initClips() {
   build();
-  set(parse(location.hash) ?? current, false);
+  const list = parse(location.hash);
+  // Rewrites an old #clips= link into the compact form.
+  set(list ?? current, Boolean(list));
 }

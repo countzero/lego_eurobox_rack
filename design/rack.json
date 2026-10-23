@@ -3,7 +3,7 @@
     "units": "mm",
     "status": "provisional until the boxes are measured (roadmap 0004)",
     "coordinates": {
-        "origin": "floor, front-left corner of the frame without the joint plates",
+        "origin": "floor, front-left corner of the frame",
         "x": "to the right, across the 3 columns",
         "y": "to the back; the boxes pull out towards -y",
         "z": "up"
@@ -20,26 +20,30 @@
         "excluded": ["600 x 400 boxes", "Wibo", "keeeper / OKT Robusto"]
     },
     "box_models": {
-        "cycle_120": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2O43-12", "class": "120", "length": 400, "width": 300, "height": 120, "inner_length": 365, "inner_width": 265, "inner_height": 115, "inner_floor_length": 359, "inner_floor_width": 259, "mass_g": 800 },
-        "cycle_220": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2O43-22", "class": "220", "length": 400, "width": 300, "height": 220, "inner_length": 365, "inner_width": 265, "inner_height": 215, "inner_floor_length": 354, "inner_floor_width": 254, "mass_g": 1180 }
+        "cycle_120": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2G43-12", "class": "120", "length": 400, "width": 300, "height": 120, "inner_length": 365, "inner_width": 265, "inner_height": 115, "inner_floor_length": 359, "inner_floor_width": 259, "volume_l": 11, "mass_g": 800 },
+        "cycle_220": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2G43-22", "class": "220", "length": 400, "width": 300, "height": 220, "inner_length": 365, "inner_width": 265, "inner_height": 215, "inner_floor_length": 354, "inner_floor_width": 254, "volume_l": 20, "mass_g": 1180 }
     },
     "model_boxes": { "120": "cycle_120", "220": "cycle_220" },
     "box_shape": {
-        "status": "UNVERIFIED, read from the aidB product photos; the inner floor is SECONDARY (inner_floor_status); roadmap 0004 measures a box",
+        "status": "UNVERIFIED, read from the aidB product photos of the closed-handle C2G43-12; the inner floor is SECONDARY (inner_floor_status); roadmap 0004 measures a box",
         "colour": "neutral dark grey, about sRGB #3F3F3F on the lit faces of the photo",
         "rim_band": 6,
         "collar": 31,
-        "ledge": 5,
+        "ledge": 3,
         "foot_band": 18,
-        "panel_recess": 3,
-        "collar_recess": 1.5,
-        "corner_post": 14,
+        "foot_chamfer": 4,
+        "panel_recess": 6,
+        "collar_recess": 5,
+        "rib_web": 2.5,
+        "rib_pair_width": 16,
+        "corner_web": 24,
+        "pin_block": { "from_corner": 49, "width": 30, "hole": 4 },
         "corner_radius": 8,
         "inner_corner_radius": 6,
         "inner_floor_status": "box_models inner_floor_*: the inner wall tapers from the inner top to the floor. 120: SECONDARY, 359 x 259 is the inner floor of Bito XL43121 and Utz RAKO 400 x 300 x 120, and aidB's insert sets need at least 358 x 258. 220: DERIVED, the same wall slope over 215 instead of 115, 365 - 6 x 215 / 115 = 354",
-        "long_side_ribs": [[88, 110], [290, 312]],
-        "handle": { "sides": "both short sides", "opening_width": 125, "opening_height": 30, "opening_top_below_rim": 24, "opening_radius": 8, "frame_width": 145, "frame_height": 50, "frame_top_below_rim": 15, "frame_radius": 12 },
-        "clip": { "outer_width": 145, "outer_height": 50, "thickness": 2, "outer_radius": 12, "inner_radius": 6, "covers": "the face of the handle frame, round the opening" }
+        "long_side_rib_pairs": [103, 297],
+        "handle": { "sides": "both short sides", "handles": "closed: a grip pocket, not an opening through the wall", "pocket_width": 116, "pocket_height": 24, "pocket_top_below_rim": 28, "pocket_radius": 6, "pocket_depth": 12, "lip_width": 2, "clip_clearance": 3, "frame_width": 145, "frame_height": 50, "frame_top_below_rim": 15, "frame_radius": 12, "tray_recess": 8, "rim_webs": { "from_frame_edge": 6, "width": 2.5 } },
+        "clip": { "outer_width": 145, "outer_height": 50, "thickness": 2, "outer_radius": 12, "inner_radius": 6, "covers": "the face of the handle frame, round the grip pocket" }
     },
     "frame": {
         "profile": { "section": 30, "type": "30x30 B-type slot 8" },
@@ -72,14 +76,13 @@
                 "screws": { "at": [[60, 15], [80, 15], [15, 60], [15, 80]], "screw": "M6 countersunk from below" }
             }
         },
-        "bottom_bar": { "type": "30x60 B-type slot 8", "depth": 30, "height": 60, "bottom": 135, "top": 195, "length": 1068 },
-        "top_bar": { "type": "30x30 B-type slot 8", "bottom": 986, "top": 1016, "length": 1068 },
-        "upright": { "bottom": 195, "top": 986, "length": 791 },
+        "bottom_bar": { "type": "30x30 B-type slot 8", "depth": 30, "height": 30, "bottom": 135, "top": 165, "length": 1068 },
+        "top_bar": { "type": "30x30 B-type slot 8", "bottom": 956, "top": 986, "length": 1068 },
+        "upright": { "bottom": 165, "top": 956, "length": 791 },
         "upright_x": [0, 346, 692, 1038],
         "upright_y": [0, 405],
-        "depth_beam": { "length": 375, "bottom": { "bottom": 135, "top": 165 }, "top": { "bottom": 986, "top": 1016 } },
-        "castors_at": "the four corners, each under a castor plate below the bottom bar and the bottom depth beam",
-        "joint_plate": { "thickness": 4, "size": 90, "faces": "front face of the front frame, back face of the back frame" }
+        "depth_beam": { "length": 375, "bottom": { "bottom": 135, "top": 165 }, "top": { "bottom": 956, "top": 986 } },
+        "castors_at": "the four corners, each under a castor plate below the bottom bar and the bottom depth beam"
     },
     "angles": {
         "section": { "leg": 50, "thickness": 3, "type": "50x50x3 EN AW-6060" },
@@ -87,27 +90,40 @@
         "clear_width_between_hanging_legs": 310,
         "clear_width_between_leg_tips": 216,
         "gap_above_box_max": 8,
-        "base": { "orientation": "flat leg at the bottom on the bottom bars, vertical leg up", "flat_leg_top": 198 },
+        "base": { "orientation": "flat leg at the bottom on the bottom bars, vertical leg up", "flat_leg_top": 168 },
         "support_and_guard": { "orientation": "flat leg on top, hanging leg down along the upright" }
     },
     "levels": [
-        { "level": 1, "class": "220", "floor": 198, "angle": "angle.base" },
-        { "level": 2, "class": "120", "floor": 442, "angle": "angle.support" },
-        { "level": 3, "class": "120", "floor": 578, "angle": "angle.support" },
-        { "level": 4, "class": "120", "floor": 714, "angle": "angle.support" },
-        { "level": 5, "class": "120", "floor": 850, "angle": "angle.support" }
+        { "level": 1, "class": "220", "floor": 168, "angle": "angle.base" },
+        { "level": 2, "class": "120", "floor": 412, "angle": "angle.support" },
+        { "level": 3, "class": "120", "floor": 548, "angle": "angle.support" },
+        { "level": 4, "class": "120", "floor": 684, "angle": "angle.support" },
+        { "level": 5, "class": "120", "floor": 820, "angle": "angle.support" }
     ],
-    "tip_guard": { "flat_leg_bottom": 983, "angle": "angle.guard" },
+    "tip_guard": { "flat_leg_bottom": 953, "angle": "angle.guard" },
     "box_position": { "front_y": 17.5, "note": "centred in the 435 depth; no back stop" },
     "pull_out": { "travel": 270, "removal": 400, "sides": ["front", "back"] },
-    "outer": { "width": 1068, "depth": 443, "height": 1016 },
+    "outer": { "width": 1068, "depth": 435, "height": 986 },
     "top_plate": {
-        "status": "planned",
-        "thickness": 18,
+        "status": "build",
+        "role": "structural: screwed to both top bars from below, plate and bar act as one composite chord that carries most of the middle uprights' load, so the bottom bar can be 30 x 30",
+        "thickness": 21,
         "overhang": 20,
         "width": 1108,
         "depth": 483,
-        "top": 1034
+        "top": 1007,
+        "mounts": {
+            "part": "bracket.plate",
+            "screw": "screw.wood_4_5x16",
+            "bars": ["front", "back"],
+            "x": [90, 165, 240, 315, 470, 628, 772, 846, 920, 993],
+            "note": "bracket centres along each top bar, in its inner slot, free leg flush with the bar top under the plate; four in each outer bay where the shear acts, two in the middle bay where it is near zero; clear of the depth-beam brackets on the right of each upright; nothing shows on top"
+        },
+        "corner_radius": 10,
+        "edge_round": 1.5,
+        "plies": 15,
+        "finish": "oiled",
+        "visual_status": "corner_radius R10 is the user's choice; plies, finish and colour are UNVERIFIED"
     },
     "inserts": {
         "system": "NextGen Einsatzkaesten x-100 (aidB), bought as sets",
@@ -134,18 +150,18 @@
         }
     },
     "color_clips": {
-        "rule": "one colour per level; every pair of neighbouring levels is close to complementary on the colour wheel, so all four steps contrast alike; both handles of a box",
-        "levels": { "1": "red", "2": "turquoise", "3": "purple", "4": "yellow", "5": "blue" },
+        "rule": "one colour per insert type, neighbouring cool hues, lighter towards the top: blue on the 220 boxes, turquoise on the half sets, light green on the quarter sets; both handles of a box",
+        "levels": { "1": "blue", "2": "turquoise", "3": "turquoise", "4": "lightgreen", "5": "lightgreen" },
         "colours": {
-            "red": { "label": "Rot", "article": "R200-00-01-SET", "srgb": "#F52B43" },
-            "magenta": { "label": "Magenta", "article": "R200-00-11-SET", "srgb": "#EB5E88" },
-            "purple": { "label": "Purpur", "article": "R200-00-15-SET", "srgb": "#BE5286" },
-            "blue": { "label": "Blau", "article": "R200-00-02-SET", "srgb": "#055FE9" },
-            "turquoise": { "label": "Türkis", "article": "R200-00-12-SET", "srgb": "#00A8A8" },
-            "green": { "label": "Grün", "article": "R200-00-08-SET", "srgb": "#1D7529" },
-            "lightgreen": { "label": "Hellgrün", "article": "R200-00-13-SET", "srgb": "#B7E686" },
-            "yellow": { "label": "Gelb", "article": "R200-00-03-SET", "srgb": "#F9E630" },
-            "black": { "label": "Schwarz", "article": "R200-00-06-SET", "srgb": "#242424" }
+            "red": { "label": "Rot", "name": "Red", "article": "R200-00-01-SET", "srgb": "#F52B43" },
+            "magenta": { "label": "Magenta", "name": "Magenta", "article": "R200-00-11-SET", "srgb": "#EB5E88" },
+            "purple": { "label": "Purpur", "name": "Purple", "article": "R200-00-15-SET", "srgb": "#BE5286" },
+            "blue": { "label": "Blau", "name": "Blue", "article": "R200-00-02-SET", "srgb": "#055FE9" },
+            "turquoise": { "label": "Türkis", "name": "Turquoise", "article": "R200-00-12-SET", "srgb": "#00A8A8" },
+            "green": { "label": "Grün", "name": "Green", "article": "R200-00-08-SET", "srgb": "#1D7529" },
+            "lightgreen": { "label": "Hellgrün", "name": "Light green", "article": "R200-00-13-SET", "srgb": "#B7E686" },
+            "yellow": { "label": "Gelb", "name": "Yellow", "article": "R200-00-03-SET", "srgb": "#F9E630" },
+            "black": { "label": "Schwarz", "name": "Black", "article": "R200-00-06-SET", "srgb": "#242424" }
         },
         "srgb_note": "UNVERIFIED, median ring colour in aidB's photos: red, yellow and blue from the ColorClip photo, turquoise and purple from the boxes with fitted rings, magenta, green and light green from the user's samples, checked against aidB's ColorClip photos within CIE76 8, black from its ColorClip photo with the shadows trimmed",
         "presets": [
@@ -153,52 +169,45 @@
             { "name": "By box type, calm", "why": "one colour per insert type without red or yellow; the largest steps between the groups", "levels": { "1": "blue", "2": "lightgreen", "3": "lightgreen", "4": "purple", "5": "purple" } },
             { "name": "Five colours, every viewer", "why": "a colour per level with large steps for normal and red-green colour vision", "levels": { "1": "blue", "2": "green", "3": "turquoise", "4": "lightgreen", "5": "purple" } },
             { "name": "Colour-blind safer", "why": "a colour per level without red, so red-green colour vision keeps every step", "levels": { "1": "magenta", "2": "yellow", "3": "blue", "4": "green", "5": "turquoise" } },
-            { "name": "Harmonious cool", "why": "neighbouring hues by insert type, lighter towards the top", "levels": { "1": "blue", "2": "turquoise", "3": "turquoise", "4": "lightgreen", "5": "lightgreen" } }
+            { "name": "Complementary steps", "why": "a colour per level, every pair of neighbouring levels close to complementary, so all four steps contrast alike", "levels": { "1": "red", "2": "turquoise", "3": "purple", "4": "yellow", "5": "blue" } }
         ]
     },
     "parts": [
         { "id": "profile.upright", "category": "profile", "description": "Upright between the bars, M8 core thread at both ends, the bottom one extra deep (80 mm)", "material": "30x30 B-type slot 8", "length": 791, "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "profile.bar_top", "category": "profile", "description": "Top bar, front and back, one piece over all three columns; 4 through holes 8.5 with 14 mm counterbore", "material": "30x30 B-type slot 8", "length": 1068, "quantity": 2, "unit": "piece", "status": "build" },
-        { "id": "profile.bar_bottom", "category": "profile", "description": "Bottom bar, 60 high, front and back, one piece over all three columns; carries the middle uprights between the corner castors; 4 through holes 8.5", "material": "30x60 B-type slot 8", "length": 1068, "quantity": 2, "unit": "piece", "status": "build" },
+        { "id": "profile.bar_bottom", "category": "profile", "description": "Bottom bar, front and back, one piece over all three columns, flush with the bottom depth beams; shares the middle uprights' load with the top plate and top bar; 4 through holes 8.5", "material": "30x30 B-type slot 8", "length": 1068, "quantity": 2, "unit": "piece", "status": "build" },
         { "id": "profile.beam_depth", "category": "profile", "description": "Depth beam between the front and the back bar at each upright, the top one flush with the top bars, the bottom one flush with the underside of the bottom bars", "material": "30x30 B-type slot 8", "length": 375, "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "angle.base", "category": "angle", "description": "Level 1 support, flat leg at the bottom on the bottom bars", "material": "50x50x3 EN AW-6060", "length": 435, "quantity": 6, "unit": "piece", "status": "build" },
         { "id": "angle.support", "category": "angle", "description": "Level 2-5 support, flat leg on top, hanging leg guides the box below", "material": "50x50x3 EN AW-6060", "length": 435, "quantity": 24, "unit": "piece", "status": "build" },
         { "id": "angle.guard", "category": "angle", "description": "Tip guard above level 5, same section and orientation as angle.support", "material": "50x50x3 EN AW-6060", "length": 435, "quantity": 6, "unit": "piece", "status": "build" },
-        { "id": "bracket.inside_30", "category": "connector", "description": "Inside angle bracket 30 for B-type slot 8: upright to top depth beam (8), top depth beam to bar (8), bottom depth beam's top face to bar (8), bottom depth beam's side to bar at the middle uprights (4)", "material": "die-cast zinc or aluminium", "quantity": 28, "unit": "piece", "status": "build" },
+        { "id": "bracket.inside_30", "category": "connector", "description": "Inside angle bracket 30 for B-type slot 8: upright to top depth beam (8), top depth beam to bar (8), bottom depth beam to bar on the beam's bay side (8), a second one on the other side at the middle uprights (4)", "material": "die-cast zinc or aluminium", "quantity": 28, "unit": "piece", "status": "build" },
         { "id": "plate.castor", "category": "connector", "description": "Castor plate 90x90x10 under each corner, screwed into the bottom slots of the bottom bar and the bottom depth beam; M8 thread at 45/45 for the castor, 14 mm hole at 15/15 for the corner bolt head, 4 countersunk holes for M6", "material": "EN AW-5083 milled cast plate", "length": 90, "width": 90, "quantity": 4, "unit": "piece", "status": "build" },
-        { "id": "plate.joint_l", "category": "connector", "description": "L connector plate 90x90x4, 5 holes, at the four corner joints of the front and the back frame, top and bottom", "material": "aluminium, anodised", "quantity": 8, "unit": "piece", "status": "build" },
-        { "id": "plate.joint_t", "category": "connector", "description": "T connector plate 90x90x4, 5 holes, at the middle uprights of the front and the back frame, top and bottom", "material": "aluminium, anodised", "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "screw.m6x12_button", "category": "fastener", "description": "ISO 7380 M6x12 for the brackets, 2 per bracket.inside_30", "material": "steel, zinc-plated", "quantity": 56, "unit": "piece", "status": "build" },
-        { "id": "screw.m6x10_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M6x10 for the joint plates", "material": "steel, zinc-plated", "quantity": 80, "unit": "piece", "status": "build" },
         { "id": "screw.m6x16_countersunk", "category": "fastener", "description": "ISO 10642 M6x16 from below through the castor plates into the bottom slots, 4 per plate", "material": "steel, zinc-plated", "quantity": 16, "unit": "piece", "status": "build" },
-        { "id": "tnut.m6", "category": "fastener", "description": "Hammer nut M6 B-type slot 8 for the brackets (56), the joint plates (80) and the castor plates (16)", "material": "steel, zinc-plated", "quantity": 152, "unit": "piece", "status": "build" },
+        { "id": "tnut.m6", "category": "fastener", "description": "Hammer nut M6 B-type slot 8 for the brackets (56) and the castor plates (16)", "material": "steel, zinc-plated", "quantity": 72, "unit": "piece", "status": "build" },
         { "id": "screw.m5x10_countersunk", "category": "fastener", "description": "ISO 10642 M5x10 for the angles, flush in a countersunk hole so the hanging leg stays smooth", "material": "steel, zinc-plated", "quantity": 144, "unit": "piece", "status": "build" },
         { "id": "tnut.m5", "category": "fastener", "description": "Hammer nut M5 B-type slot 8 for the angles", "material": "steel, zinc-plated", "quantity": 144, "unit": "piece", "status": "build" },
-        { "id": "screw.m8x100_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x100 from below through the bottom bar into an upright's 80 mm core thread; at a corner its head sits in the castor plate's 14 mm hole", "material": "steel 8.8, zinc-plated", "quantity": 8, "unit": "piece", "status": "build" },
+        { "id": "screw.m8x70_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x70 from below through the bottom bar into an upright's 80 mm core thread, 40 mm engaged; at a corner its head sits in the castor plate's 14 mm hole", "material": "steel 8.8, zinc-plated", "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "screw.m8x50_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x50 through the top bar into an upright, head sunk in the counterbore", "material": "steel 8.8, zinc-plated", "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "screw.m8x20_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x20 from inside the castor housing up through the back hole into the castor plate's M8 thread", "material": "steel 8.8, zinc-plated", "quantity": 4, "unit": "piece", "status": "build" },
         { "id": "washer.m8", "category": "fastener", "description": "ISO 7089 (DIN 125 A) washer 8.4 under the castor bolt's head inside the housing", "material": "steel, zinc-plated", "quantity": 4, "unit": "piece", "status": "build" },
         { "id": "castor.plain", "category": "castor", "description": "Swivel castor 100 mm without brake, 125 high, back hole 11, offset 28, 70 kg, under a castor plate at each corner", "material": "PU tread on PP", "quantity": 4, "unit": "piece", "status": "build" },
         { "id": "tape.uhmw_25", "category": "consumable", "description": "Self-adhesive UHMW-PE slide tape on the flat legs that carry boxes", "material": "UHMW-PE, 25 mm wide", "length": 13050, "quantity": 1, "unit": "length", "status": "build" },
-        { "id": "cap.end_30", "category": "finish", "description": "End cap 30x30 for the ends of the top bars", "material": "plastic", "quantity": 4, "unit": "piece", "status": "build" },
-        { "id": "cap.end_30x60", "category": "finish", "description": "End cap 30x60 for the ends of the bottom bars", "material": "plastic", "quantity": 4, "unit": "piece", "status": "build" },
+        { "id": "cap.end_30", "category": "finish", "description": "End cap 30x30 for the ends of the top and the bottom bars", "material": "plastic", "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "cover.slot_8", "category": "finish", "description": "Slot cover strip for the top faces of the top bars and the top depth beams", "material": "plastic, B-type slot 8", "length": 3636, "quantity": 1, "unit": "length", "status": "build" },
-        { "id": "box.e120", "category": "box", "description": "Eurobox NextGen 2.0 Cycle 400x300x120, open handles, anthracite (C2O43-12)", "material": "r-PP", "quantity": 12, "unit": "piece", "status": "build" },
-        { "id": "box.e220", "category": "box", "description": "Eurobox NextGen 2.0 Cycle 400x300x220, open handles, anthracite (C2O43-22), no inserts", "material": "r-PP", "quantity": 3, "unit": "piece", "status": "build" },
-        { "id": "clip.red", "category": "box", "description": "ColorClip set red, 2 rings (R200-00-01-SET), level 1", "material": "plastic", "quantity": 3, "unit": "piece", "status": "build" },
-        { "id": "clip.turquoise", "category": "box", "description": "ColorClip set turquoise, 2 rings (R200-00-12-SET), level 2", "material": "plastic", "quantity": 3, "unit": "piece", "status": "build" },
-        { "id": "clip.purple", "category": "box", "description": "ColorClip set purple, 2 rings (R200-00-15-SET), level 3", "material": "plastic", "quantity": 3, "unit": "piece", "status": "build" },
-        { "id": "clip.yellow", "category": "box", "description": "ColorClip set yellow, 2 rings (R200-00-03-SET), level 4", "material": "plastic", "quantity": 3, "unit": "piece", "status": "build" },
-        { "id": "clip.blue", "category": "box", "description": "ColorClip set blue, 2 rings (R200-00-02-SET), level 5", "material": "plastic", "quantity": 3, "unit": "piece", "status": "build" },
+        { "id": "box.e120", "category": "box", "description": "Eurobox NextGen 2.0 Cycle 400x300x120, closed handles, anthracite (C2G43-12)", "material": "r-PP", "quantity": 12, "unit": "piece", "status": "build" },
+        { "id": "box.e220", "category": "box", "description": "Eurobox NextGen 2.0 Cycle 400x300x220, closed handles, anthracite (C2G43-22), no inserts", "material": "r-PP", "quantity": 3, "unit": "piece", "status": "build" },
+        { "id": "clip.blue", "category": "box", "description": "ColorClip set blue, 2 rings (R200-00-02-SET), level 1", "material": "plastic", "quantity": 3, "unit": "piece", "status": "build" },
+        { "id": "clip.turquoise", "category": "box", "description": "ColorClip set turquoise, 2 rings (R200-00-12-SET), levels 2 and 3", "material": "plastic", "quantity": 6, "unit": "piece", "status": "build" },
+        { "id": "clip.lightgreen", "category": "box", "description": "ColorClip set light green, 2 rings (R200-00-13-SET), levels 4 and 5", "material": "plastic", "quantity": 6, "unit": "piece", "status": "build" },
         { "id": "insert.set_half", "category": "insert", "description": "Insert set 1/2 for 400x300x120 (EES43-01-100-04): 2 x NextGen 3613-100", "material": "PS", "length": 365, "width": 266, "quantity": 6, "unit": "piece", "status": "build" },
         { "id": "insert.set_quarter", "category": "insert", "description": "Insert set 1/4 for 400x300x120 (EES43-02-100-04): 4 x NextGen 1813-100", "material": "PS", "length": 364, "width": 266, "quantity": 6, "unit": "piece", "status": "build" },
-        { "id": "plate.top", "category": "plate", "description": "Top plate, birch plywood, corners rounded R25", "material": "18 mm birch plywood", "length": 1108, "width": 483, "quantity": 1, "unit": "piece", "status": "planned" },
-        { "id": "bracket.plate", "category": "connector", "description": "Angle bracket 30 with fixing set, swung into the top bars' inner slots", "material": "steel", "quantity": 10, "unit": "piece", "status": "planned" },
-        { "id": "screw.wood_4_5x12", "category": "fastener", "description": "Wood screw 4.5x12, pan head, from below through the brackets", "material": "steel", "quantity": 20, "unit": "piece", "status": "planned" }
+        { "id": "plate.top", "category": "plate", "description": "Top plate, birch plywood, grain along the 1108 length, corners rounded R10; structural, screwed to the top bars from below", "material": "21 mm birch plywood", "length": 1108, "width": 483, "quantity": 1, "unit": "piece", "status": "build" },
+        { "id": "bracket.plate", "category": "connector", "description": "Angle bracket 30 with fixing set, swung into the top bars' inner slots, 10 per bar at top_plate.mounts.x", "material": "die-cast zinc", "quantity": 20, "unit": "piece", "status": "build" },
+        { "id": "screw.wood_4_5x16", "category": "fastener", "description": "Wood screw 4.5x16, pan head, from below through a bracket into a pre-drilled hole in the plate, 1 per bracket; at least 5 mm of wood stays above the tip", "material": "steel, zinc-plated", "quantity": 20, "unit": "piece", "status": "build" }
     ],
     "stock": {
         "profile_30x30": { "lengths": [1000, 2000, 3000], "kerf": 3, "note": "most shops cut to length; the cut list also packs into stock bars" },
-        "profile_30x60": { "lengths": [1000, 2000, 3000], "kerf": 3 },
         "angle_50x50x3": { "lengths": [1000, 2000, 6000], "kerf": 3 }
     }
 }

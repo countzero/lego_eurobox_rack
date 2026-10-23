@@ -3,8 +3,11 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import packed from "rack-model";
-import { addClipMaterials, colourOf, initClips } from "./clips.js";
+import { frame, levels, model_boxes, box_models } from "../../design/rack.json";
+import { addClipMaterials, initClips } from "./clips.js";
+import { applyPlywood } from "./plywood.js";
 import "./style.css";
 
 const canvas = document.getElementById("view");
@@ -13,19 +16,32 @@ const label = document.getElementById("label");
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.AgXToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf4f5f7);
-scene.add(new THREE.HemisphereLight(0xffffff, 0xb8bcc4, 2.2));
-const sun = new THREE.DirectionalLight(0xffffff, 2.2);
-sun.position.set(2, 4, 3);
-scene.add(sun);
+scene.background = new THREE.Color(0x8c8c8c);
+// The aluminium is a full metal and only shows what it reflects; a procedural
+// room gives it something to reflect without loading a file.
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.25;
+pmrem.dispose();
+scene.add(new THREE.HemisphereLight(0xffffff, 0x5a5a5a, 0.15));
+const sun = new THREE.DirectionalLight(0xffffff, 2.6);
+sun.position.set(-1.5, 4, 3);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.bias = -0.0005;
+sun.shadow.normalBias = 0.01;
+scene.add(sun, sun.target);
 
 const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
 const boxes = [];
-let plate = null;
 let centre = new THREE.Vector3();
 let radius = 1;
 let tween = null;
@@ -73,12 +89,6 @@ function setOut(box, out, side = 1) {
   box.t = 0;
 }
 
-function updateAllButton() {
-  const any = boxes.some((b) => b.out);
-  const button = document.getElementById("all");
-  button.textContent = any ? "All in" : "All out";
-}
-
 function highlight(box, on) {
   for (const m of box.materials) m.emissive?.setHex(on ? 0x2a4d7a : 0x000000);
 }
@@ -112,7 +122,7 @@ function sideOf(box, point) {
 
 canvas.addEventListener("pointermove", (event) => {
   if (event.pointerType !== "mouse") return;
-  const { box, side } = pick(event) ?? {};
+  const { box } = pick(event) ?? {};
   if (box !== hovered) {
     if (hovered) highlight(hovered, false);
     if (box) highlight(box, true);
@@ -121,8 +131,7 @@ canvas.addEventListener("pointermove", (event) => {
   canvas.style.cursor = box ? "pointer" : "";
   label.hidden = !box;
   if (box) {
-    const where = box.out ? "in" : side > 0 ? "front" : "back";
-    label.textContent = `${box.name}, ${colourOf(box.level)}${box.back ? `, ${where}` : ""}`;
+    label.textContent = box.out ? "Close" : "Open";
     label.style.left = `${event.clientX + 14}px`;
     label.style.top = `${event.clientY + 14}px`;
   }
@@ -143,26 +152,13 @@ canvas.addEventListener("pointerup", (event) => {
   const { box, side } = pick(event) ?? {};
   if (box) {
     setOut(box, !box.out, side);
-    updateAllButton();
   }
 });
 
 for (const button of document.querySelectorAll("[data-view]")) {
-  button.addEventListener("click", () => view(button.dataset.view));
-}
-
-document.getElementById("all").addEventListener("click", () => {
-  const out = !boxes.some((b) => b.out);
-  for (const box of boxes) setOut(box, out);
-  updateAllButton();
-});
-
-function toggle(id, objects) {
-  const button = document.getElementById(id);
   button.addEventListener("click", () => {
-    const on = button.getAttribute("aria-pressed") !== "true";
-    button.setAttribute("aria-pressed", String(on));
-    for (const o of objects) o.visible = on;
+    view(button.dataset.view);
+    if (button.dataset.view === "reset") for (const box of boxes) if (box.out) setOut(box, false);
   });
 }
 
@@ -190,7 +186,11 @@ async function load() {
   scene.add(root);
   root.traverse((o) => {
     const x = o.userData;
-    if (x.kind === "plate") plate = o;
+    if (o.isMesh) {
+      o.castShadow = true;
+      o.receiveShadow = true;
+    }
+    if (x.kind === "plate" && x.plywood) o.traverse((m) => { if (m.isMesh) applyPlywood(m, x.plywood); });
     if (x.kind === "box") {
       const materials = [];
       o.traverse((m) => {
@@ -205,7 +205,6 @@ async function load() {
       boxes.push({
         node: o,
         level: x.level,
-        name: `L${x.level} C${x.column}, ${x.class} mm class`,
         axis: new THREE.Vector3(...(x.pull_axis ?? [0, 0, 1])).normalize(),
         travel: x.travel ?? 0.4,
         back: (x.sides ?? ["front"]).includes("back"),
@@ -216,7 +215,6 @@ async function load() {
       });
     }
   });
-  toggle("plate", plate ? [plate] : []);
   root.updateMatrixWorld(true);
   for (const box of boxes) {
     const world = new THREE.Box3().setFromObject(box.node).getCenter(new THREE.Vector3());
@@ -228,8 +226,26 @@ async function load() {
   centre = sphere.center;
   radius = sphere.radius;
 
-  const mm = root.userData.outer_mm;
-  info.textContent = mm ? `Outer size ${mm[0]} × ${mm[1]} × ${mm[2]} mm (W × D × H), ${boxes.length} boxes` : `${boxes.length} boxes`;
+  const floorY = bounds.min.y;
+  const ground = new THREE.Mesh(
+    new THREE.CircleGeometry(radius * 4, 64).rotateX(-Math.PI / 2),
+    new THREE.MeshStandardMaterial({ color: 0x737373, roughness: 0.85 }),
+  );
+  ground.position.set(centre.x, floorY, centre.z);
+  ground.receiveShadow = true;
+  scene.add(ground);
+  sun.target.position.copy(centre);
+  sun.position.copy(centre).add(new THREE.Vector3(-1.5, 4, 3));
+  const cam = sun.shadow.camera;
+  cam.left = cam.bottom = -radius * 1.5;
+  cam.right = cam.top = radius * 1.5;
+  cam.near = 0.1;
+  cam.far = 10;
+  cam.updateProjectionMatrix();
+
+  const litres = levels.reduce((sum, l) => sum + frame.columns * box_models[model_boxes[l.class]].volume_l, 0);
+  const count = levels.length * frame.columns;
+  info.textContent = `Storage volume ${litres} l in ${count} boxes`;
   resize();
   view("three");
   tween.step(1);

@@ -37,6 +37,7 @@ def main():
         export_animations=False,
         export_normals=True,
         export_texcoords=False,
+        export_image_format="NONE",
     )
     print("wrote", OUT)
 

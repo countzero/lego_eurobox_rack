@@ -88,26 +88,28 @@ The three 220 boxes on L1 have no inserts.
 
 ## Handles
 
-The end walls of two inserts stand right behind each handle opening. With the
-handle geometry read from the product photos (opening 24 to 54 mm below the
-rim, insert top 15 mm below the rim) the opening is blocked from inside, so the
-handle is gripped from outside only. `UNVERIFIED` until a box is measured.
+The boxes have closed handles (C2G43-12, C2G43-22): a grip pocket 116 × 24 mm,
+12 mm deep, 28 to 52 mm below the rim, in a tray 145 × 50 mm whose top is
+15 mm below the rim. There is no opening, so the end walls of two inserts stand
+behind a closed wall and the handle is gripped from outside. The pocket
+geometry is read from the product photo and `UNVERIFIED` until a box is
+measured (`docs/sources.md`).
 
 ## ColorClips
 
 One ColorClip set (2 rings, R200-00-xx-SET) per box, on both handles, one
-colour per level (`rack.json` → `color_clips`). Every pair of neighbouring
-levels is close to complementary on the colour wheel, so the four steps
-contrast alike. The sRGB values are the median ring colour in aidB's photos
-and drive the model (`UNVERIFIED`).
+colour per insert type (`rack.json` → `color_clips`): neighbouring cool hues,
+lighter towards the top, so the colour says which insert a box holds. The
+sRGB values are the median ring colour in aidB's photos and drive the model
+(`UNVERIFIED`).
 
-| Level | Boxes           | Colour    | Article        | sRGB      | Part             | Packs |
-| ----- | --------------- | --------- | -------------- | --------- | ---------------- | ----- |
-| L5    | 120, set 1/4    | blue      | R200-00-02-SET | `#055FE9` | `clip.blue`      | 3     |
-| L4    | 120, set 1/4    | yellow    | R200-00-03-SET | `#F9E630` | `clip.yellow`    | 3     |
-| L3    | 120, set 1/2    | purple    | R200-00-15-SET | `#BE5286` | `clip.purple`    | 3     |
-| L2    | 120, set 1/2    | turquoise | R200-00-12-SET | `#00A8A8` | `clip.turquoise` | 3     |
-| L1    | 220, no inserts | red       | R200-00-01-SET | `#F52B43` | `clip.red`       | 3     |
+| Level | Boxes           | Colour      | Article        | sRGB      | Part              | Packs |
+| ----- | --------------- | ----------- | -------------- | --------- | ----------------- | ----- |
+| L5    | 120, set 1/4    | light green | R200-00-13-SET | `#B7E686` | `clip.lightgreen` | 3     |
+| L4    | 120, set 1/4    | light green | R200-00-13-SET | `#B7E686` | `clip.lightgreen` | 3     |
+| L3    | 120, set 1/2    | turquoise   | R200-00-12-SET | `#00A8A8` | `clip.turquoise`  | 3     |
+| L2    | 120, set 1/2    | turquoise   | R200-00-12-SET | `#00A8A8` | `clip.turquoise`  | 3     |
+| L1    | 220, no inserts | blue        | R200-00-02-SET | `#055FE9` | `clip.blue`       | 3     |
 
 ## What goes where
 

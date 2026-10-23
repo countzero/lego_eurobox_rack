@@ -3,6 +3,23 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-10-23
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: the bottom bars become 30 × 30 and everything above them moves 30 mm down; the uprights keep their length. The top plate is now part of the structure and must be screwed on before the rack is loaded. Order the boxes with closed handles (C2G43-12, C2G43-22) and the hardware from the new parts list._
+
+### Changed
+
+- **Breaking:** screw the 21 mm birch top plate to the top bars from below with 20 hidden brackets and make it carry the middle uprights with the top bars, so the bottom bars drop from 30 × 60 to 30 × 30 and the rack is 30 mm lower ([`74b7d12`](https://github.com/countzero/lego_eurobox_rack/commit/74b7d12))
+- Use the closed-handle boxes C2G43-12 and C2G43-22 and draw their grip pocket, lip and struts from aidB's photos ([`74b7d12`](https://github.com/countzero/lego_eurobox_rack/commit/74b7d12))
+- Draw the ribbed boxes and the birch top plate in the renders ([#16](https://github.com/countzero/lego_eurobox_rack/pull/16))
+- Simplify the web viewer to Reset and Colours, show the storage volume, draw the plywood and the shading as in Blender, and shorten the colour link ([`bc5f8ce`](https://github.com/countzero/lego_eurobox_rack/commit/bc5f8ce))
+
+### Removed
+
+- Drop the joint plates ([#15](https://github.com/countzero/lego_eurobox_rack/pull/15))
+
 ## [0.3.0] - 2026-10-22
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
@@ -42,6 +59,7 @@ _Not ready to build: the box dimensions are provisional until the boxes are meas
 - Add the price comparison with the cheapest order split ([#8](https://github.com/countzero/lego_eurobox_rack/pull/8))
 - Add the assembly guide ([#7](https://github.com/countzero/lego_eurobox_rack/pull/7))
 
+[0.4.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.4.0
 [0.3.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.3.0
 [0.2.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.2.0
 [0.1.0]: https://github.com/countzero/lego_eurobox_rack/releases/tag/v0.1.0

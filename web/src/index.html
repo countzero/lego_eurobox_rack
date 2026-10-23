@@ -14,27 +14,17 @@
   <h1>LEGO Eurobox rack</h1>
   <p id="info">Loading the model…</p>
 </header>
-<nav id="views" aria-label="Views">
-  <button data-view="front">Front</button>
-  <button data-view="side">Side</button>
-  <button data-view="top">Top</button>
-  <button data-view="three">Three-quarter</button>
-  <button data-view="reset">Reset</button>
+<nav id="views" aria-label="View">
+  <button class="wa-neutral wa-outlined wa-size-s" data-view="reset">Reset</button>
+  <button id="colours" class="wa-neutral wa-outlined wa-size-s" aria-pressed="false" aria-controls="clips">Colours</button>
 </nav>
-<nav id="toggles" aria-label="Show">
-  <button id="all" aria-pressed="false">All out</button>
-  <button id="plate" aria-pressed="true">Top plate</button>
-  <button id="colours" aria-pressed="true" aria-controls="clips">Colours</button>
-</nav>
-<aside id="clips" aria-label="ColorClips">
+<aside id="clips" aria-label="ColorClips" hidden>
   <h2>ColorClips</h2>
-  <div id="presets" role="group" aria-label="Presets"></div>
   <div id="levels"></div>
   <p id="step"></p>
   <ul id="order" aria-label="Packs to order"></ul>
 </aside>
 <div id="label" hidden></div>
-<p id="help">Drag to orbit, right-drag or two fingers to pan, wheel or pinch to zoom. Click the front or back half of a box to pull it out to that side. Pick a ColorClip colour per level under Colours.</p>
 <script>/* JS */</script>
 </body>
 </html>

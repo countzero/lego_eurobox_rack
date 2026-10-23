@@ -15,7 +15,7 @@ if (!existsSync(glb)) {
   process.exit(1);
 }
 
-const licences = [["three", "LICENSE"]].map(([name, file]) => {
+const licences = [["three", "LICENSE"], ["@awesome.me/webawesome", "LICENSE.md"]].map(([name, file]) => {
   const pkg = JSON.parse(readFileSync(join(here, "node_modules", name, "package.json"), "utf8"));
   const text = readFileSync(join(here, "node_modules", name, file), "utf8").trim();
   return `${name} ${pkg.version}\n\n${text}`;
