@@ -7,7 +7,6 @@ import { frame, levels, model_boxes, box_models } from "../../design/rack.json";
 import { addClipMaterials, initClips, isPanelOpen, openPanel } from "./clips.js";
 import { announce, createHint, inViewer } from "./a11y.js";
 import { initUi, dismissTooltip } from "./ui.js";
-import { redraw } from "./redraw.js";
 import { applyPlywood } from "./plywood.js";
 import { redraw, take } from "./redraw.js";
 import { TAA_SAMPLES, createView } from "./view.js";
