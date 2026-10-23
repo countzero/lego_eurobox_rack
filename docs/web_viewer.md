@@ -14,7 +14,12 @@ request. The published copy is at
   shows or hides the ColorClips panel (*ColorClips* below), which is hidden at
   the start on every screen; Full screen (`expand`, `compress` while full
   screen) is shown only on a touch screen (*Controls* below).
-- The title and the storage volume sit on a white panel at the top left.
+- The title at the top left is a link to the repository on GitHub, drawn as a
+  panel as tall as the toolbar buttons. The buttons and the title are 80 %
+  white, so the scene shows faintly through them. Below it a status line shows
+  only while the model loads or when it fails to load.
+- The view turns about the middle of the rack: the centre of the frame and
+  the top plate (glTF extras `kind: "frame"` and `kind: "plate"`).
 - Hovering a box shows "Open" or "Close". A click or tap pulls the box out to
   the side that was clicked: on its front half to the front, on its back half
   to the back (the rack is open at the back). A second click pushes it back.
@@ -22,9 +27,6 @@ request. The published copy is at
   `sides` pulls to the front only.
 - The top plate is always shown; there is no toggle. The rack has no
   panels, so the inside is always visible.
-- The title line shows the storage volume, the sum of the boxes' nominal
-  volumes from `rack.json` → `box_models` → `volume_l`: 12 × 11 l + 3 × 20 l
-  = 192 l in 15 boxes.
 - The shading is drawn to match the Blender renders: the tone mapping is
   Blender's AgX with the renders' look "AgX - Punchy" (`build_rack.py`),
   ported to a shader in `web/src/agx.js`, and the light is an environment map
@@ -39,7 +41,10 @@ request. The published copy is at
 - The look follows [Web Awesome](https://webawesome.com) (MIT): its default
   theme and native styles are bundled as CSS only, with native buttons and
   Web Awesome classes and tokens and no web components, fonts or icons
-  fetched from the network.
+  fetched from the network. Headings keep Web Awesome's heading weight,
+  tooltips and the box hint its tooltip tokens, and keys its `kbd` style; the
+  page text is `--wa-font-size-s` (14 px) instead of the body's 16 px, since
+  it is a compact tool over a 3D view.
 
 ## ColorClips
 

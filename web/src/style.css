@@ -4,6 +4,14 @@
 :root {
   --wa-content-spacing: 0;
   --tool-size: 2.75rem;
+  /* Title and icons a little softer than full text colour: gray-10 at 80 %
+     on white is #494a51, 8.8:1 (docs/accessibility.md). Mixed with white,
+     not made transparent, so the scene never shows through. */
+  --ink: #494a51;
+  /* The white buttons and the title let a fifth of the scene through, so they
+     sit in it rather than on it; --ink keeps 5.5:1 even over black, and the
+     hover turns them fully white. */
+  --tool-bg: color-mix(in srgb, var(--wa-color-surface-raised) 80%, transparent);
   --edge: var(--wa-space-m);
   /* The focus ring alone shows 3.0:1 on white and 1.1:1 on the grey scene;
      a dark halo under it, out past the ring and into its offset, keeps the
@@ -43,26 +51,50 @@ body:has(#view:focus-visible)::after {
   box-shadow: inset 0 0 0 calc(var(--wa-focus-ring-width) + var(--wa-border-width-m)) var(--wa-color-neutral-10);
 }
 
-/* The title on a panel: its contrast does not depend on the scene behind it.
-   It stops short of the three toolbar buttons. */
+/* The title is a button-like link to the repository, as tall as the toolbar
+   buttons; its contrast does not depend on the scene behind it. It stops
+   short of the three toolbar buttons. */
 #title {
   position: fixed;
   top: var(--edge);
   left: var(--edge);
-  width: fit-content;
   max-width: calc(100% - 3 * var(--edge) - 3 * var(--tool-size) - 2 * var(--wa-space-xs));
-  padding: var(--wa-space-xs) var(--wa-space-s);
-  border: var(--wa-panel-border-width) var(--wa-panel-border-style) var(--wa-color-surface-border);
-  border-radius: var(--wa-panel-border-radius);
-  background: var(--wa-color-surface-raised);
-  box-shadow: var(--wa-shadow-s);
-  pointer-events: none;
-  overflow-wrap: anywhere;
   /* It comes before the view in the page, which would paint over it. */
   z-index: 1;
 }
-h1 { margin: 0; font-size: var(--wa-font-size-l); font-weight: var(--wa-font-weight-semibold); color: var(--wa-color-text-normal); }
-#info { margin: var(--wa-space-3xs) 0 0; color: var(--wa-color-text-quiet); }
+h1 { margin: 0; font-size: var(--wa-font-size-l); }
+#title a {
+  display: flex;
+  align-items: center;
+  height: var(--tool-size);
+  padding: 0 var(--wa-space-s);
+  border: var(--wa-panel-border-width) var(--wa-panel-border-style) var(--wa-color-surface-border);
+  border-radius: var(--wa-border-radius-m);
+  background: var(--tool-bg);
+  box-shadow: var(--wa-shadow-s);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color var(--wa-transition-fast);
+}
+#title a:hover { background: var(--wa-color-surface-raised); }
+#title a:focus-visible { box-shadow: var(--focus-halo); }
+/* Shown only while loading or when the model fails to load. */
+#info {
+  position: fixed;
+  top: calc(var(--edge) + var(--tool-size) + var(--wa-space-xs));
+  left: var(--edge);
+  max-width: calc(100% - 2 * var(--edge));
+  margin: 0;
+  padding: var(--wa-space-2xs) var(--wa-space-s);
+  border-radius: var(--wa-border-radius-m);
+  background: var(--wa-color-surface-raised);
+  box-shadow: var(--wa-shadow-s);
+  color: var(--wa-color-text-quiet);
+}
+#info[hidden] { display: none; }
 
 #views {
   position: fixed;
@@ -82,13 +114,13 @@ h1 { margin: 0; font-size: var(--wa-font-size-l); font-weight: var(--wa-font-wei
   padding: 0;
   border: var(--wa-panel-border-width) var(--wa-panel-border-style) var(--wa-color-surface-border);
   border-radius: var(--wa-border-radius-m);
-  background: var(--wa-color-surface-raised);
-  color: var(--wa-color-text-normal);
+  background: var(--tool-bg);
+  color: var(--ink);
   box-shadow: var(--wa-shadow-s);
   cursor: pointer;
   transition: background-color var(--wa-transition-fast);
 }
-.tool:hover { background: var(--wa-color-neutral-fill-quiet); }
+.tool:hover { background: var(--wa-color-surface-raised); }
 .tool [data-icon] { display: contents; }
 .tool .icon { width: 1.25rem; height: 1.25rem; fill: currentColor; }
 #colours[aria-expanded="true"] {
@@ -103,23 +135,19 @@ h1 { margin: 0; font-size: var(--wa-font-size-l); font-weight: var(--wa-font-wei
 #tooltip, #label {
   position: fixed;
   padding: var(--wa-space-2xs) var(--wa-space-xs);
-  border-radius: var(--wa-border-radius-s);
-  background: var(--wa-color-text-normal);
-  color: var(--wa-color-surface-default);
-  font-size: var(--wa-font-size-xs);
+  border: var(--wa-tooltip-border-width) var(--wa-tooltip-border-style) var(--wa-tooltip-border-color);
+  border-radius: var(--wa-tooltip-border-radius);
+  background: var(--wa-tooltip-background-color);
+  color: var(--wa-tooltip-content-color);
+  font-size: var(--wa-tooltip-font-size);
+  line-height: var(--wa-tooltip-line-height);
   white-space: nowrap;
 }
 #label { pointer-events: none; }
 #tooltip { z-index: 1; max-width: calc(100% - 12px); }
 #tooltip[hidden], #label[hidden] { display: none; }
-#tooltip kbd {
-  margin-left: var(--wa-space-2xs);
-  padding: 0 var(--wa-space-2xs);
-  font: inherit;
-  font-weight: var(--wa-font-weight-semibold);
-  border: var(--wa-border-width-s) solid var(--wa-color-neutral-40);
-  border-radius: var(--wa-border-radius-s);
-}
+/* Web Awesome's own kbd style; only the gap to the name is added. */
+#tooltip kbd { margin-left: var(--wa-space-2xs); }
 
 #clips {
   position: fixed;
@@ -137,10 +165,10 @@ h1 { margin: 0; font-size: var(--wa-font-size-l); font-weight: var(--wa-font-wei
   box-shadow: var(--wa-shadow-l);
 }
 #clips[hidden] { display: none; }
-#clips h2 { margin: 0 0 var(--wa-space-xs); font-size: var(--wa-font-size-s); font-weight: var(--wa-font-weight-semibold); }
+#clips h2 { margin: 0 0 var(--wa-space-xs); font-size: var(--wa-font-size-m); }
 .level { margin-bottom: var(--wa-space-xs); }
 .level-name { display: block; font-size: var(--wa-font-size-xs); color: var(--wa-color-text-quiet); }
-.level-name b { color: var(--wa-color-text-normal); font-weight: var(--wa-font-weight-semibold); }
+.level-name b { color: var(--wa-color-text-normal); }
 .swatches { display: flex; flex-wrap: wrap; gap: var(--wa-space-2xs); margin-top: var(--wa-space-3xs); }
 .swatch {
   width: 28px;
@@ -156,7 +184,7 @@ h1 { margin: 0; font-size: var(--wa-font-size-l); font-weight: var(--wa-font-wei
   outline: var(--wa-focus-ring); outline-offset: var(--wa-focus-ring-offset);
 }
 #step { margin: var(--wa-space-xs) 0 var(--wa-space-2xs); font-size: var(--wa-font-size-xs); }
-#step.weak { color: var(--wa-color-danger-on-quiet); font-weight: var(--wa-font-weight-semibold); }
+#step.weak { color: var(--wa-color-danger-on-quiet); font-weight: var(--wa-font-weight-bold); }
 #order { margin: 0; padding: 0; list-style: none; font-size: var(--wa-font-size-xs); }
 #order li { margin: 0; }
 #order i {

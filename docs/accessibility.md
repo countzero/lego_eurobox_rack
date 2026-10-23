@@ -56,7 +56,10 @@ tap.
   or closed by key ("Level 3, column 2, closed").
 - **The weakest-step line** of the ColorClips panel is a polite live region,
   so a changed colour announces the new weakest step.
-- **`#info`**, the storage volume, is a status (`role="status"`).
+- **The title** is a link to the repository; its name adds a hidden "on
+  GitHub" ("LEGO Eurobox rack on GitHub").
+- **`#info`** is a status (`role="status"`) shown only while the model loads
+  or when it fails to load.
 - **Icon buttons** are native `<button>` elements named by `aria-label`:
   Reset, Colours with `aria-expanded` and `aria-controls` pointing at the
   panel, Full screen with `aria-pressed` and a constant name. The icons are
@@ -70,11 +73,13 @@ tap.
 
 | Mark                               | Against              | Ratio  |
 | ---------------------------------- | -------------------- | ------ |
-| Title text `text-normal` (gray-10) | White panel          | 16.8:1 |
+| Title text `--ink` `#494a51`       | 80 % white on black  | 5.5:1  |
+| Title text `--ink` `#494a51`       | 80 % white on scene  | 7.2:1  |
+| Title text `--ink` `#494a51`       | White (hover)        | 8.8:1  |
 | Quiet text `#info` (gray-40)       | White panel          | 7.1:1  |
 | Quiet text before 0019 (gray-40)   | Scene `#8c8c8c`      | 2.1:1  |
-| Icon `text-normal` (gray-10)       | White button         | 16.8:1 |
-| White button                       | Scene `#8c8c8c`      | 3.4:1  |
+| Icon `--ink` `#494a51`             | 80 % white on black  | 5.5:1  |
+| 80 % white button                  | Scene `#8c8c8c`      | 2.7:1  |
 | Focus ring `focus` (blue-60)       | White                | 3.0:1  |
 | Focus ring `focus` (blue-60)       | Scene `#8c8c8c`      | 1.1:1  |
 | Focus ring `focus` (blue-60)       | Dark halo (gray-10)  | 5.6:1  |
@@ -85,8 +90,14 @@ Awesome's tokens (`themes/default.css` and `color/palettes/default.css`:
 `--wa-color-text-normal` → `neutral-10` → `gray-10` `#1b1d26`,
 `--wa-color-text-quiet` → `neutral-40` → `gray-40` `#545868`,
 `--wa-color-focus` → `brand-60` → `blue-60` `#3e96ff`). The title and the
-volume sit on a white panel, so their contrast never depends on the scene;
-before, the quiet text stood on the scene at 2.1:1. The ring alone fails
+icons use `--ink`, gray-10 mixed 80 % with white, a little softer than full
+text colour and opaque. The buttons and the title are 80 % white, so a fifth
+of the scene shows through; over the darkest the scene holds (black) their
+text and icons still reach 5.5:1, and hovered they turn fully white. Their
+outline against the scene (2.7:1) is not what 1.4.11 asks for: the icon or
+the text identifies each control, and those reach 5.5:1. The status line and
+the ColorClips panel stay opaque white. Before 0019 the quiet text stood on
+the scene at 2.1:1. The ring alone fails
 against the scene, which is why it carries the dark halo. Recheck the table
 when `web/src/style.css` changes a token.
 
