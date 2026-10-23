@@ -2,6 +2,7 @@
 // in the URL fragment as #c=<3 base64url chars> (docs/web_viewer.md → *ColorClips*).
 import { color_clips as clips, levels, inserts, frame } from "../../design/rack.json";
 import { deltaE2000 } from "./colour.js";
+import { redraw } from "./redraw.js";
 
 const keys = Object.keys(clips.colours);
 const levelNumbers = levels.map((l) => l.level);
@@ -57,6 +58,7 @@ function paint() {
   levelNumbers.forEach((n, i) => {
     for (const m of materials.get(n)) m.color.set(clips.colours[choice[i]].srgb);
   });
+  redraw();
 }
 
 function levelName(lv) {
@@ -106,7 +108,7 @@ function build() {
   document.getElementById("levels").innerHTML = [...levels].reverse()
     .map((lv) => `<div class="level"><span class="level-name">${levelName(lv)}: <b data-name="${lv.level}"></b></span>`
       + `<div class="swatches" role="group" aria-label="L${lv.level} colour">`
-      + keys.map((k) => `<button class="swatch" data-level="${lv.level}" data-colour="${k}" style="background:${clips.colours[k].srgb}"`
+      + keys.map((k) => `<button type="button" class="swatch" data-level="${lv.level}" data-colour="${k}" style="background:${clips.colours[k].srgb}"`
         + ` title="${name(k)}" aria-label="${name(k)}"></button>`).join("")
       + "</div></div>")
     .join("");
@@ -120,19 +122,23 @@ function build() {
   });
   document.querySelector('[data-view="reset"]')?.addEventListener("click", () => set(current));
 
-  const panel = document.getElementById("clips");
-  const toggle = document.getElementById("colours");
-  const show = (on) => {
-    panel.hidden = !on;
-    toggle.setAttribute("aria-pressed", String(on));
-  };
-  show(false);
-  toggle.addEventListener("click", () => show(panel.hidden));
+  document.getElementById("step").setAttribute("aria-live", "polite");
+  openPanel(false);
+  document.getElementById("colours").addEventListener("click", () => openPanel(!isPanelOpen()));
 
   window.addEventListener("hashchange", () => {
     const list = parse(location.hash) ?? current;
     if (!same(list, choice)) set(list, false);
   });
+}
+
+export function openPanel(on) {
+  document.getElementById("clips").hidden = !on;
+  document.getElementById("colours").setAttribute("aria-expanded", String(on));
+}
+
+export function isPanelOpen() {
+  return !document.getElementById("clips").hidden;
 }
 
 export function initClips() {

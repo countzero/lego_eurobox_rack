@@ -49,11 +49,12 @@ sorted by ID; the order of work follows from the status.
 | 0010 | [Width-beam joints](#0010-width-beam-joints)                 | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0011 | [ColorClip picker](#0011-colorclip-picker)                   | Done                 | [#10](https://github.com/countzero/lego_eurobox_rack/pull/10) |
 | 0012 | [Photorealistic boxes](#0012-photorealistic-boxes)           | Done                 | [#13](https://github.com/countzero/lego_eurobox_rack/pull/13) |
-| 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Planned              |                                                               |
+| 0013 | [Viewer lighting](#0013-viewer-lighting)                     | Done                 | [#18](https://github.com/countzero/lego_eurobox_rack/pull/18) |
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | Done                 | [#16](https://github.com/countzero/lego_eurobox_rack/pull/16) |
 | 0017 | [No joint plates](#0017-no-joint-plates)                     | Done                 | [#15](https://github.com/countzero/lego_eurobox_rack/pull/15) |
 | 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Planned              |                                                               |
+| 0019 | [Viewer controls](#0019-viewer-controls)                     | Done                 | [#19](https://github.com/countzero/lego_eurobox_rack/pull/19) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -308,12 +309,21 @@ renders do.
 (work no step owned, on `develop`), so the aluminium no longer renders black;
 the colour match by eye is still open.
 
-**Delivers:** `web/src/*`, `docs/web_viewer.md`.
+**Delivers:** `web/src/*` (but `icons.js`, `ui.js`, `a11y.js`, `index.html`,
+`style.css`), `docs/web_viewer.md` → *Performance* and the shading line of
+*What it does*.
 
 **Acceptance:**
 
 - AgX tone mapping and a `RoomEnvironment` light the model; the page still
   opens offline.
+- The tone mapping is a port of Blender's AgX with the look of the renders
+  (`build_rack.py`: "AgX - Punchy"), not three.js's own AgX.
+- The render path of the house viewer: no canvas MSAA; 4× MSAA on half-float
+  targets at a pixel ratio of at most 1 while anything moves; 32 TAA samples
+  gathered once the view is still; nothing drawn while nothing changes; the
+  shadow map redrawn only on a change; no orbit damping; the middle button
+  pans.
 - The box, ring and insert colours match the renders by eye.
 
 ## 0014 Castor plates, open back
@@ -475,3 +485,30 @@ and place, so the renders and the viewer show what is bought.
 
 **Open:** the brackets' hole offset (motedis CAD); the counterbore depth of the
 top bars.
+
+## 0019 Viewer controls
+
+**Goal:** the web viewer's controls as icon buttons with keys, a full-screen
+toggle on touch screens, and the whole page meeting WCAG 2.2 Level AA.
+
+**Delivers:** `web/package.json`, `web/package-lock.json`, `web/build.mjs`,
+`web/src/*` (but `agx.js` and `view.js`), `docs/web_viewer.md`,
+`docs/accessibility.md`.
+
+**Acceptance:**
+
+- The toolbar reads reset | colours | full screen, as the Font Awesome Free
+  icons `rotate-left`, `palette` and `expand` (`compress` while full screen),
+  inlined at build time; each button is named for a screen reader and shows
+  its name and key on hover and focus.
+- Esc first hides a shown hint, then closes the ColorClips panel when the
+  focus is in it, and otherwise resets; C shows or hides the panel while the
+  view or a toolbar button has the focus.
+- The full-screen button shows only on a touch screen whose browser grants
+  full screen to the page.
+- The title and the storage volume sit on a panel, so their contrast does not
+  depend on the scene behind them.
+- Every box opens and closes by keyboard, and orbit and zoom work by keyboard
+  and without dragging or pinching; the page meets WCAG 2.2 Level AA, checked
+  as `docs/accessibility.md` describes.
+- `npm --prefix web run build` runs clean and the page still opens offline.
