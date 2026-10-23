@@ -2,6 +2,7 @@
 // in the URL fragment as #c=<3 base64url chars> (docs/web_viewer.md → *ColorClips*).
 import { color_clips as clips, levels, inserts, frame } from "../../design/rack.json";
 import { deltaE2000 } from "./colour.js";
+import { redraw } from "./redraw.js";
 
 const keys = Object.keys(clips.colours);
 const levelNumbers = levels.map((l) => l.level);
@@ -57,6 +58,7 @@ function paint() {
   levelNumbers.forEach((n, i) => {
     for (const m of materials.get(n)) m.color.set(clips.colours[choice[i]].srgb);
   });
+  redraw();
 }
 
 function levelName(lv) {

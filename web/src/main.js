@@ -2,8 +2,6 @@
 // docs/design.md → *Model objects and the web export*.
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import packed from "rack-model";
 import { frame, levels, model_boxes, box_models } from "../../design/rack.json";
 import { addClipMaterials, initClips, isPanelOpen, openPanel } from "./clips.js";
@@ -11,39 +9,17 @@ import { announce, createHint, inViewer } from "./a11y.js";
 import { initUi, dismissTooltip } from "./ui.js";
 import { redraw } from "./redraw.js";
 import { applyPlywood } from "./plywood.js";
+import { redraw, take } from "./redraw.js";
+import { TAA_SAMPLES, createView } from "./view.js";
 import "./style.css";
 
 const canvas = document.getElementById("view");
 const info = document.getElementById("info");
 const label = document.getElementById("label");
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.toneMapping = THREE.AgXToneMapping;
-renderer.toneMappingExposure = 1.0;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x8c8c8c);
-// The aluminium is a full metal and only shows what it reflects; a procedural
-// room gives it something to reflect without loading a file.
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.25;
-pmrem.dispose();
-scene.add(new THREE.HemisphereLight(0xffffff, 0x5a5a5a, 0.15));
-const sun = new THREE.DirectionalLight(0xffffff, 2.6);
-sun.position.set(-1.5, 4, 3);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.bias = -0.0005;
-sun.shadow.normalBias = 0.01;
-scene.add(sun, sun.target);
-
-const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-
+const { renderer, scene, camera, controls, sun, moving, composer, taa, resize: resizeView } = createView(canvas);
+// Read live, so a change in the system settings applies at once.
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const boxes = [];
 let centre = new THREE.Vector3();
 let radius = 1;
@@ -54,11 +30,11 @@ async function unpack(bytes) {
   return new Response(stream).arrayBuffer();
 }
 
+let resized = false;
+
 function resize() {
-  const { clientWidth: w, clientHeight: h } = canvas;
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
+  resizeView();
+  resized = true;
 }
 
 window.addEventListener("resize", resize);
@@ -94,6 +70,7 @@ function setOut(box, out, side = 1) {
 
 function highlight(box, on) {
   for (const m of box.materials) m.emissive?.setHex(on ? 0x2a4d7a : 0x000000);
+  redraw();
 }
 
 const pointer = new THREE.Vector2();
@@ -320,22 +297,57 @@ for (const button of document.querySelectorAll("[data-view]")) {
   });
 }
 
+// Without damping the controls move the camera inside their own pointer and
+// wheel handlers, so the loop's controls.update() sees nothing left to do:
+// the change event is what marks the frame as one in motion.
+let cameraMoved = false;
+controls.addEventListener("change", () => { cameraMoved = true; });
+
+// While anything moves, one MSAA frame at the lower ratio; once it stops,
+// one jittered sample a frame at the screen's own until the still frame has
+// them all; then nothing is drawn (docs/web_viewer.md → *Performance*).
 let last = performance.now();
+let settle = false;
 renderer.setAnimationLoop((now) => {
-  const dt = Math.min((now - last) / 1000, 0.1);
+  // Reduced motion: every tween ends in the frame it starts.
+  const dt = reducedMotion.matches ? Infinity : Math.min((now - last) / 1000, 0.1);
   last = now;
+  let busy = resized;
+  resized = false;
   for (const box of boxes) {
     if (box.t >= 1) continue;
     box.t = Math.min(1, box.t + dt / 0.45);
     box.node.position.lerpVectors(box.from, box.to, ease(box.t));
+    renderer.shadowMap.needsUpdate = true;
+    busy = true;
   }
   if (tween) {
     tween.t = Math.min(1, tween.t + dt / 0.6);
     tween.step(ease(tween.t));
     if (tween.t >= 1) tween = null;
+    busy = true;
   }
   controls.update();
-  renderer.render(scene, camera);
+  busy ||= cameraMoved;
+  cameraMoved = false;
+  // A requested frame (the model loaded, a highlight, new ring colours): its
+  // shadows are redrawn too, which costs little next to how rarely it comes.
+  let dirty = take();
+  if (dirty) renderer.shadowMap.needsUpdate = true;
+  if (busy) {
+    moving.render();
+    settle = true;
+    return;
+  }
+  // Whatever changed, the samples gathered so far show the old picture.
+  if (settle || dirty) {
+    taa.accumulateIndex = -1;
+    settle = false;
+    dirty = true;
+  } else if (taa.accumulateIndex >= 0 && taa.accumulateIndex < TAA_SAMPLES) {
+    dirty = true;
+  }
+  if (dirty) composer.render();
 });
 
 async function load() {
@@ -409,6 +421,7 @@ async function load() {
   view("three");
   tween.step(1);
   tween = null;
+  redraw();
 }
 
 initClips();
