@@ -140,7 +140,7 @@ same mould; the body geometry below was read from their photos.
 | Angle 50 × 50 × 3, alu-profile-zuschnitt | 12.02 €/m, 0.81 kg/m, up to 5000 mm                                   | VERIFIED  | [alu-profile-zuschnitt 50][apz-50]           |
 | Angle 50 × 50 × 3, profilzuschnitt24     | 12.11 €/m + 1.10 € per cut                                            | VERIFIED  | [profilzuschnitt24 50][pz-50]                |
 | Castor 100 mm grey solid rubber, Dold    | 112 kg, 133 mm high, non-marking, brake, 27.83 €                      | VERIFIED  | [Dold 100 rubber][dold-100]                  |
-| UHMW slide tape 25 mm                    | about 8 € per 10 m roll (thin film); movet 25 × 0.8 mm: 120.86 €      | SECONDARY | [Amazon][tape-amz], [movet][tape-movet]      |
+| UHMW slide tape 25 mm                    | about 8 € per 10 m roll (thin film); movet 0.8 mm: 120.86 €; dropped  | SECONDARY | [Amazon][tape-amz], [movet][tape-movet]      |
 | Shipping Dold                            | DHL up to 1 m: 6.90–8.90 €                                            | VERIFIED  | [Dold shipping][dold-ship]                   |
 | Shipping motedis                         | 5.83 € net up to 111.09 €, 16.33 € net up to 222.19 €; packing 3.89 € | VERIFIED  | [motedis shipping][mo-ship]                  |
 
@@ -213,7 +213,7 @@ Facts of roadmap 0014, read on 2026-10-22. The loads built on them are in
 | Swing-in T-nuts fit an assembled frame | hammer nuts and spring T-nuts go in from the open slot face                                                              | VERIFIED   | [BM Profiles][bm-nuts]                                 |
 | Bracket with fixing set, B-type slot 8 | Winkel 30 with screw and nut, 1.93 €                                                                                     | SECONDARY  | [aluprofile-express][ape-acc]                          |
 | Threaded insert Rampa SK M6            | about 2.46 € each, stainless                                                                                             | SECONDARY  | [schraubenking][rampa]                                 |
-| Slot cover B-type slot 8               | about 0.42 € per unit; unit length to be checked                                                                         | SECONDARY  | [motedis cover][mo-cover]                              |
+| Slot cover B-type slot 8               | about 0.42 € per unit; unit length to be checked; dropped, the user's choice                                             | SECONDARY  | [motedis cover][mo-cover]                              |
 | Birch plywood 21 mm, cut to size       | 66.95 €/m² BB/CP, 15 plies (Holz-Speckmann); 91.40 €/m² BB/BB, 20.0–22.4 mm, 14.3 kg/m² (plattenzuschnitt24); 2026-10-22 | VERIFIED   | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
 | Birch plywood 20 mm                    | not sold by either shop; they step from 18 mm (13 plies) to 21 mm                                                        | VERIFIED   | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
 | Multiplex build                        | crosswise glued veneers, at least 5, often 7 or more layers                                                              | VERIFIED   | [plattenzuschnitt24][pz-mpx]                           |

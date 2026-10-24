@@ -11,7 +11,7 @@ front, levels 1-5 from the bottom.
 ![Three-quarter view](../renders/three_quarter.png)
 
 The renders show the top plate on the frame. It is part of the structure and
-is fitted before the rack is loaded (step 12).
+is fitted before the rack is loaded (step 11).
 
 The rack is two flat frames, front (`y` 0-30) and back (`y` 405-435), each a
 bottom bar, a top bar and four uprights, joined by eight depth beams and
@@ -46,19 +46,17 @@ out at the front and at the back.
 | `screw.m8x20_socket`      | 4        | 8            |
 | `washer.m8`               | 4        | 8            |
 | `screw.m5x10_countersunk` | 144      | 9            |
-| `tape.uhmw_25`            | 13050 mm | 10           |
-| `cap.end_30`              | 8        | 11           |
-| `cover.slot_8`            | 3636 mm  | 11           |
-| `plate.top`               | 1        | 12           |
-| `bracket.plate`           | 20       | 12           |
-| `screw.wood_4_5x16`       | 20       | 12           |
-| `box.e220`                | 3        | 13           |
-| `box.e120`                | 12       | 13           |
-| `clip.blue`               | 3        | 13           |
-| `clip.turquoise`          | 6        | 13           |
-| `clip.lightgreen`         | 6        | 13           |
-| `insert.set_quarter`      | 6        | 13           |
-| `insert.set_half`         | 6        | 13           |
+| `cap.end_30`              | 8        | 10           |
+| `plate.top`               | 1        | 11           |
+| `bracket.plate`           | 20       | 11           |
+| `screw.wood_4_5x16`       | 20       | 11           |
+| `box.e220`                | 3        | 12           |
+| `box.e120`                | 12       | 12           |
+| `clip.blue`               | 3        | 12           |
+| `clip.turquoise`          | 6        | 12           |
+| `clip.lightgreen`         | 6        | 12           |
+| `insert.set_quarter`      | 6        | 12           |
+| `insert.set_half`         | 6        | 12           |
 
 Buy about ten spare `tnut.m5` and `tnut.m6`. Both are hammer nuts for B-type
 slot 8: they go into a slot from its open face, also where the slot is closed
@@ -77,7 +75,7 @@ made, and a forgotten one is added later without taking the frame apart.
   bar ([Dold 30x30L][dold-30]; the thread options are read from the page
   data, `UNVERIFIED`).
 - Top plate: 21 mm birch plywood cut to 1108 × 483, grain along the 1108
-  length (`docs/prices.md`); its corners are rounded at home (step 12).
+  length (`docs/prices.md`); its corners are rounded at home (step 11).
 - Angles 50 × 50 × 3 cut to 435: 6 `angle.base`, 24 `angle.support`,
   6 `angle.guard`. Their holes are drilled at home (step 3).
 - Castor plates: Dold AGP-10-90-Z, milled cast plate EN AW-5083, 10 thick,
@@ -104,7 +102,6 @@ made, and a forgotten one is added later without taking the frame apart.
 | Fine marker, centre punch                 | Marking heights and holes                                |
 | Spirit level, at least 600 mm             | Levels horizontal, uprights plumb                        |
 | Two clamps, a few wooden blocks           | Holding a beam while a bracket is fitted                 |
-| Cutter knife, cloth, isopropyl alcohol    | UHMW tape                                                |
 | Medium threadlocker, optional             | The 16 M8 core bolts of the frames (step 6)              |
 | Drill, 2.5 mm wood bit with a depth stop  | Pilot holes in the top plate, at most 14 mm deep         |
 | Jigsaw or rasp, sandpaper                 | R10 corners and round edges of the top plate             |
@@ -389,38 +386,20 @@ from the bottom up:
   level 1) of each column, front and back; 216 between the leg tips.
 - Both angles of a column at the same height.
 - No screw head stands proud of the leg.
+- The boxes slide on the bare aluminium: both ends of every flat leg that
+  carries a box are deburred and their top edge slightly rounded, so a box
+  pushed in from the front or the back does not catch.
 
-## Step 10: UHMW tape on the carrying legs
+## Step 10: End caps
 
-**Parts:** `tape.uhmw_25`, 30 pieces of 435 mm (13050 mm).
+**Parts:** `cap.end_30` × 8.
 
-The tape goes on the top of the flat leg of each `angle.base` and
-`angle.support`, the 30 legs that carry a box. The guard carries nothing and
-gets none.
+Press a `cap.end_30` into each end of the two top and the two bottom bars. The
+other slots stay open.
 
-1. Clean the flat leg with isopropyl alcohol and let it dry.
-2. Cut 435 mm, peel a few centimetres of liner, and lay the tape from the front
-   end along the outer edge of the flat leg, pulling the liner as you go. Press
-   it down firmly with a cloth along the whole length.
-3. Round both end corners of each piece with the knife, so a box pushed in from
-   the front or the back does not lift the tape.
+**Check:** no sharp edge at hand height.
 
-**Check:** no bubbles, no lifted corner; a box slides on it without catching.
-Self-adhesive tapes reach full strength only after some time; leave the rack
-unloaded overnight if the maker says so (`UNVERIFIED`).
-
-## Step 11: End caps and slot covers
-
-**Parts:** `cap.end_30` × 8, `cover.slot_8` × 3636 mm.
-
-1. Press a `cap.end_30` into each end of the two top and the two bottom bars.
-2. Cut `cover.slot_8` for the top faces: 2 × 1068 (top bars) and 4 × 375 (top
-   depth beams), 3636 mm in all, and press it in. The inner slots of the top
-   bars stay free for the plate brackets (step 12).
-
-**Check:** no open slot on the top; no sharp edge at hand height.
-
-## Step 12: Top plate
+## Step 11: Top plate
 
 **Parts:** `plate.top` × 1, `bracket.plate` × 20, `screw.wood_4_5x16` × 20.
 
@@ -450,7 +429,7 @@ goes in. The brackets come with swing-in nuts, so nothing is taken apart
 **Check:** 20 screws in; the plate lies flat and does not rock; the overhang
 is equal on opposite sides; nothing shows on top.
 
-## Step 13: Boxes, ColorClips and inserts
+## Step 12: Boxes, ColorClips and inserts
 
 **Parts:** `box.e220` × 3, `box.e120` × 12, `clip.blue` × 3,
 `clip.turquoise` × 6, `clip.lightgreen` × 6, `insert.set_quarter` × 6,
@@ -513,7 +492,7 @@ front or to the back it stays on its legs, and it comes out entirely at
   time, never more than its 270 mm travel.
 - The braked castor Dold 69490 has the same height, hole and offset
   (`VERIFIED`) and fits the front corners later without any other change.
-- Never load the rack without the top plate (step 12): without it the middle
+- Never load the rack without the top plate (step 11): without it the middle
   uprights hang on the 30 × 30 bottom bars alone.
 - The rack is not made to be climbed or stood on.
 

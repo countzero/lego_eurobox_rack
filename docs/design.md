@@ -15,7 +15,7 @@ until the boxes are measured (roadmap 0004).
 | 316 mm between the uprights                               | 310 mm between the hanging legs: 2.5 mm play per side for a 305 mm rim                                                                                                                                         | `DERIVED` below                                                                   |
 | Angles 50 × 50 × 3, flat leg on top                       | One angle carries the box above, guides the rim of the box below sideways and stops it tipping when pulled out                                                                                                 | `DERIVED` below                                                                   |
 | Levels set for the tallest box per class                  | 233 mm for the 220 class, 125 mm for the 120 class, 8 mm gap above                                                                                                                                             | `sources.md` → *Boxes*                                                            |
-| No slides, no pull-out stop                               | The user's choice; a box comes out like from an open shelf                                                                                                                                                     | the user                                                                          |
+| No slides, no slide tape, no pull-out stop                | The user's choice; a box comes out like from an open shelf and slides on the bare aluminium of the flat legs; the slots stay open for an industrial look, only the eight bar ends get caps                     | the user                                                                          |
 | No back stop: boxes pull out to the front and to the back | The user's choice; each box sits centred in the depth and pulls out 270 mm at either end; the rack must stand free in the room; the core-bolt joints keep the frames square                                    | the user                                                                          |
 | One 1068 mm bar front and back, top and bottom            | One piece over all three columns; the uprights stand between the bars on an M8 through-bolt into their core thread                                                                                             | the user                                                                          |
 | No joint plates; core-bolt joints keep the frames square  | The real CPL3030 / CPT3030 webs would block the level 1 and level 5 boxes; one tightened M8 core bolt per upright end holds the frames square (*Joints*, `UNVERIFIED`); threadlocker optional                  | the user; *Joints*                                                                |
@@ -194,7 +194,7 @@ bar. The top plate overhangs the frame by 20 at each side.
 ```
  upright   angle.support 50 x 50 x 3, flat leg on top
    ||
-   ||#############      <- the box ABOVE stands on the 50 mm flat leg (UHMW tape)
+   ||#############      <- the box ABOVE stands on the 50 mm flat leg
    ||#
    ||#    8 mm gap      <- the box BELOW tips up into the flat leg: tip guard
    ||#  +----------     <- rim of the box BELOW
@@ -416,9 +416,7 @@ and `planned` for a part that is designed but not yet bought (none at present).
 | `screw.m8x20_socket`      | fastener   | 4        | build   |
 | `washer.m8`               | fastener   | 4        | build   |
 | `castor.plain`            | castor     | 4        | build   |
-| `tape.uhmw_25`            | consumable | 13050 mm | build   |
 | `cap.end_30`              | finish     | 8        | build   |
-| `cover.slot_8`            | finish     | 3636 mm  | build   |
 | `box.e120`                | box        | 12       | build   |
 | `box.e220`                | box        | 3        | build   |
 | `clip.blue`               | box        | 3        | build   |

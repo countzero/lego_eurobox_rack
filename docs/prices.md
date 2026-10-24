@@ -62,8 +62,6 @@ The cheapest sound way to buy every part of `design/rack.json` (roadmap 0007).
 | `castor.plain` (4)             | motedis               | Rolle 100 Rückenloch ohne Bremse (995)      | 22.31 € per 4, out of stock       | pack of 4  | 22.31 €          | VERIFIED   | [mo-100]      |
 | `cap.end_30` (8)               | Dold                  | Profilabdeckkappe 30 B-Typ Nut 8            | 0.86 €                            | piece      | 6.88 €           | DERIVED    | [dold-caps]   |
 | `cap.end_30` (8)               | profilzuschnitt24     | Profilabdeckkappe Schwarz Nut 8 30x30       | 0.62 €                            | piece      | 4.96 €           | DERIVED    | [pz-cap]      |
-| `cover.slot_8` (3636 mm)       | Dold                  | Abdeckprofil grau B-Typ Nut 8, 1 m, VPE 5   | 8.75 € per 5 m                    | pack of 5  | 8.75 €           | VERIFIED   | [dold-caps]   |
-| `cover.slot_8` (3636 mm)       | Dold (ape shop)       | Abdeckprofil Natur B-Typ Nut 8, 1 m         | 2.19 €                            | piece      | 8.76 € (4)       | DERIVED    | [ape-cover]   |
 
 Notes:
 
@@ -105,23 +103,12 @@ Notes:
 | `screw.wood_4_5x16` (20) | any hardware store | wood screw 4.5 × 16 pan head               | not read            | about 2 €          | UNVERIFIED |               |
 
 The plate is structural and is fitted before the rack is loaded
-(`docs/assembly.md`, step 12), so it is in the totals: Holz-Speckmann's plate
+(`docs/assembly.md`, step 11), so it is in the totals: Holz-Speckmann's plate
 for 35.82 €, the Dold brackets for 20 × 1.51 = 30.20 € in the Dold order, and
 about 2 € of wood screws, an `UNVERIFIED` estimate counted in the totals. The
 plate is 1108 × 483 mm = 0.535 m²; the square-metre prices are from the
 2026-10-22 reading. The R10 corners, the edge finish and the plate's shipping
 are not priced.
-
-### Slide tape
-
-| Part           | Supplier        | Product                                   | Price incl. VAT         | Unit         | For the quantity | Status    | Source       |
-| -------------- | --------------- | ----------------------------------------- | ----------------------- | ------------ | ---------------- | --------- | ------------ |
-| `tape.uhmw_25` | Amazon (Dimeho) | Schubladen-Gleitband 25 mm, 33 ft (~10 m) | 7.69 € per roll         | roll         | 15.38 € (2)      | SECONDARY | [tape-amz]   |
-| `tape.uhmw_25` | movet           | PE-UHMW sliding strip 25 × 0.8 mm, 15 m   | 101.56 € net = 120.86 € | roll of 15 m | 120.86 €         | DERIVED   | [tape-movet] |
-
-The rack needs 13.05 m. The Amazon tape is a thin film of unstated thickness;
-the movet strip is a rated 0.8 mm UHMW-PE. The totals take Amazon and name
-movet as the durable option (+105.48 €).
 
 ### Boxes, rings and inserts
 
@@ -150,14 +137,13 @@ boxes, rings and inserts.
 | -------- | ----------------------------------------------------------- | ------- | ----------- | --------- | ----------- |
 | Dold     | DPD, pieces over 1 m up to 1.5 m, about 29 kg (up to 30 kg) | 14.90 € | none        | VERIFIED  | [dold-ship] |
 | motedis  | accessories only, above 16.66 €                             | 0.00 €  | 16.66 €     | DERIVED   | [mo-ship]   |
-| Amazon   | with Prime or above the threshold                           | 0.00 €  | seller rule | SECONDARY | [tape-amz]  |
 | aidB     | free in Germany from 150 €                                  | 0.00 €  | 150 €       | VERIFIED  | [aidb-12]   |
 
 Dold's DPD class up to 1.5 m costs 14.90 € up to 30 kg and 23.90 € up to
 60 kg; the table does not say whether its prices include VAT. The 1068 mm
 bars put the order in that class. The weight is DERIVED: profiles and angles
 11.46 + 12.67 = 24.13 kg, castors 1.16 kg, castor plates 0.87 kg, plus
-brackets, caps, covers and screws. Holz-Speckmann's shipping for the plate is
+brackets, caps and screws. Holz-Speckmann's shipping for the plate is
 not read and not in the totals.
 
 The motedis order no longer holds a profile, so it ships at the accessory
@@ -168,38 +154,37 @@ rate for up to 221.09 € plus the packing charge, 16.33 + 3.89 = 20.22 €
 
 ## Recommended order split
 
-Five shops and a hardware store: Dold for everything long, the castors, the
+Four shops and a hardware store: Dold for everything long, the castors, the
 castor plates, the M6 hammer nuts, the M8 socket screws and the plate
-brackets, motedis for connectors and the small screws, Amazon for the tape,
+brackets, motedis for connectors and the small screws,
 Holz-Speckmann for the top plate, a hardware store for the wood screws, aidB
 for boxes, rings and inserts. The
 castors and plates go to Dold because motedis has the castor out of stock and
 its plate is thinner and uncut.
 
-| Shop           | Parts                                                                                                                                                                                                            | Subtotal     | Shipping | Total        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | -------- | ------------ |
-| Dold           | `profile.*` incl. M8 threads, `angle.*`, `plate.castor`, `castor.plain`, `tnut.m6`, `screw.m8x70_socket`, `screw.m8x50_socket`, `screw.m8x20_socket`, `washer.m8`, `cap.end_30`, `cover.slot_8`, `bracket.plate` | 514.25 €     | 14.90 €  | 529.15 €     |
-| motedis        | `bracket.inside_30`, `screw.m6x12_button`, `screw.m6x16_countersunk`, `screw.m5x10_countersunk`, `tnut.m5`                                                                                                       | 72.05 €      | 0.00 €   | 72.05 €      |
-| Amazon         | `tape.uhmw_25` (2 rolls)                                                                                                                                                                                         | 15.38 €      | 0.00 €   | 15.38 €      |
-| Holz-Speckmann | `plate.top`, cut to 1108 × 483                                                                                                                                                                                   | 35.82 €      | not read | 35.82 €      |
-| Hardware store | `screw.wood_4_5x16` × 20                                                                                                                                                                                         | about 2.00 € | 0.00 €   | about 2.00 € |
-| aidB           | `box.e120` × 12, `box.e220` × 3, `clip.*` × 15, `insert.set_half` × 6, `insert.set_quarter` × 6                                                                                                                  | 277.68 €     | 0.00 €   | 277.68 €     |
+| Shop           | Parts                                                                                                                                                                                            | Subtotal     | Shipping | Total        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | -------- | ------------ |
+| Dold           | `profile.*` incl. M8 threads, `angle.*`, `plate.castor`, `castor.plain`, `tnut.m6`, `screw.m8x70_socket`, `screw.m8x50_socket`, `screw.m8x20_socket`, `washer.m8`, `cap.end_30`, `bracket.plate` | 505.50 €     | 14.90 €  | 520.40 €     |
+| motedis        | `bracket.inside_30`, `screw.m6x12_button`, `screw.m6x16_countersunk`, `screw.m5x10_countersunk`, `tnut.m5`                                                                                       | 72.05 €      | 0.00 €   | 72.05 €      |
+| Holz-Speckmann | `plate.top`, cut to 1108 × 483                                                                                                                                                                   | 35.82 €      | not read | 35.82 €      |
+| Hardware store | `screw.wood_4_5x16` × 20                                                                                                                                                                         | about 2.00 € | 0.00 €   | about 2.00 € |
+| aidB           | `box.e120` × 12, `box.e220` × 3, `clip.*` × 15, `insert.set_half` × 6, `insert.set_quarter` × 6                                                                                                  | 277.68 €     | 0.00 €   | 277.68 €     |
 
 Dold: 144.64 + 24.00 + 203.44 + 22.66 + 24.00 + 19.00 + 22.32 + 6.72 + 1.24 +
-0.40 + 6.88 + 8.75 + 30.20 = 514.25 €, with the 23.96 € estimate for the
+0.40 + 6.88 + 30.20 = 505.50 €, with the 23.96 € estimate for the
 M8x70 and M8x20 screws and the washers (22.32 + 1.24 + 0.40). motedis:
 21.81 + 5.29 + 5.29 + 10.58 + 29.08 = 72.05 €.
 
 | Total                           | Amount       |
 | ------------------------------- | ------------ |
-| Rack without boxes              | 654.40 €     |
+| Rack without boxes              | 630.27 €     |
 | Boxes, rings and inserts (aidB) | 277.68 €     |
-| **Overall**                     | **932.08 €** |
+| **Overall**                     | **907.95 €** |
 
-The rack total is 529.15 + 72.05 + 15.38 + 35.82 + 2.00 €, without the plate's
+The rack total is 520.40 + 72.05 + 35.82 + 2.00 €, without the plate's
 shipping. If motedis charges the basic rate, add 20.22 €. If Dold's M8x70
 costs what its M8x100 costs (1.35 €), the Dold subtotal falls by 11.52 € to
-502.73 €.
+493.98 €.
 
 ## Not verified
 
@@ -212,7 +197,6 @@ costs what its M8x100 costs (1.35 €), the Dold subtotal falls by 11.52 € to
 - Whether Dold's shipping table includes VAT.
 - Whether motedis counts every part of this order as an accessory.
 - Whether the castor tread is non-marking.
-- Amazon tape thickness and seller shipping.
 
 ## Rejected castors
 
@@ -230,6 +214,17 @@ The side and back panels of 3 mm white aluminium composite are gone with the
 redesign; the core-bolt joints keep the frames square and the back stays open
 (`docs/design.md`). This saves about 102.69 € for the panels plus 17.45 €
 shipping from plattenzuschnitt24.
+
+## Slide tape and slot covers (dropped)
+
+The user dropped both: the boxes slide on the bare aluminium of the flat legs,
+and the slots stay open for an industrial look; only the eight bar ends keep
+their caps (`docs/design.md`). The slot covers would have sat under the top
+plate anyway. This saves 15.38 € for two rolls of Amazon (Dimeho) slide tape
+`SECONDARY` [tape-amz] (the 0.8 mm movet strip [tape-movet] would have cost
+120.86 €) and 8.75 € for a pack of five 1 m Dold slot covers `VERIFIED`
+[dold-caps] ([ape-cover] sold them singly at 2.19 €), 24.13 € in all, and the
+Amazon order with its shipping.
 
 [dold-30]: https://www.dold-mechatronik.de/Aluminiumprofil-30x30L-B-Typ-Nut-8-084kg-m-Zuschnitt-50-6000mm
 [dold-50]: https://www.dold-mechatronik.de/Winkelprofile-gleichschenklig-50x50x3mm-Aluminium-EN-AW-6060-T66-AlMgSi05-0809kg-m-Zuschnitt-20-6000mm

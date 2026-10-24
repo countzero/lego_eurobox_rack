@@ -18,9 +18,7 @@ screw.m8x50_socket,fastener,"ISO 4762 (DIN 912) M8x50 through the top bar into a
 screw.m8x20_socket,fastener,ISO 4762 (DIN 912) M8x20 from inside the castor housing up through the back hole into the castor plate's M8 thread,"steel 8.8, zinc-plated",,,4,piece,build
 washer.m8,fastener,ISO 7089 (DIN 125 A) washer 8.4 under the castor bolt's head inside the housing,"steel, zinc-plated",,,4,piece,build
 castor.plain,castor,"Swivel castor 100 mm without brake, 125 high, back hole 11, offset 28, 70 kg, under a castor plate at each corner",PU tread on PP,,,4,piece,build
-tape.uhmw_25,consumable,Self-adhesive UHMW-PE slide tape on the flat legs that carry boxes,"UHMW-PE, 25 mm wide",13050,,1,length,build
 cap.end_30,finish,End cap 30x30 for the ends of the top and the bottom bars,plastic,,,8,piece,build
-cover.slot_8,finish,Slot cover strip for the top faces of the top bars and the top depth beams,"plastic, B-type slot 8",3636,,1,length,build
 box.e120,box,"Eurobox NextGen 2.0 Cycle 400x300x120, closed handles, anthracite (C2G43-12)",r-PP,,,12,piece,build
 box.e220,box,"Eurobox NextGen 2.0 Cycle 400x300x220, closed handles, anthracite (C2G43-22), no inserts",r-PP,,,3,piece,build
 clip.blue,box,"ColorClip set blue, 2 rings (R200-00-02-SET), level 1",plastic,,,3,piece,build
