@@ -496,7 +496,8 @@ run in three steps, each a third of the range, so no part passes through
 another: (1) the boxes straight out to the front, far enough that they stay in
 front of the rack to the end (the build checks this); (2) the boxes' levels
 spread upwards, each higher than the one below so that level's inserts clear
-the box above; (3) everything else: the frame apart, the fasteners out of their
+the box above; (3) everything else: the frame apart, the uprights lifted off
+the bottom bars as the top bars off the uprights, the fasteners out of their
 holes, the inserts out of their boxes, the rings off the handles. Every part
 that moves has one simple-expression driver per
 moving axis on its delta location, in its parent's axes, a sum of
