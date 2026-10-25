@@ -1,6 +1,7 @@
 // The rack viewer. It relies only on the node names and extras of
 // docs/design.md → *Model objects and the web export*.
 import * as THREE from "three";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import packed from "rack-model";
 import { addClipMaterials, initClips, isPanelOpen, openPanel } from "./clips.js";
@@ -431,7 +432,8 @@ renderer.setAnimationLoop((now) => {
 });
 
 async function load() {
-  const gltf = await new GLTFLoader().parseAsync(await unpack(packed), "");
+  const [bytes] = await Promise.all([unpack(packed), MeshoptDecoder.ready]);
+  const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).parseAsync(bytes, "");
   const root = gltf.scene;
   scene.add(root);
   root.traverse((o) => {

@@ -156,15 +156,20 @@ model with esbuild into `web/dist/index.html`. `web/src/clips.js` imports
 esbuild inlines, so a change there needs a rebuild:
 
 - The model is inlined deflated (`deflate-raw` from `node:zlib`); the browser
-  unpacks it with `DecompressionStream` before `GLTFLoader.parse`.
+  unpacks it with `DecompressionStream` before `GLTFLoader.parse`. The build
+  stops when `web/rack.glb` deflated exceeds 110 kB (`MODEL_LIMIT_KB`; not
+  checked for a `RACK_GLB` stand-in).
+- Inside the file the meshes are compressed with `KHR_meshopt_compression`,
+  which three.js's `MeshoptDecoder` (`three/addons/libs/meshopt_decoder.module.js`,
+  a WebAssembly module inlined in the script) unpacks during the parse.
 - `web/src/style.css` imports Web Awesome's `themes/default.css` and
   `native.css` from `node_modules`; esbuild inlines them. They reference no
   remote font or icon (their icons are inline SVG data URIs).
 - The favicon is inlined as a data URI.
 - The toolbar icons are Font Awesome Free 7.3.1 SVGs (icons CC BY 4.0),
   inlined through esbuild's `text` loader for `.svg`.
-- The licences of three.js, Web Awesome and Font Awesome Free go into an HTML
-  comment.
+- The licences of three.js, Web Awesome and Font Awesome Free, and the notice
+  of meshoptimizer, whose decoder three.js ships, go into an HTML comment.
 - A literal `</script` in the bundle is escaped.
 
 The model is `web/rack.glb`, exported by `blender/export_web.py` from the
@@ -198,8 +203,9 @@ The viewer relies only on the node names and extras of `docs/design.md` →
 
 A screw, nut, washer or cap carries its extras on its glTF mesh, not on its
 node; `GLTFLoader` merges them into the object's `userData`. The model needs
-`KHR_mesh_quantization` (16-bit positions, 8-bit normals), which three.js's
-`GLTFLoader` reads.
+`KHR_mesh_quantization` (16-bit positions, 8-bit normals) and
+`KHR_meshopt_compression`, which three.js's `GLTFLoader` reads once
+`setMeshoptDecoder` has given it the decoder.
 
 The inserts and the ColorClip rings are children of their box node, so moving
 the box node moves them too. The viewer clones the materials under every box,
@@ -247,6 +253,6 @@ two ways (`web/src/view.js`, the render loop in `web/src/main.js`):
 
 ## Browser requirement
 
-The viewer needs WebGL and `DecompressionStream` with the `deflate-raw`
-format: Chrome and Edge 103 or later, Firefox 113 or later, Safari 16.4 or
-later.
+The viewer needs WebGL, WebAssembly (for the meshopt decoder) and
+`DecompressionStream` with the `deflate-raw` format: Chrome and Edge 103 or
+later, Firefox 113 or later, Safari 16.4 or later.

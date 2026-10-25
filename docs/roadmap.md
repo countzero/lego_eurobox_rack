@@ -56,7 +56,7 @@ sorted by ID; the order of work follows from the status.
 | 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Done                 | [#22](https://github.com/countzero/lego_eurobox_rack/pull/22) |
 | 0019 | [Viewer controls](#0019-viewer-controls)                     | Done                 | [#19](https://github.com/countzero/lego_eurobox_rack/pull/19) |
 | 0020 | [Exploded view](#0020-exploded-view)                         | Done                 | [#23](https://github.com/countzero/lego_eurobox_rack/pull/23) |
-| 0021 | [Model size](#0021-model-size)                               | Planned              |                                                               |
+| 0021 | [Model size](#0021-model-size)                               | In progress          |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -567,12 +567,31 @@ goes together.
 **Goal:** `web/rack.glb` small enough to load fast on a phone, with every part
 of 0018 and the exploded view of 0020.
 
-**Delivers:** set when the step starts, from the sizes 0018 and 0020 report.
+**Delivers:** `blender/build_rack.py`, `blender/export_web.py`,
+`blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `web/build.mjs`,
+`web/src/main.js`, `docs/design.md` → *Model objects and the web export*,
+`docs/web_viewer.md`.
 
-**Acceptance:** to be written when 0020 is *Done*; it covers at least a size
-limit (1 MB before 0018), GPU instancing (`export_gpu_instances`,
-`EXT_mesh_gpu_instancing`), one mesh for the parts that are copies today
-(uprights, angles, brackets), mesh quantization or meshopt, and what the
-extras cost.
+**Acceptance:**
 
-**Open:** everything; the step investigates first.
+- `web/rack.glb` deflated is at most 110 kB, as `npm --prefix web run build`
+  reports it, and the build stops above that; at the start of the step it was
+  211 kB, two thirds of it the two box meshes.
+- The box meshes lose their slivers: after the rounding, near-coincident
+  vertices are welded, degenerate faces dissolved and coplanar faces merged;
+  the build still checks every box's outer size and inner top.
+- `export_web.py` keeps its quantization and stores every mesh's indices and
+  vertices with `KHR_meshopt_compression`, encoded by the meshoptimizer that
+  ships with Blender's glTF exporter, the triangles first ordered for the
+  vertex cache; identical buffers are stored once. No new dependency.
+- The viewer decodes the model with three.js's `MeshoptDecoder`, whose
+  licence goes into the page's licence notice.
+- The node names, extras and material names of 0002, 0018 and 0020 stay; the
+  viewer opens boxes, explodes and recolours clips as before.
+- Not taken: GPU instancing, which would drop the per-node names and extras
+  the viewer reads, while the whole JSON is 11 kB deflated; Draco, whose
+  decoder outweighs its saving; one clip mesh for all colours, a few kB after
+  meshopt.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `npm --prefix web run build` runs clean and the page opens offline. The pull
+  request reports the size of `web/rack.glb` and of the page.

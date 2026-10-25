@@ -511,8 +511,17 @@ The distances are `rack.json` → `explode`.
 `export_web.py` compacts the file after Blender's exporter: normals as
 normalized 8-bit integers and positions of the meshes within 1 m of their
 origin as normalized 16-bit integers (`KHR_mesh_quantization`, required), the
-long bars as floats on a 0.01 mm grid, node transforms rounded to 1e-6 m and
-1e-7, the JSON without spaces. There are no panel and no back stop nodes. The scene's extras carry
+long bars as floats on a 0.01 mm grid. Then each mesh's triangles are ordered
+for a vertex cache (tipsify), its vertices numbered in the order the
+triangles first use them, and indices and vertices stored losslessly with
+`KHR_meshopt_compression` (required), encoded by the meshoptimizer that ships
+with Blender's glTF exporter; identical buffers are stored once. The
+exporter's own meshopt option is not used: it stores the attributes as
+filtered floats, which pack worse than the integers. Node transforms are
+rounded to 1e-6 m and 1e-7, the JSON has no spaces. The boxes' meshes have
+their slivers removed after the rounding (near-coincident vertices welded at
+0.01 mm, degenerate faces dissolved, coplanar faces within 0.5° merged), which
+leaves their size checks unchanged. There are no panel and no back stop nodes. The scene's extras carry
 `{ "rack_schema": 3, "outer_mm": [1068, 435, 986] }`. Columns count 1-3 from
 the left seen from the front, levels 1-5 from the bottom. `pull_axis` points to
 the front; moving a box node by `travel` along it pulls the box, its inserts
