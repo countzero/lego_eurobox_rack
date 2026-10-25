@@ -6,8 +6,8 @@ meets WCAG 2.2 Level AA.
 ## Target and scope
 
 The viewer, `web/dist/index.html`, is to meet WCAG 2.2 Level AA as one full
-page, in every state: loading, boxes open or closed, the ColorClips panel
-shown or hidden, full screen. No conformance claim is published; the
+page, in every state: loading, boxes open or closed, the rack exploded or
+assembled, the ColorClips panel shown or hidden, full screen. No conformance claim is published; the
 requirement binds every change. AAA criteria are not pursued. The controls
 themselves are described in `docs/web_viewer.md` → *Controls*.
 
@@ -26,11 +26,15 @@ toolbar buttons show a focus ring with a dark halo.
   zoom by 1.25.
 - **Esc** is no character key and stays global: it first hides a shown tooltip
   or box hint (1.4.13), else, with the focus in the ColorClips panel, closes
-  the panel and returns the focus to Colours, else resets view, boxes and
-  colours. In full screen the browser takes the first Esc to leave full
-  screen.
-- **C** shows or hides the ColorClips panel only while the view or a toolbar
-  button has the focus (2.1.4, *Active only on focus*).
+  the panel and returns the focus to Colours, else resets view, boxes,
+  colours and the exploded view. In full screen the browser takes the first
+  Esc to leave full screen.
+- **C** shows or hides the ColorClips panel and **E** draws the rack apart or
+  puts it together, only while the view or a toolbar button has the focus
+  (2.1.4, *Active only on focus*).
+- **Motion:** the exploded view moves for 1.8 s, started only by the user, and
+  ends in one frame under `prefers-reduced-motion` (2.3.3 is AAA; the page
+  honours the setting anyway).
 - **Focus back to the view:** a toolbar button clicked with a pointer hands
   the focus back to the view, so its keys go on working; one pressed from the
   keyboard keeps it.
@@ -52,8 +56,9 @@ tap.
 
 ## Announcements and names
 
-- **Live region** (polite): each step of the box cursor and each box opened
-  or closed by key ("Level 3, column 2, closed").
+- **Live region** (polite): each step of the box cursor, each box opened
+  or closed by key ("Level 3, column 2, closed"), and "Exploded" or
+  "Assembled".
 - **The weakest-step line** of the ColorClips panel is a polite live region,
   so a changed colour announces the new weakest step.
 - **The title** is a link to the repository; its name adds a hidden "on
@@ -62,10 +67,10 @@ tap.
   or when it fails to load.
 - **Icon buttons** are native `<button>` elements named by `aria-label`:
   Reset, Colours with `aria-expanded` and `aria-controls` pointing at the
-  panel, Full screen with `aria-pressed` and a constant name. The icons are
-  `aria-hidden`.
+  panel, Explode and Full screen with `aria-pressed` and a constant name. The
+  icons are `aria-hidden`.
 - **Tooltips** show on hover and on keyboard focus with the name and key
-  ("Reset Esc", "Colours C"); they can be hovered, stay until the pointer or
+  ("Reset Esc", "Colours C", "Explode E"); they can be hovered, stay until the pointer or
   the focus leaves, and Esc hides them (1.4.13).
 - **Swatches** are named by the colour's English name.
 
@@ -123,9 +128,10 @@ After a change to `web/src/`, in Chromium:
 
 - Lighthouse's accessibility audit at 100 and axe with no violations. Neither
   finds the failures above by itself, so the rest are checked by hand.
-- Every function by keyboard alone: Tab order view, Reset, Colours, Full
-  screen when shown, the swatches when the panel is open; the view's keys;
-  Esc in each of its three cases; C from the view and from a button.
+- Every function by keyboard alone: Tab order view, Reset, Colours, Explode,
+  Full screen when shown, the swatches when the panel is open; the view's
+  keys; Esc in each of its three cases; C and E from the view and from a
+  button; Enter on a box while exploded assembles the rack.
 - Emulated at 320 × 256 and at 390 × 844 with touch: no control overlaps
   another or leaves the window; the single and double tap work.
 - The text-spacing bookmarklet's values (line height 1.5, paragraph spacing 2,

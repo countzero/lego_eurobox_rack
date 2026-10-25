@@ -53,8 +53,10 @@ sorted by ID; the order of work follows from the status.
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | Done                 | [#16](https://github.com/countzero/lego_eurobox_rack/pull/16) |
 | 0017 | [No joint plates](#0017-no-joint-plates)                     | Done                 | [#15](https://github.com/countzero/lego_eurobox_rack/pull/15) |
-| 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Planned              |                                                               |
+| 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Done                 | [#22](https://github.com/countzero/lego_eurobox_rack/pull/22) |
 | 0019 | [Viewer controls](#0019-viewer-controls)                     | Done                 | [#19](https://github.com/countzero/lego_eurobox_rack/pull/19) |
+| 0020 | [Exploded view](#0020-exploded-view)                         | Done                 | [#23](https://github.com/countzero/lego_eurobox_rack/pull/23) |
+| 0021 | [Model size](#0021-model-size)                               | Planned              |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -472,15 +474,18 @@ and place, so the renders and the viewer show what is bought.
 **Acceptance:**
 
 - Every `build` part of `rack.json` is drawn; each object names its part ID,
-  and the build stops unless the count per ID, or the length for the tape and
-  the slot cover, equals the parts list.
+  and the build stops unless the count per ID equals the parts list.
 - Screws, hammer nuts and washers sit in their holes with the heads where the
-  assembly guide puts them; the castor plates and the angles show their holes,
-  the brackets the shape of motedis S8BBR30.
+  assembly guide puts them, each a child of the part it holds; the castor
+  plates and the angles show their holes, the brackets the shape of motedis
+  S8BBR30; the end caps sit on the ends of the four bars.
+- Fasteners and caps carry `{ "kind": "fastener" | "cap", "part": "<id>" }`
+  in `web/rack.glb`.
 - Every shape value names its status; the pull request lists the `sources.md`
   rows to add on merge.
-- Parts of one kind share one mesh; `web/rack.glb` stays under 1 MB; a click
-  in the viewer passes through fasteners to the boxes.
+- Parts of one kind share one mesh; a click in the viewer passes through
+  fasteners and caps to the boxes. The pull request reports the size of
+  `web/rack.glb`; the 1 MB limit moves to 0021.
 - `build_rack.py` runs headless and a second run gives the same files.
 
 **Open:** the brackets' hole offset (motedis CAD); the counterbore depth of the
@@ -512,3 +517,62 @@ toggle on touch screens, and the whole page meeting WCAG 2.2 Level AA.
   and without dragging or pinching; the page meets WCAG 2.2 Level AA, checked
   as `docs/accessibility.md` describes.
 - `npm --prefix web run build` runs clean and the page still opens offline.
+
+## 0020 Exploded view
+
+**Goal:** the rack drawn apart, every part moved out of its place along a
+clear direction, in Blender and in the web viewer, so it shows how the rack
+goes together.
+
+**Delivers:** `design/rack.json` (`explode`), `blender/build_rack.py`,
+`blender/export_web.py`, `blender/rack.blend`, `renders/*.png`,
+`web/rack.glb`, `web/src/*` (but `agx.js`), `docs/design.md` → *Renders* and
+*Model objects and the web export*, `docs/web_viewer.md`,
+`docs/accessibility.md`, `README.md` (render list).
+
+**Acceptance:**
+
+- `rack.json` → `explode` holds the move of each group in mm: top plate up,
+  plate brackets up, top bars and top depth beams up, front frame forward and
+  back frame back, angles towards the middle of their bay, castor plates and
+  castors down, end caps out along their bar, screws out of their hole along
+  their own axis, hammer nuts and washers the opposite way, and the boxes with
+  their inserts and rings forward along `pull_axis`, clear of the frame.
+- In Blender a scene property `explode` from 0 to 1 moves every part between
+  its place and its exploded place through simple-expression drivers, which
+  run without Python auto-run; `rack.blend` is saved at 0.
+- `renders/exploded.png` shows the rack at 1, three-quarter from the front.
+- Every exported node that moves carries `explode` as an offset from its home
+  in glTF axes, relative to its parent; `web/rack.glb` holds the rack at 0.
+- The toolbar reads reset | colours | explode | full screen; explode is the
+  Font Awesome Free solid icon `bomb`, inlined at build time like the others,
+  a toggle with `aria-pressed` under the constant name "Explode", key E,
+  "Explode E" on hover and focus, announced as "Exploded" or "Assembled".
+- Exploding closes open boxes first; a click on a box while exploded
+  assembles the rack; Reset (Esc) assembles it too. The move takes 0.6 s with
+  the box easing and jumps under `prefers-reduced-motion`.
+- The shadows, the ground and the camera fit take in the exploded rack; clicks
+  still pass through fasteners and caps.
+- The page meets WCAG 2.2 Level AA in both states, checked as
+  `docs/accessibility.md` describes, at 320 × 256 and 390 × 844 with four
+  buttons.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `npm --prefix web run build` runs clean and the page opens offline. The pull
+  request reports the size of `web/rack.glb`.
+
+**Open:** the move distances are set by eye.
+
+## 0021 Model size
+
+**Goal:** `web/rack.glb` small enough to load fast on a phone, with every part
+of 0018 and the exploded view of 0020.
+
+**Delivers:** set when the step starts, from the sizes 0018 and 0020 report.
+
+**Acceptance:** to be written when 0020 is *Done*; it covers at least a size
+limit (1 MB before 0018), GPU instancing (`export_gpu_instances`,
+`EXT_mesh_gpu_instancing`), one mesh for the parts that are copies today
+(uprights, angles, brackets), mesh quantization or meshopt, and what the
+extras cost.
+
+**Open:** everything; the step investigates first.

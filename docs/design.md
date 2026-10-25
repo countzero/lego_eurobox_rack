@@ -15,7 +15,7 @@ until the boxes are measured (roadmap 0004).
 | 316 mm between the uprights                               | 310 mm between the hanging legs: 2.5 mm play per side for a 305 mm rim                                                                                                                                         | `DERIVED` below                                                                   |
 | Angles 50 × 50 × 3, flat leg on top                       | One angle carries the box above, guides the rim of the box below sideways and stops it tipping when pulled out                                                                                                 | `DERIVED` below                                                                   |
 | Levels set for the tallest box per class                  | 233 mm for the 220 class, 125 mm for the 120 class, 8 mm gap above                                                                                                                                             | `sources.md` → *Boxes*                                                            |
-| No slides, no pull-out stop                               | The user's choice; a box comes out like from an open shelf                                                                                                                                                     | the user                                                                          |
+| No slides, no slide tape, no pull-out stop                | The user's choice; a box comes out like from an open shelf and slides on the bare aluminium of the flat legs; the slots stay open for an industrial look, only the eight bar ends get caps                     | the user                                                                          |
 | No back stop: boxes pull out to the front and to the back | The user's choice; each box sits centred in the depth and pulls out 270 mm at either end; the rack must stand free in the room; the core-bolt joints keep the frames square                                    | the user                                                                          |
 | One 1068 mm bar front and back, top and bottom            | One piece over all three columns; the uprights stand between the bars on an M8 through-bolt into their core thread                                                                                             | the user                                                                          |
 | No joint plates; core-bolt joints keep the frames square  | The real CPL3030 / CPT3030 webs would block the level 1 and level 5 boxes; one tightened M8 core bolt per upright end holds the frames square (*Joints*, `UNVERIFIED`); threadlocker optional                  | the user; *Joints*                                                                |
@@ -194,7 +194,7 @@ bar. The top plate overhangs the frame by 20 at each side.
 ```
  upright   angle.support 50 x 50 x 3, flat leg on top
    ||
-   ||#############      <- the box ABOVE stands on the 50 mm flat leg (UHMW tape)
+   ||#############      <- the box ABOVE stands on the 50 mm flat leg
    ||#
    ||#    8 mm gap      <- the box BELOW tips up into the flat leg: tip guard
    ||#  +----------     <- rim of the box BELOW
@@ -416,9 +416,7 @@ and `planned` for a part that is designed but not yet bought (none at present).
 | `screw.m8x20_socket`      | fastener   | 4        | build   |
 | `washer.m8`               | fastener   | 4        | build   |
 | `castor.plain`            | castor     | 4        | build   |
-| `tape.uhmw_25`            | consumable | 13050 mm | build   |
 | `cap.end_30`              | finish     | 8        | build   |
-| `cover.slot_8`            | finish     | 3636 mm  | build   |
 | `box.e120`                | box        | 12       | build   |
 | `box.e220`                | box        | 3        | build   |
 | `clip.blue`               | box        | 3        | build   |
@@ -462,6 +460,7 @@ render but `inserts_top`:
 | `renders/drawer_out.png`    | Three-quarter, box `L3.C2` pulled out by `pull_out.travel` (270 mm)                   |
 | `renders/inserts_top.png`   | Orthographic from above, the twelve 120 boxes with their inserts, staged in four rows |
 | `renders/angle_detail.png`  | Close-up of one support angle with the boxes above and below                          |
+| `renders/exploded.png`      | Perspective, front left from above, the rack exploded (`explode` at 1)                |
 
 ### Model objects and the web export
 
@@ -470,15 +469,48 @@ glTF in metres, Y up, as Blender's exporter writes it: rack `x` stays glTF `x`,
 rack `z` becomes glTF `y`, rack `y` becomes glTF `-z`. The front is rack `-y`,
 which is glTF `+z`.
 
-| Node name                                        | Holds                                                                               | glTF extras                                                                                                                                                                |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `frame`                                          | uprights, bars, depth beams, castor plates, brackets, angles, castors               | `{ "kind": "frame" }`                                                                                                                                                      |
-| `box.L<level>.C<column>`                         | one box and, as children, its inserts and its ColorClip rings; 15 nodes             | `{ "kind": "box", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1], "sides": ["front", "back"] }` |
-| `insert.L<level>.C<column>.R<row>.<cell>.<type>` | one insert, child of its box node                                                   | `{ "kind": "insert" }`                                                                                                                                                     |
-| `clip.L<level>.C<column>.<colour>`               | the ColorClip rings of both handles, child of its box node                          | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                               |
-| `plate.top`                                      | the top plate                                                                       | `{ "kind": "plate", "status": "build", "plywood": { … } }`                                                                                                                 |
+| Node name                                                                                   | Holds                                                                           | glTF extras                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `frame`                                                                                     | every part of the rack but the boxes and the plate, as children                 | `{ "kind": "frame" }`                                                                                                                                                                                        |
+| `upright.<n>.<side>`, `bar.<top/bottom>.<side>`, `beam.depth.<top/bottom>.<n>`              | one profile, child of `frame`; side is `front` or `back`                        | `{ "part": "profile.upright" }` and so on                                                                                                                                                                    |
+| `angle.base.L1.C<column>.<left/right>`, `angle.support.L<level>…`, `angle.guard.C<column>…` | one angle, child of `frame`                                                     | `{ "part": "angle.base" }` and so on                                                                                                                                                                         |
+| `bracket.<n>`, `bracket.plate.<side>.<n>`, `plate.castor.<n>`, `castor.plain.<n>`           | one bracket, castor plate or castor, child of `frame`                           | `{ "part": "<part ID>" }`                                                                                                                                                                                    |
+| `<part ID>.<n>`                                                                             | one screw, hammer nut, washer or end cap, child of the part it sits in or holds | none; its mesh carries `{ "part": "<part ID>", "kind": "fastener" or "cap" }`                                                                                                                                |
+| `bracket.plate.fixing.<part ID>.<n>`                                                        | the screw or hammer nut of a plate bracket's fixing set, child of the bracket   | `{ "part_of": "bracket.plate" }`; its mesh as above                                                                                                                                                          |
+| `box.L<level>.C<column>`                                                                    | one box and, as children, its inserts and its ColorClip rings; 15 nodes         | `{ "kind": "box", "part": "box.e120" or "box.e220", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1], "sides": ["front", "back"] }` |
+| `insert.L<level>.C<column>.R<row>.<cell>.<type>`                                            | one insert, child of its box node                                               | `{ "kind": "insert", "type": "<type>", "part": "insert.set_half" or "insert.set_quarter" }`                                                                                                                  |
+| `clip.L<level>.C<column>.<colour>.<front/back>`                                             | the ColorClip ring of one handle, child of its box node                         | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                                                                 |
+| `plate.top`                                                                                 | the top plate                                                                   | `{ "kind": "plate", "part": "plate.top", "status": "build", "plywood": { … } }`                                                                                                                              |
 
-There are no panel and no back stop nodes. The scene's extras carry
+Every part of the parts list is drawn: `build_rack.py` stops unless the count
+per part ID equals `rack.json` → `parts` (an insert set counts once per box,
+a ColorClip set once per box, a fixing-set piece not at all). Parts of one
+kind share one mesh; a right-hand angle or a back castor is its left or front
+twin turned half round, not mirrored. A screw, nut, washer or cap carries its
+part ID on its mesh, not on its node, which keeps its 484 nodes small; three.js
+merges the mesh extras into the node's `userData`, so the viewer reads
+`kind` and `part` there alike.
+
+The exploded view: `rack.blend` has a scene property `explode` from 0 to 1,
+run in three steps, each a third of the range, so no part passes through
+another: (1) the boxes straight out to the front, past the frame and the
+plate's overhang (the build checks this); (2) the boxes up and aside, each
+level higher than the one below; (3) everything else: the frame apart, the
+fasteners out of their holes, the inserts out of their boxes, the rings off
+the handles. Every part that moves has one simple-expression driver per
+moving axis on its delta location, in its parent's axes, a sum of
+`<metres>*clamp(e*3-<step>,0,1)`; Blender runs them without Python auto-run,
+and the file is saved at 0. `export_web.py` reads the drivers back and writes
+each moving node's move as the glTF extra `{ "explode": [[x, y, z], …] }`,
+one offset per step, in metres, glTF axes, its parent's space; the glb holds
+the rack assembled. A child that only moves with its parent carries none.
+The distances are `rack.json` → `explode`.
+
+`export_web.py` compacts the file after Blender's exporter: normals as
+normalized 8-bit integers and positions of the meshes within 1 m of their
+origin as normalized 16-bit integers (`KHR_mesh_quantization`, required), the
+long bars as floats on a 0.01 mm grid, node transforms rounded to 1e-6 m and
+1e-7, the JSON without spaces. There are no panel and no back stop nodes. The scene's extras carry
 `{ "rack_schema": 3, "outer_mm": [1068, 435, 986] }`. Columns count 1-3 from
 the left seen from the front, levels 1-5 from the bottom. `pull_axis` points to
 the front; moving a box node by `travel` along it pulls the box, its inserts
@@ -486,4 +518,5 @@ and its rings out together. When `sides` contains `"back"`, the viewer pulls
 the box the other way, along `-pull_axis`, for a click on its back half.
 
 Material names: `aluminium`, `box_anthracite`, `insert_grey`, `clip_blue`,
-`clip_turquoise`, `clip_lightgreen`, `castor`, `plywood`.
+`clip_turquoise`, `clip_lightgreen`, `castor`, `plywood`, `steel` (the
+zinc-plated screws, nuts and washers), `cap_black` (the end caps).

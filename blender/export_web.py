@@ -2,19 +2,38 @@
 
 Run headless on the saved model; the .blend is never saved:
     blender --background blender/rack.blend --python-exit-code 1 --python blender/export_web.py
+
+After Blender's exporter, compact() makes the file smaller without changing
+what the viewer shows:
+- normals become normalized 8-bit integers (KHR_mesh_quantization, which
+  three.js's GLTFLoader reads), 4 bytes a vertex instead of 12, about half a
+  degree of error;
+- positions of a mesh within 1 m of its origin become normalized 16-bit
+  integers, a 0.03 mm grid, 8 bytes a vertex instead of 12; the longer bars
+  keep floats snapped to a 0.01 mm grid;
+- node transforms round to 1e-6 m and 1e-7 of a unit quaternion, which
+  deflate packs far better than float noise;
+- the JSON loses its spaces and the buffer views their padding gaps.
 """
 
+import array
+import json
 import os
+import re
+import struct
 
 import bpy
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "web", "rack.glb")
 
-EXPORT_COLLECTIONS = ("frame", "angles", "castors", "boxes", "inserts", "top_plate")
+EXPORT_COLLECTIONS = ("frame", "angles", "fasteners", "castors", "boxes", "inserts", "top_plate")
+GRID = 1e-5  # m, the positions' grid
+FLOAT, BYTE, SHORT = 5126, 5120, 5122
+QUANT = "KHR_mesh_quantization"
 
 
-def main():
+def export():
     for obj in bpy.data.objects:
         obj.select_set(False)
     keep = {obj for name in EXPORT_COLLECTIONS for obj in bpy.data.collections[name].all_objects}
@@ -39,7 +58,144 @@ def main():
         export_texcoords=False,
         export_image_format="NONE",
     )
-    print("wrote", OUT)
+
+
+TERM = re.compile(r"^(-?[\d.e+-]+)\*clamp\(e\*(\d+)-(\d+),0,1\)$")
+
+
+def explode_offsets():
+    """Each object's exploded move, in glTF axes and its parent's space, as one
+    offset per step: build_rack.py drives delta_location with a sum of
+    `<metres>*clamp(e*<steps>-<step>,0,1)` per axis, and the exporter turns
+    Blender's (x, y, z) into glTF's (x, z, -y)."""
+    out = {}
+    for obj in bpy.data.objects:
+        ad = obj.animation_data
+        if not ad:
+            continue
+        steps = {}
+        count = 1
+        for fc in ad.drivers:
+            if fc.data_path != "delta_location":
+                continue
+            for term in fc.driver.expression.split("+"):
+                found = TERM.match(term)
+                assert found, fc.driver.expression
+                d, count, k = float(found.group(1)), int(found.group(2)), int(found.group(3))
+                steps.setdefault(k, [0.0, 0.0, 0.0])[fc.array_index] = d
+        if steps:
+            full = [[0.0, 0.0, 0.0] for _ in range(count)]
+            for k, v in steps.items():
+                full[k] = [v[0], v[2], -v[1]]
+            out[obj.name] = full
+    return out
+
+
+def read_glb(path):
+    data = open(path, "rb").read()
+    jlen = struct.unpack("<I", data[12:16])[0]
+    doc = json.loads(data[20:20 + jlen])
+    blen = struct.unpack("<I", data[20 + jlen:24 + jlen])[0]
+    return doc, data[28 + jlen:28 + jlen + blen]
+
+
+def write_glb(path, doc, binary):
+    js = json.dumps(doc, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    js += b" " * (-len(js) % 4)
+    binary += b"\0" * (-len(binary) % 4)
+    total = 12 + 8 + len(js) + 8 + len(binary)
+    with open(path, "wb") as f:
+        f.write(struct.pack("<III", 0x46546C67, 2, total))
+        f.write(struct.pack("<II", len(js), 0x4E4F534A) + js)
+        f.write(struct.pack("<II", len(binary), 0x004E4942) + binary)
+
+
+def rounded(values, step):
+    return [round(v / step) * step for v in values]
+
+
+def short(values, digits):
+    """Round to digits after the point and keep the shortest float that prints so."""
+    return [float(f"{v:.{digits}f}") + 0.0 for v in values]
+
+
+def compact(path, offsets):
+    doc, old = read_glb(path)
+    for node in doc["nodes"]:
+        if node.get("name") in offsets:
+            node.setdefault("extras", {})["explode"] = [short(v, 6) for v in offsets[node["name"]]]
+    views, accessors = doc["bufferViews"], doc["accessors"]
+    roles = {}
+    for mesh in doc["meshes"]:
+        for prim in mesh["primitives"]:
+            for name, index in prim["attributes"].items():
+                roles[index] = name
+    chunks = []
+    for i, acc in enumerate(accessors):
+        view = views[acc["bufferView"]]
+        start = view.get("byteOffset", 0) + acc.get("byteOffset", 0)
+        raw = old[start:start + view["byteLength"]]
+        role = roles.get(i)
+        if role in ("POSITION", "NORMAL") and acc["componentType"] == FLOAT and acc["type"] == "VEC3":
+            assert "byteStride" not in view, "interleaved attributes are not handled"
+            vals = array.array("f")
+            vals.frombytes(raw[:acc["count"] * 12])
+            if role == "POSITION" and max(map(abs, vals)) <= 1.0:
+                q = array.array("h")
+                for k in range(0, len(vals), 3):
+                    q.extend(round(v * 32767) for v in vals[k:k + 3])
+                    q.append(0)
+                acc["min"] = [min(q[k::4]) for k in range(3)]
+                acc["max"] = [max(q[k::4]) for k in range(3)]
+                raw = q.tobytes()
+                acc["componentType"] = SHORT
+                acc["normalized"] = True
+                view["byteStride"] = 8
+            elif role == "POSITION":
+                vals = array.array("f", rounded(vals, GRID))
+                acc["min"] = [min(vals[k::3]) for k in range(3)]
+                acc["max"] = [max(vals[k::3]) for k in range(3)]
+                raw = vals.tobytes()
+            else:
+                q = array.array("b")
+                for k in range(0, len(vals), 3):
+                    q.extend(max(-127, min(127, round(v * 127))) for v in vals[k:k + 3])
+                    q.append(0)
+                raw = q.tobytes()
+                acc["componentType"] = BYTE
+                acc["normalized"] = True
+                view["byteStride"] = 4
+        chunks.append((acc["bufferView"], raw))
+    # one tightly packed buffer view per accessor, in accessor order
+    binary = b""
+    new_views = []
+    for i, (view_index, raw) in enumerate(chunks):
+        binary += b"\0" * (-len(binary) % 4)
+        view = {k: v for k, v in views[view_index].items() if k not in ("byteOffset", "byteLength")}
+        view.update(buffer=0, byteOffset=len(binary), byteLength=len(raw))
+        new_views.append(view)
+        accessors[i]["bufferView"] = i
+        accessors[i].pop("byteOffset", None)
+        binary += raw
+    doc["bufferViews"] = new_views
+    doc["buffers"] = [{"byteLength": len(binary)}]
+    for node in doc["nodes"]:
+        for key, digits in (("translation", 6), ("rotation", 7), ("scale", 7)):
+            if key in node:
+                node[key] = short(node[key], digits)
+    for key in ("extensionsUsed", "extensionsRequired"):
+        doc[key] = sorted(set(doc.get(key, [])) | {QUANT})
+    write_glb(path, doc, binary)
+
+
+def main():
+    bpy.context.scene["explode"] = 0.0
+    bpy.context.view_layer.update()
+    offsets = explode_offsets()
+    export()
+    before = os.path.getsize(OUT)
+    compact(OUT, offsets)
+    print("wrote", OUT, before, "->", os.path.getsize(OUT), "bytes")
 
 
 main()

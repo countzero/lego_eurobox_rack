@@ -98,6 +98,28 @@ same mould; the body geometry below was read from their photos.
 [pb-pp]: https://api.physicallybased.info/v2/materials
 [ri-ps]: https://refractiveindex.info/?shelf=organic&book=polystyrene&page=Sultanova
 
+## Fasteners and brackets in the model
+
+Added with 0018; the values live in `design/rack.json` → `brackets` and
+`fasteners`.
+
+| Fact                                        | Value                                                                                                                 | Status   | Source                                                     |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------- |
+| Bracket 30 B-type slot 8, motedis S8BBR30   | legs 27 long, 6 thick, 28 wide; side walls 3 thick cut off at 32.5; hole 7.0 to 20.7 from the corner, 6.4 to 7.0 wide | VERIFIED | [motedis S8BBR30 CAD][mo-s8bbr30]                          |
+| Hammer nut B-type slot 8 M6 and M5, motedis | 16.4 × 8 × 6                                                                                                          | VERIFIED | [motedis M6 CAD][mo-hm6-cad], [motedis M5 CAD][mo-hm5-cad] |
+| ISO 4762 M8 head                            | dk 13, k 8                                                                                                            | VERIFIED | [ISO 4762 table][iso-4762]                                 |
+| ISO 7380-1 M6 head                          | dk 10.5, k 3.3                                                                                                        | VERIFIED | [ISO 7380-1 table][iso-7380]                               |
+| ISO 10642 (DIN 7991) heads M5, M6           | dk max 10 and 12; k = (dk − d) / 2 for the 90° head                                                                   | VERIFIED | [ISO 10642 table][iso-10642]                               |
+| ISO 7089 washer M8                          | 8.4 × 16 × 1.6                                                                                                        | VERIFIED | [Böllhoff ISO 7089][boellhoff-7089]                        |
+
+[mo-s8bbr30]: https://www.motedis.com/shop/products_files/Motedis_S8BBR30.zip
+[mo-hm6-cad]: https://www.motedis.com/shop/products_files/Motedis_S8BHASNM6_1.zip
+[mo-hm5-cad]: https://www.motedis.com/shop/products_files/Motedis_S8BHASNM5_1.zip
+[iso-4762]: https://cdn.standards.iteh.ai/samples/34460/06335046afaf46fb8e84d91a3eda001d/ISO-4762-2004.pdf
+[iso-7380]: https://cdn.standards.iteh.ai/samples/53671/84df01c5fcce4a91896ac3b0c55ca128/ISO-7380-1-2011.pdf
+[iso-10642]: https://www.aramfix.com/content/files/i642buaps/datasheet%20iso%2010642.pdf
+[boellhoff-7089]: https://eshop.boellhoff.de/out/media/pdf/ISO_7089_Stahl_HV3_gv___en.pdf
+
 ## Frame additions of the 400 × 300 design
 
 | Fact                                  | Value                                                                            | Status     | Source                                 |
@@ -140,7 +162,7 @@ same mould; the body geometry below was read from their photos.
 | Angle 50 × 50 × 3, alu-profile-zuschnitt | 12.02 €/m, 0.81 kg/m, up to 5000 mm                                   | VERIFIED  | [alu-profile-zuschnitt 50][apz-50]           |
 | Angle 50 × 50 × 3, profilzuschnitt24     | 12.11 €/m + 1.10 € per cut                                            | VERIFIED  | [profilzuschnitt24 50][pz-50]                |
 | Castor 100 mm grey solid rubber, Dold    | 112 kg, 133 mm high, non-marking, brake, 27.83 €                      | VERIFIED  | [Dold 100 rubber][dold-100]                  |
-| UHMW slide tape 25 mm                    | about 8 € per 10 m roll (thin film); movet 25 × 0.8 mm: 120.86 €      | SECONDARY | [Amazon][tape-amz], [movet][tape-movet]      |
+| UHMW slide tape 25 mm                    | about 8 € per 10 m roll (thin film); movet 0.8 mm: 120.86 €; dropped  | SECONDARY | [Amazon][tape-amz], [movet][tape-movet]      |
 | Shipping Dold                            | DHL up to 1 m: 6.90–8.90 €                                            | VERIFIED  | [Dold shipping][dold-ship]                   |
 | Shipping motedis                         | 5.83 € net up to 111.09 €, 16.33 € net up to 222.19 €; packing 3.89 € | VERIFIED  | [motedis shipping][mo-ship]                  |
 
@@ -213,7 +235,7 @@ Facts of roadmap 0014, read on 2026-10-22. The loads built on them are in
 | Swing-in T-nuts fit an assembled frame | hammer nuts and spring T-nuts go in from the open slot face                                                              | VERIFIED   | [BM Profiles][bm-nuts]                                 |
 | Bracket with fixing set, B-type slot 8 | Winkel 30 with screw and nut, 1.93 €                                                                                     | SECONDARY  | [aluprofile-express][ape-acc]                          |
 | Threaded insert Rampa SK M6            | about 2.46 € each, stainless                                                                                             | SECONDARY  | [schraubenking][rampa]                                 |
-| Slot cover B-type slot 8               | about 0.42 € per unit; unit length to be checked                                                                         | SECONDARY  | [motedis cover][mo-cover]                              |
+| Slot cover B-type slot 8               | about 0.42 € per unit; unit length to be checked; dropped, the user's choice                                             | SECONDARY  | [motedis cover][mo-cover]                              |
 | Birch plywood 21 mm, cut to size       | 66.95 €/m² BB/CP, 15 plies (Holz-Speckmann); 91.40 €/m² BB/BB, 20.0–22.4 mm, 14.3 kg/m² (plattenzuschnitt24); 2026-10-22 | VERIFIED   | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
 | Birch plywood 20 mm                    | not sold by either shop; they step from 18 mm (13 plies) to 21 mm                                                        | VERIFIED   | [Holz-Speckmann][hs-mpx], [plattenzuschnitt24][pz-mpx] |
 | Multiplex build                        | crosswise glued veneers, at least 5, often 7 or more layers                                                              | VERIFIED   | [plattenzuschnitt24][pz-mpx]                           |

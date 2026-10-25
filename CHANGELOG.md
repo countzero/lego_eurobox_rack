@@ -3,6 +3,25 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-10-25
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: do not order the slide tape or the slot covers any more; the parts list, the prices and the assembly guide no longer have them, and the guide's steps 11 to 13 are now 10 to 12._
+
+### Added
+
+- Draw every bought part in the model: 476 screws, hammer nuts and washers in their holes, the end caps, the holes of the bars, angles and castor plates, and the brackets in the shape of motedis S8BBR30; the build stops unless every part of the parts list is drawn as often as listed ([#22](https://github.com/countzero/lego_eurobox_rack/pull/22))
+- Add an exploded view: an `explode` slider in Blender, `renders/exploded.png` and an Explode button (key E) in the web viewer; the boxes slide out to the front and aside before the rack comes apart, the inserts lift out and the ColorClip rings come off ([#23](https://github.com/countzero/lego_eurobox_rack/pull/23))
+
+### Changed
+
+- Shrink the web model from 945 kB to 636 kB with every part in it: shared meshes and quantized vertices ([#22](https://github.com/countzero/lego_eurobox_rack/pull/22))
+
+### Removed
+
+- **Breaking:** drop the UHMW slide tape and the slot covers; the boxes slide on the bare aluminium and the slots stay open, the rack costs 24.13 € less ([`f7f3725`](https://github.com/countzero/lego_eurobox_rack/commit/f7f3725))
+
 ## [0.4.2] - 2026-10-23
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
