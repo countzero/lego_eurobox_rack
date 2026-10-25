@@ -6,8 +6,8 @@ A rolling rack that holds 15 Euroboxes NextGen 2.0 Cycle 400 × 300
 (ab-in-die-BOX) as LEGO drawers, the short side with the handle at the front:
 3 columns, one level of 220 mm boxes at the bottom and four levels of 120 mm
 boxes with inserts above, one long bar front and back, on 4 castors, without
-panels, under a structural birch plywood top plate. It takes any 400 × 300
-Eurobox with a continuous bottom edge.
+panels, under a structural birch plywood top plate. It takes NextGen 2.0
+boxes 400 × 300 only (0022, the user's choice).
 Everything needed to buy the parts and build it is in this repository, and a
 web viewer on GitHub Pages shows the rack in 3D with boxes that pull out.
 
@@ -56,7 +56,8 @@ sorted by ID; the order of work follows from the status.
 | 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Done                 | [#22](https://github.com/countzero/lego_eurobox_rack/pull/22) |
 | 0019 | [Viewer controls](#0019-viewer-controls)                     | Done                 | [#19](https://github.com/countzero/lego_eurobox_rack/pull/19) |
 | 0020 | [Exploded view](#0020-exploded-view)                         | Done                 | [#23](https://github.com/countzero/lego_eurobox_rack/pull/23) |
-| 0021 | [Model size](#0021-model-size)                               | Planned              |                                                               |
+| 0021 | [Model size](#0021-model-size)                               | Done                 | [#27](https://github.com/countzero/lego_eurobox_rack/pull/27) |
+| 0022 | [Switch to motedis](#0022-switch-to-motedis)                 | Done                 | [#28](https://github.com/countzero/lego_eurobox_rack/pull/28) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -567,12 +568,104 @@ goes together.
 **Goal:** `web/rack.glb` small enough to load fast on a phone, with every part
 of 0018 and the exploded view of 0020.
 
-**Delivers:** set when the step starts, from the sizes 0018 and 0020 report.
+**Delivers:** `blender/build_rack.py`, `blender/export_web.py`,
+`blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `web/build.mjs`,
+`web/src/main.js`, `docs/design.md` → *Model objects and the web export*,
+`docs/web_viewer.md`.
 
-**Acceptance:** to be written when 0020 is *Done*; it covers at least a size
-limit (1 MB before 0018), GPU instancing (`export_gpu_instances`,
-`EXT_mesh_gpu_instancing`), one mesh for the parts that are copies today
-(uprights, angles, brackets), mesh quantization or meshopt, and what the
-extras cost.
+**Acceptance:**
 
-**Open:** everything; the step investigates first.
+- `web/rack.glb` deflated is at most 110 kB, as `npm --prefix web run build`
+  reports it, and the build stops above that; at the start of the step it was
+  211 kB, two thirds of it the two box meshes.
+- The box meshes lose their slivers: after the rounding, near-coincident
+  vertices are welded, degenerate faces dissolved and coplanar faces merged;
+  the build still checks every box's outer size and inner top.
+- `export_web.py` keeps its quantization and stores every mesh's indices and
+  vertices with `KHR_meshopt_compression`, encoded by the meshoptimizer that
+  ships with Blender's glTF exporter, the triangles first ordered for the
+  vertex cache; identical buffers are stored once. No new dependency.
+- The viewer decodes the model with three.js's `MeshoptDecoder`, whose
+  licence goes into the page's licence notice.
+- The node names, extras and material names of 0002, 0018 and 0020 stay; the
+  viewer opens boxes, explodes and recolours clips as before.
+- Not taken: GPU instancing, which would drop the per-node names and extras
+  the viewer reads, while the whole JSON is 11 kB deflated; Draco, whose
+  decoder outweighs its saving; one clip mesh for all colours, a few kB after
+  meshopt.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `npm --prefix web run build` runs clean and the page opens offline. The pull
+  request reports the size of `web/rack.glb` and of the page.
+
+## 0022 Switch to motedis
+
+**Goal:** every metal part and the castors from motedis in one order, with
+40 × 40 × 4 angles, 8 mm castor plates and braked castors, the rack redrawn
+around them, so the build rests on what one shop sells, cuts and ships
+together in a few days.
+
+**Delivers:** `design/rack.json` (frame heights and widths, castor, castor
+plate, angles, fasteners, `top_plate`, `box_envelope`, levels, `outer`,
+`parts`, `stock`), `blender/build_rack.py`, `blender/rack.blend`,
+`renders/*.png`, `web/rack.glb`, `bom/build_bom.py`, `bom/parts.csv`,
+`bom/cutlist.csv`, `bom/README.md`, `docs/design.md`, `docs/assembly.md`,
+`docs/prices.md`, `README.md`, `AGENTS.md` (*Single Source of Truth*, the box
+envelope bullet).
+
+**Acceptance:**
+
+- Angles 40 × 40 × 4, anodised (motedis), cut to 435 from whole 1980 mm bars:
+  `rack.json` → `stock` holds the bar, its kerf, end trim and smallest rest, and
+  the cut list packs 36 pieces into 9 bars. The holes sit 15 from each end and
+  11 and 28 from the inner face of the flat leg, for `screw.m5x12_countersunk`.
+- 310 between the hanging legs stays: bays 318, leg tips 238 apart, bars 1074,
+  frame 1074 × 435 × 990; castor plate 125–133 (motedis 8 × 90 EN AW-5083,
+  a 740 mm bar cut to 4 × 90), bottom bars 133–163, uprights 797 (163–960),
+  top bars 960–990; level floors 167, 412, 549, 686, 823, guard 956–960; top
+  plate 1114 × 483 × 21, its top at 1011. The same numbers in `rack.json`,
+  the scene's `outer_mm`, the documents and the README.
+- The upright joints use stainless A2 bolts (at least A2-50):
+  `screw.m8x50_socket` from below and `screw.m8x40_socket` from above into
+  motedis' M8 core thread, taken as 25 mm deep (`UNVERIFIED`); the build stops
+  unless each engages at most the thread depth less 2 mm.
+- Four `castor.brake` (motedis 1748: 100 mm, 125 high, back hole 11, offset 28,
+  70 kg, total lock), each held by `screw.m8x35_socket`, two `washer.m8` and
+  `nut.m8_lock` (DIN 985) through a 9 mm hole in the castor plate. The four
+  corner bottom brackets are gone: 24 `bracket.inside_30` and 20
+  `bracket.plate`, the plate brackets' screws and nuts counted as
+  `screw.m6x12_button` and `tnut.m6`.
+- No `castor.plain`, `screw.m8x70_socket`, `screw.m8x20_socket` or
+  `screw.m5x10_countersunk` in `rack.json`, the parts list, the model,
+  `web/rack.glb` or the documents, apart from earlier roadmap sections and
+  superseded rows of `docs/sources.md`.
+- The box envelope takes NextGen 2.0 boxes only, the user's choice:
+  `AGENTS.md`, this roadmap's goal and `docs/design.md` say so; the foot width
+  of at least 282 is `UNVERIFIED` until 0004. The fit check passes on paper: a
+  305 rim in 310, the foot 22 mm on each leg centred and 15 mm pushed to one
+  side, 8 mm above the tallest box on every level.
+- The build stops unless the uprights fill the space between the bars, the gap
+  above the tallest box is the same on every level and the castor bolt's tip
+  stays below the bottom bars' top.
+- `docs/design.md` → *Loads* follows the new masses, bar length and castor
+  positions and the A2-50 bolts; tipping and rolling are stated for braked
+  castors.
+- `docs/prices.md` gives one motedis order with its shipping as read, the top
+  plate from Holz-Speckmann, the wood screws from a hardware store and the
+  boxes from aidB; Dold stays as a comparison outside the totals.
+- `docs/assembly.md` lists the new parts, the holes drilled at home and the
+  tools: no 6.8 mm drill and no M8 tap; a 9 mm drill and two 13 mm spanners.
+- Every new dimension, price and product property names its status and the
+  date it was read (2026-10-25); the pull request lists the `sources.md` rows
+  to add on merge and the Dold rows to mark superseded.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `build_bom.py` runs twice with the same CSV files; `npm --prefix web run
+  build` runs clean, `web/rack.glb` deflated stays at or below 110 kB and the
+  page opens offline. The pull request reports both sizes.
+
+**Open:** the depth of motedis' M8 core thread (asked by email); the boxes'
+foot width (0004); the castor's metal thickness at its back hole, which the
+1748 drawing does not give; the motedis profile's moment of inertia, which
+motedis does not publish (the loads use Dold's 2.68 cm⁴, `UNVERIFIED` for
+motedis); whether motedis still has four 1748 when ordering (fallback: the
+plain 995). This step supersedes the Dold parts and plain castors of 0014 and
+the joint estimate of 0017.

@@ -3,7 +3,8 @@
 Every fact the design, the parts list and the prices rest on, with its status
 (`docs/conventions.md` → *Sources*). Prices were read on 2026-10-20; the
 prices of the 400 × 300 redesign were read on 2026-10-21, those of 0012 and
-0014 on 2026-10-22. All include 19 % VAT
+0014 on 2026-10-22, those of the motedis order (0022) on 2026-10-25. Since
+0022 the Dold rows below are a comparison only. All include 19 % VAT
 unless marked; a net price converted with 19 % is `DERIVED`. A source is a
 reference link, defined at the end of its section.
 
@@ -122,19 +123,19 @@ Added with 0018; the values live in `design/rack.json` → `brackets` and
 
 ## Frame additions of the 400 × 300 design
 
-| Fact                                  | Value                                                                            | Status     | Source                                 |
-| ------------------------------------- | -------------------------------------------------------------------------------- | ---------- | -------------------------------------- |
-| Profile 30 × 60L B-type slot 8, Dold  | 19.00 €/m + 1.00 € per cut; 1.489 kg/m; dropped with the 30 × 30 bottom bar      | VERIFIED   | [Dold 30x60][dold-3060]                |
-| Profile 30 × 60L moment of inertia Iy | 19.5 cm⁴, from the page data; dropped with the 30 × 30 bottom bar                | SECONDARY  | [Dold 30x60][dold-3060]                |
-| M8 core thread surcharges, Dold       | 1.00 € per end; 2.00 € extra for 80 mm deep; from the page JSON                  | UNVERIFIED | [Dold 30x30][dold-30]                  |
-| CNC holes, Dold                       | at least 2.00 € per hole, only in the configurator                               | UNVERIFIED | [Dold 30x60][dold-3060]                |
-| DIN 912 M8 × 100 8.8 zinc, Dold       | 1.11 € each (0.05 € base + 1.06 €)                                               | DERIVED    | [aluprofile-express][ape-912]          |
-| DIN 912 M8 × 70 8.8 zinc, Dold        | about 2.79 € each (0.05 € base + 2.74 €), not the cart price                     | UNVERIFIED | [aluprofile-express][ape-912]          |
-| DIN 912 M8 × 50 8.8 zinc, Dold        | 0.60 € each                                                                      | DERIVED    | [aluprofile-express][ape-912]          |
-| Shipping Dold, pieces over 1 m        | DPD up to 1.5 m and 30 kg: 14.90 €; VAT basis not stated                         | VERIFIED   | [Dold shipping][dold-ship]             |
-| Joint plates L and T 3030, motedis    | CPL3030, CPT3030; 90 × 90 × 4 mm, 5 holes; 2.00 € net each; dropped with 0017    | DERIVED    | [motedis L][mo-pl], [motedis T][mo-pt] |
-| Joint plate shape, motedis drawing    | holes Ø6.5, 15 from the edges, 30 apart; corner filled to a chamfer 30–90 mm     | VERIFIED   | [motedis L][mo-pl], [motedis T][mo-pt] |
-| Castor 100 mm solid rubber, Dold      | only a braked swivel (27.83 €) and a fixed castor (23.03 €, 136 mm high)         | VERIFIED   | [Dold 100 rubber][dold-100]            |
+| Fact                                  | Value                                                                         | Status     | Source                                 |
+| ------------------------------------- | ----------------------------------------------------------------------------- | ---------- | -------------------------------------- |
+| Profile 30 × 60L B-type slot 8, Dold  | 19.00 €/m + 1.00 € per cut; 1.489 kg/m; dropped with the 30 × 30 bottom bar   | VERIFIED   | [Dold 30x60][dold-3060]                |
+| Profile 30 × 60L moment of inertia Iy | 19.5 cm⁴, from the page data; dropped with the 30 × 30 bottom bar             | SECONDARY  | [Dold 30x60][dold-3060]                |
+| M8 core thread surcharges, Dold       | 1.00 € per end; 2.00 € extra for 80 mm deep; from the page JSON               | UNVERIFIED | [Dold 30x30][dold-30]                  |
+| CNC holes, Dold                       | at least 2.00 € per hole, only in the configurator                            | UNVERIFIED | [Dold 30x60][dold-3060]                |
+| DIN 912 M8 × 100 8.8 zinc, Dold       | 1.11 € each (0.05 € base + 1.06 €)                                            | DERIVED    | [aluprofile-express][ape-912]          |
+| DIN 912 M8 × 70 8.8 zinc, Dold        | about 2.79 € each (0.05 € base + 2.74 €), not the cart price                  | UNVERIFIED | [aluprofile-express][ape-912]          |
+| DIN 912 M8 × 50 8.8 zinc, Dold        | 0.60 € each                                                                   | DERIVED    | [aluprofile-express][ape-912]          |
+| Shipping Dold, pieces over 1 m        | DPD up to 1.5 m and 30 kg: 14.90 €; VAT basis not stated                      | VERIFIED   | [Dold shipping][dold-ship]             |
+| Joint plates L and T 3030, motedis    | CPL3030, CPT3030; 90 × 90 × 4 mm, 5 holes; 2.00 € net each; dropped with 0017 | DERIVED    | [motedis L][mo-pl], [motedis T][mo-pt] |
+| Joint plate shape, motedis drawing    | holes Ø6.5, 15 from the edges, 30 apart; corner filled to a chamfer 30–90 mm  | VERIFIED   | [motedis L][mo-pl], [motedis T][mo-pt] |
+| Castor 100 mm solid rubber, Dold      | only a braked swivel (27.83 €) and a fixed castor (23.03 €, 136 mm high)      | VERIFIED   | [Dold 100 rubber][dold-100]            |
 
 [dold-3060]: https://www.dold-mechatronik.de/Aluminiumprofil-30x60L-B-Typ-Nut-8-149kg-m-Zuschnitt-50-6000mm
 [ape-912]: https://www.aluprofile-express.de/DIN-912-Zylinderschraube-mit-Innensechskant-8.8-verzinkt
@@ -227,6 +228,55 @@ Facts of roadmap 0014, read on 2026-10-22. The loads built on them are in
 [eb-weight]: https://www.eurobricks.com/forum/forums/topic/72114-lego-weight/
 [ineos-gp35]: https://eshop.ineos-styrolution.com/Product/Terluran_TERLURAN-GP-35_SKU300600120829.html
 [cpsc-csu]: https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Clothing-Storage-Units
+
+Superseded with 0022: the Dold castors 69483 and 69490, the Dold plate
+AGP-10-90-Z, the M8 thread in the 10 mm plate and the 30.63 € plate bar of
+motedis; the rack now uses the facts of *motedis order*. Dold's 0.843 kg/m and
+2.68 cm⁴ stay in the loads as stand-ins for the motedis profile
+(`UNVERIFIED` for it).
+
+## motedis order
+
+Facts of roadmap 0022, read on 2026-10-25 on motedis' own pages: the gross
+prices of their product data (`valueAddedTaxIncluded`), the delivery times of
+the shop's delivery query for Germany. A price for loose pieces is worked out
+as the shop's data does it, (piece price × quantity + 0.25 pick fee) × 1.111 ×
+1.19, and is `DERIVED`.
+
+| Fact                                     | Value                                                                                                                             | Status     | Source                                            |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------- |
+| Profile 30 × 30 B-Typ Nut 8, cut to size | 9.87 €/m, no cut fee, 50–1980 mm; slot 8 wide, 9 deep; "Der Kern eignet sich zur Aufnahme eines M8 Gewindes"                      | VERIFIED   | [motedis 30x30][mo-30b]                           |
+| M8 machining per profile end             | 1.32 € per end; no depth option, no depth stated                                                                                  | DERIVED    | [motedis 30x30][mo-30b]                           |
+| M8 core thread depth                     | 25 mm taken until motedis answers the user's email                                                                                | UNVERIFIED | roadmap 0022                                      |
+| Profile 30 × 30, motedis, I and kg/m     | not published; the CAD file holds no properties                                                                                   | UNVERIFIED | [motedis 30x30][mo-30b]                           |
+| Angle 40 × 40 × 4, anodised              | SKU 9522, "Maße: 40 x 40 x 4 mm", alloy not stated; whole bars 1980 / 1500 / 1000 cut to a list, kerf 4, trim 3, rest at least 40 | VERIFIED   | [motedis angle][mo-4040]                          |
+| Angle 40 × 40 × 4, price                 | 8.42 €/m regular, cut whole bar; 9 × 1980 mm 142.49 € at the overstock rate (149.98 € regular), 2–4 working days                  | DERIVED    | [motedis angle][mo-4040]                          |
+| Angles of other sizes at motedis         | no 50 × 50 × 3, 50 × 50 × 4, 50 × 50 × 5 or 40 × 40 × 3                                                                           | VERIFIED   | [motedis angle][mo-4040]                          |
+| Plate 8 × 90, motedis                    | EN AW-5083 0/H111, 42.64 €/m cut whole bar; 740 mm bar cut to 4 × 90: 31.55 €; closeout item                                      | VERIFIED   | [motedis plate][mo-agp]                           |
+| Castor 1748, braked                      | total lock; 100 mm, 125 high, back hole 11, offset 28, 70 kg, PU on PP; 0.298 kg; 30.06 € per 4; 8 in stock                       | VERIFIED   | [motedis 1748][mo-1748]                           |
+| Castor 1748, metal at the back hole      | not given in the drawing                                                                                                          | UNVERIFIED | [motedis 1748 drawing][mo-1748-dwg]               |
+| Castor head diameter                     | the value 46,00 in the drawings of 1748 and 995; the feature it measures not labelled                                             | SECONDARY  | [motedis 1748 drawing][mo-1748-dwg]               |
+| Winkel 30 B-Typ Nut 8                    | 7.27 € per bag of 10, sold without screws                                                                                         | VERIFIED   | [motedis Winkel][mo-winkel]                       |
+| Hammer nuts B-Typ Nut 8 M6 and M5        | 14.54 € per 100 each                                                                                                              | VERIFIED   | [motedis Hammermutter][mo-hm]                     |
+| DIN 7991 M5x12 and M6x16, ISO 7380 M6x12 | 8.8, zinc-plated; 3.97 €, 5.29 € and 5.29 € per 100                                                                               | VERIFIED   | [motedis DIN 7991][mo-7991]                       |
+| DIN 912 A2 M8x50, M8x40, M8x35           | "mindestens A2-50"; 47.60 € and 35.70 € per 100, 0.62 € for one M8x35                                                             | VERIFIED   | [motedis DIN 912 A2][mo-912a2]                    |
+| DIN 985 M8, DIN 125 M8                   | 0.53 € per 10, 3.97 € per 100                                                                                                     | VERIFIED   | [motedis DIN 985][mo-985]                         |
+| DIN 985 M8 size                          | s 13, h max 8                                                                                                                     | SECONDARY  | [DIN 985 table][din-985]                          |
+| End cap 30 B-Typ Nut 8                   | black PA, 30 × 30 × 3.7; 25.12 € per 100                                                                                          | VERIFIED   | [motedis cap][mo-cap]                             |
+| Shipping motedis, long goods             | up to 1,109.89 € 23.33 €; packing 3.89 €; over 1150 mm and over 1700 mm +4.44 € each, again every 20 kg; net or gross not stated  | VERIFIED   | [motedis shipping][mo-ship]                       |
+| Delivery motedis                         | 2–4 working days for cut profiles, angle bars and plate, 1–3 for the rest; "unverbindlich"                                        | VERIFIED   | [motedis 30x30][mo-30b]                           |
+| A2-50 proof stress                       | about 210 MPa against about 640 MPa for 8.8; used for the joint estimate                                                          | SECONDARY  | ISO 3506-1, ISO 898-1                             |
+| Dold for comparison                      | cut 30 × 30L "Lieferzeit: 2 - 3 Wochen"; braked castor 69490 "Nicht vorrätig"                                                     | VERIFIED   | [Dold 30x30L][dold-30l], [Dold 69490][dold-69490] |
+
+[mo-30b]: https://www.motedis.com/de/Aluprofil-30x30-B-Typ-Nut-8
+[mo-4040]: https://www.motedis.com/de/Winkelstange-eloxiert-40x40x4mm
+[mo-1748]: https://www.motedis.com/de/Rolle-100-Rueckenloch-mit-Bremse
+[mo-1748-dwg]: https://www.motedis.com/shop/products_files/Motedis_1748-Drawing.pdf
+[mo-7991]: https://www.motedis.com/de/Senkschraube-mit-Innensechskant-nach-DIN-7991/M5x12
+[mo-912a2]: https://www.motedis.com/de/Zylinderschraube-mit-Innensechskant-nach-DIN-912-M8x40-Edelstahl
+[mo-985]: https://www.motedis.com/de/Mutter-DIN-985/DIN-985-x-M8
+[din-985]: https://www.schrauben-lexikon.de/norm/DIN_985.asp
+[mo-cap]: https://www.motedis.com/de/Profilabdeckkappe-30-B-Typ-Nut-8
 
 ## Top plate
 

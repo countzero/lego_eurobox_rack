@@ -20,6 +20,13 @@ const licences = [["three", "LICENSE"], ["@awesome.me/webawesome", "LICENSE.md"]
   const text = readFileSync(join(here, "node_modules", name, file), "utf8").trim();
   return `${name} ${pkg.version}\n\n${text}`;
 });
+// three ships meshoptimizer's decoder under meshoptimizer's own licence, which
+// its first two lines name.
+licences.push(readFileSync(join(here, "node_modules", "three", "examples", "jsm", "libs", "meshopt_decoder.module.js"), "utf8")
+  .split("\n").slice(0, 2).map((l) => l.replace(/^\/\/ /, "")).join("\n"));
+
+// docs/roadmap.md → 0021: the model, deflated as it goes into the page.
+const MODEL_LIMIT_KB = 110;
 
 function page(js, css) {
   const template = readFileSync(join(here, "src", "index.html"), "utf8");
@@ -42,7 +49,11 @@ const model = {
     b.onLoad({ filter: /\.glb$/ }, ({ path }) => {
       const raw = readFileSync(path);
       const contents = deflateRawSync(raw, { level: 6 });
-      console.log(`[build] ${path}: ${(raw.length / 1e3).toFixed(0)} kB, deflated ${(contents.length / 1e3).toFixed(0)} kB`);
+      const kb = contents.length / 1e3;
+      console.log(`[build] ${path}: ${(raw.length / 1e3).toFixed(0)} kB, deflated ${kb.toFixed(0)} kB`);
+      if (!process.env.RACK_GLB && kb > MODEL_LIMIT_KB) {
+        return { errors: [{ text: `rack.glb deflated is ${kb.toFixed(0)} kB, above the limit of ${MODEL_LIMIT_KB} kB` }] };
+      }
       return { contents, loader: "binary", watchFiles: [path] };
     });
   },
