@@ -1530,14 +1530,14 @@ def render(scene, cam, filename):
 
 # ---------------------------------------------------------------- exploded view
 
-EXPLODE_STEPS = 3  # the boxes out to the front; the boxes up and aside; everything else
+EXPLODE_STEPS = 3  # the boxes out to the front; the boxes' levels apart upwards; everything else
 
 
 def explode_world(obj, memo):
     """Where the exploded view moves obj, world vectors in mm, one per step
     (rack.json → explode). The boxes leave first: straight out to the front of
-    their bay, then up and aside, clear of the rack; only then does the rest
-    move, so no part passes through another. A screw, nut, washer or cap moves
+    their bay, clear of the rack, then their levels spread upwards; only then
+    does the rest move, so no part passes through another. A screw, nut, washer or cap moves
     with the part that holds it and then out of its hole; the inserts lift out
     of their box and the rings come off its handles in the last step."""
     if obj.name in memo:
@@ -1582,9 +1582,9 @@ def explode_world(obj, memo):
         last[:] = (0, 0, top + E["plate_up"])
     elif name.startswith("box."):
         # out of the bay to the front, then up, each level further than the one
-        # below so its inserts clear the box above, and aside past the rack
+        # below so its inserts clear the box above
         steps[0][:] = (0, -E["boxes_forward"], 0)
-        steps[1][:] = (E["boxes_aside"], 0, up + (obj["level"] - 1) * E["box_levels_apart"])
+        steps[1][:] = (0, 0, up + (obj["level"] - 1) * E["box_levels_apart"])
     elif name.startswith("insert."):
         steps = [v.copy() for v in explode_world(obj.parent, memo)]
         steps[-1] += Vector((0, 0, E["inserts_up"]))
@@ -1598,14 +1598,29 @@ def explode_world(obj, memo):
     return steps
 
 
-def check_boxes_clear():
-    """Stop the build unless a box pulled out by boxes_forward has left the rack:
-    its back clear of the frame's front, the top plate's overhang and the rings."""
-    E, tp = RACK["explode"], RACK["top_plate"]
-    overhang = (tp["depth"] - RACK["frame"]["depth"]) / 2
-    back = RACK["box_position"]["front_y"] + max(b["length"] for b in RACK["box_models"].values())
-    ring = RACK["box_shape"]["clip"]["thickness"]
-    assert back + ring - E["boxes_forward"] < -overhang, "boxes_forward does not take the boxes out of the rack"
+def check_boxes_clear(scene):
+    """Stop the build unless the boxes, once out to the front, stay in front of
+    every other part for the rest of the exploded view: the back of each box,
+    its ring and its inserts clear of the frame, the fasteners and the top plate
+    as these move apart. Every part moves in a straight line within a step, so
+    the gap is narrowest at a step's start or end."""
+    boxes = ("boxes", "inserts")
+    for k in (1 / EXPLODE_STEPS, 2 / EXPLODE_STEPS, 1.0):
+        set_explode(scene, k)
+        back, front = float("-inf"), float("inf")
+        for obj in scene.objects:
+            if obj.type != "MESH":
+                continue
+            names = {c.name for c in obj.users_collection}
+            if "stage" in names:
+                continue
+            ys = [(obj.matrix_world @ Vector(c)).y for c in obj.bound_box]
+            if names & set(boxes):
+                back = max(back, *ys)
+            else:
+                front = min(front, *ys)
+        assert back < front, f"boxes_forward leaves the boxes {(back - front) * 1000:.0f} mm in the rack at explode {k:.2f}"
+    set_explode(scene, 0.0)
 
 
 def build_explode(scene, colls):
@@ -1615,7 +1630,6 @@ def build_explode(scene, colls):
     its parent's axes, `<metres>*clamp(e*3-<step>,0,1)` summed over the steps,
     so Blender runs them without Python auto-run. export_web.py reads them back
     for the viewer."""
-    check_boxes_clear()
     scene["explode"] = 0.0
     scene.id_properties_ui("explode").update(min=0.0, max=1.0, soft_min=0.0, soft_max=1.0, step=10,
                                              description="0 assembled, 1 exploded (rack.json → explode)")
@@ -1714,6 +1728,7 @@ def main():
 
     build_stage(scene, mats, colls)
     build_explode(scene, colls)
+    check_boxes_clear(scene)
 
     W, D, H = m(out["width"]), m(out["depth"]), m(out["height"])
     cx, cy, cz = m(RACK["frame"]["width"]) / 2, D / 2, H / 2
@@ -1780,12 +1795,15 @@ def main():
                     (ax + 0.02, 0.0, az - 0.01), lens=45)
     render(scene, detail, "angle_detail.png")
 
-    # Exploded, from the front left and above, just far enough back that every
-    # corner of the exploded model's bounding box is inside the 4:3 picture.
+    # Exploded, from the front right and above, just far enough back that every
+    # corner of the exploded model's bounding box is inside the 4:3 picture. The
+    # boxes stand in front of the rack, so the camera looks from their right: the
+    # rack and the boxes fall apart side by side in the picture instead of the
+    # boxes hiding the rack.
     set_explode(scene, 1.0)
     lo, hi = model_bounds(exclude=("stage",))
     aim = (lo + hi) / 2
-    exploded = camera(scene, cams, "cam.exploded", aim + Vector((-2.4, -1.5, 1.4)), aim, lens=42)
+    exploded = camera(scene, cams, "cam.exploded", aim + Vector((2.6, -2.2, 1.7)), aim, lens=42)
     fit_camera(exploded, lo, hi, margin=1.06)
     render(scene, exploded, "exploded.png")
     set_explode(scene, 0.0)

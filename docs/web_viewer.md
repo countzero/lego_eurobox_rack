@@ -55,8 +55,9 @@ by its offsets, one per step and the steps one after the other (glTF axes, in
 its parent's space), over 1.8 s with the boxes' easing, and back. The offsets
 come from `rack.json` → `explode` through the Blender drivers
 (`docs/design.md` → *Contracts*). First the boxes slide straight out to the
-front, then up and aside, so none passes through the rack; then the castor
-plates, the frames, the top bars and the plate move up, the front and the
+front, then their levels spread apart upwards, so none passes through the rack;
+then the castor plates, the frames, the top bars and the plate move up, the
+front and the
 back frame apart, the angles towards the middle of their bay, every screw out
 of its hole, every nut and washer the other way, the end caps out of the
 bars, the inserts up out of their boxes and the rings off the handles.

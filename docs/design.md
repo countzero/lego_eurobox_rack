@@ -460,7 +460,7 @@ render but `inserts_top`:
 | `renders/drawer_out.png`    | Three-quarter, box `L3.C2` pulled out by `pull_out.travel` (270 mm)                   |
 | `renders/inserts_top.png`   | Orthographic from above, the twelve 120 boxes with their inserts, staged in four rows |
 | `renders/angle_detail.png`  | Close-up of one support angle with the boxes above and below                          |
-| `renders/exploded.png`      | Perspective, front left from above, the rack exploded (`explode` at 1)                |
+| `renders/exploded.png`      | Perspective, front right from above, the rack exploded (`explode` at 1)               |
 
 ### Model objects and the web export
 
@@ -493,11 +493,12 @@ merges the mesh extras into the node's `userData`, so the viewer reads
 
 The exploded view: `rack.blend` has a scene property `explode` from 0 to 1,
 run in three steps, each a third of the range, so no part passes through
-another: (1) the boxes straight out to the front, past the frame and the
-plate's overhang (the build checks this); (2) the boxes up and aside, each
-level higher than the one below; (3) everything else: the frame apart, the
-fasteners out of their holes, the inserts out of their boxes, the rings off
-the handles. Every part that moves has one simple-expression driver per
+another: (1) the boxes straight out to the front, far enough that they stay in
+front of the rack to the end (the build checks this); (2) the boxes' levels
+spread upwards, each higher than the one below so that level's inserts clear
+the box above; (3) everything else: the frame apart, the fasteners out of their
+holes, the inserts out of their boxes, the rings off the handles. Every part
+that moves has one simple-expression driver per
 moving axis on its delta location, in its parent's axes, a sum of
 `<metres>*clamp(e*3-<step>,0,1)`; Blender runs them without Python auto-run,
 and the file is saved at 0. `export_web.py` reads the drivers back and writes

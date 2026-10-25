@@ -3,6 +3,14 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2026-10-25
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+### Changed
+
+- Let the exploded view open in front of the rack instead of beside it: the boxes slide out to the front, their levels spread up so each level's inserts lift clear, and nothing moves past the side of the rack; `renders/exploded.png` and the viewer's camera follow ([`167613a`](https://github.com/countzero/lego_eurobox_rack/commit/167613a))
+
 ## [0.5.0] - 2026-10-25
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
