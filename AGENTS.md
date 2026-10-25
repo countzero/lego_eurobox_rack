@@ -24,9 +24,9 @@ assembly guide. Nothing here is built into software; the rack is built by hand.
   `UNVERIFIED`) and its URL in `docs/sources.md`
   (`docs/conventions.md` → *Sources*). An unverified value is never presented
   as a fact.
-- **The rack accepts NextGen and regular Euroboxes 400 × 300.** A design change that
-  narrows the box envelope of `docs/design.md` is refused unless the user
-  agrees.
+- **The rack accepts NextGen 2.0 Euroboxes 400 × 300**, narrowed with the
+  user's agreement in roadmap 0022. A design change that narrows the box
+  envelope of `docs/design.md` further is refused unless the user agrees.
 
 ## Privacy
 

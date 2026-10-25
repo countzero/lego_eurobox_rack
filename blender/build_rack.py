@@ -483,11 +483,16 @@ def screw_mesh(part):
 
 def nut_mesh(part):
     """Hammer nut turned across the slot: origin on the slot face, +z into the
-    profile, its top lip below the face."""
+    profile, its top lip below the face. A hex nut: origin on its bearing face,
+    +z into the part it clamps, so the nut lies at z < 0 like a screw head."""
     n = RACK["fasteners"]["nuts"][part]
-    lip = RACK["frame"]["slot"]["lip"]
     bm = bmesh.new()
-    mm_box(bm, -n["length"] / 2, n["length"] / 2, -n["width"] / 2, n["width"] / 2, lip, lip + n["height"])
+    if n["type"] == "hex":
+        r = n["across_flats"] / 2 / math.cos(math.pi / 6)
+        bm_cone(bm, (0, 0, -n["height"]), Z, r, r, n["height"], segments=6)
+    else:
+        lip = RACK["frame"]["slot"]["lip"]
+        mm_box(bm, -n["length"] / 2, n["length"] / 2, -n["width"] / 2, n["width"] / 2, lip, lip + n["height"])
     return to_mesh(f"mesh.{part}", bm, MATS["steel"])
 
 
@@ -509,7 +514,7 @@ def cap_mesh(part):
 
 def fastener_mesh(part):
     """One mesh per screw, nut, washer or cap; it carries the part ID and the
-    kind, so its 484 objects need no custom property of their own (in
+    kind, so its objects need no custom property of their own (in
     rack.blend and as glTF mesh extras, which three.js gives every node)."""
     f = RACK["fasteners"]
     if part in f["screws"]:
@@ -590,9 +595,10 @@ def build_frame(mats, colls, frame_root):
             FRAME[("bar", key, side)] = obj
             for x0, out in ((0, -X), (bar["length"], X)):
                 fastener("cap.end_30", (x0, y + h, zc), out, obj)
+        bolts = fr["core_thread"]["bolts"]
         for x in ux:
-            fastener("screw.m8x70_socket", (x + h, y + h, bb["bottom"]), Z, FRAME[("bar", "bottom", side)])
-            fastener("screw.m8x50_socket", (x + h, y + h, tb["top"] - fr["bar_holes"]["top_counterbore"]["depth"]),
+            fastener(bolts["bottom"], (x + h, y + h, bb["bottom"]), Z, FRAME[("bar", "bottom", side)])
+            fastener(bolts["top"], (x + h, y + h, tb["top"] - fr["bar_holes"]["top_counterbore"]["depth"]),
                      -Z, FRAME[("bar", "top", side)])
     db = fr["depth_beam"]
     for i, x in enumerate(ux):
@@ -721,7 +727,9 @@ def bracket(name, part, corner_mm, a, b, parent, slot_a, slot_b, part_of=None, s
 
 
 def build_brackets(mats, colls, frame_root):
-    """The 28 inside brackets of the joints and the 20 plate brackets."""
+    """The 24 inside brackets of the joints and the 20 plate brackets. At the
+    corners the castor plate joins the bottom bar and beam, so no bracket sits
+    there: its lower side wall would take the place of the castor's lock nut."""
     fr = RACK["frame"]
     sec = fr["profile"]["section"]
     ux, uy = fr["upright_x"], fr["upright_y"]
@@ -737,12 +745,13 @@ def build_brackets(mats, colls, frame_root):
             n += 1
             bracket(f"bracket.{n}", "bracket.inside_30", (x + sec / 2, y_face, db["top"]["bottom"]), -Z, dy * Y,
                     frame_root, (up, Z), (FRAME[("beam", "top", i)], Y))
-            # depth beam to bar on the beam's bay side, and at the middle
-            # uprights a second one at the bottom on the other side
+            # depth beam to bar on the beam's bay side at the top; at the
+            # bottom only at the middle uprights, on both sides
             xf, dx = (x, -1) if i == last else (x + sec, +1)
+            middle = 0 < i < last
             for zc, bar, lvl, sides in ((zc_top, bar_top, "top", [(xf, dx)]),
                                         (zc_bottom, bar_bottom, "bottom",
-                                         [(xf, dx)] + ([(x, -1)] if 0 < i < last else []))):
+                                         [(xf, dx), (x, -1)] if middle else [])):
                 for xs, ds in sides:
                     n += 1
                     bracket(f"bracket.{n}", "bracket.inside_30", (xs, y_face, zc), ds * X, dy * Y, frame_root,
@@ -753,9 +762,10 @@ def build_brackets(mats, colls, frame_root):
         mid, t = (br["hole"]["from"] + br["hole"]["to"]) / 2, br["thickness"]
         for k, xc in enumerate(RACK["top_plate"]["mounts"]["x"], 1):
             obj = bracket(f"bracket.plate.{side}.{k}", "bracket.plate", (xc, y_face, tb["top"]), -Z, dy * Y,
-                          frame_root, (bar_top, X), None, part_of="bracket.plate", screw_b=False)
+                          frame_root, (bar_top, X), None, screw_b=False)
             fastener("screw.wood_4_5x16", (xc, y_face + dy * mid, tb["top"] - t), Z, obj)
-    assert n == 28, n
+    want = next(p["quantity"] for p in RACK["parts"] if p["id"] == "bracket.inside_30")
+    assert n == want, (n, want)
 
 
 def corners():
@@ -787,8 +797,9 @@ def castor_plate_mesh():
         u, v = holes["bolt_clearance"]["at"]
         r = holes["bolt_clearance"]["diameter"] / 2
         bm_cone(cutter, (u, v, -1), Z, r, r, t + 2)
-        u, v = holes["castor_thread"]["at"]
-        bm_cone(cutter, (u, v, -1), Z, 4, 4, t + 2, segments=12)
+        u, v = holes["castor_bolt"]["at"]
+        r = holes["castor_bolt"]["diameter"] / 2
+        bm_cone(cutter, (u, v, -1), Z, r, r, t + 2, segments=12)
         return to_mesh("mesh.plate.castor", boolean_cut(body, cutter), MATS["aluminium"])
     return shared("plate.castor", build)
 
@@ -813,20 +824,30 @@ def build_castor_plates(mats, colls, frame_root):
             fastener("screw.m6x16_countersunk", (p.x, p.y, cp["bottom"]), Z, obj)
             host = FRAME[("bar", "bottom", side)] if along_bar else beam
             nut("tnut.m6", (p.x, p.y, cp["top"]), Z, X if along_bar else Y, host)
+        # the castor bolt's washer and lock nut on top of the plate
+        bolt = cp["holes"]["castor_bolt"]
+        p = at((x0, y0, 0), (sx * X, bolt["at"][0]), (sy * Y, bolt["at"][1]))
+        w = RACK["fasteners"]["washers"][bolt["washer"]]["h"]
+        fastener(bolt["washer"], (p.x, p.y, cp["top"]), -Z, obj)
+        fastener(bolt["nut"], (p.x, p.y, cp["top"] + w), -Z, obj)
     return plates
 
 
 def build_castors(mats, colls, frame_root):
-    """Plain swivel castors 1-4 at front-left, front-right, back-left, back-right; wheels trail inward."""
+    """Braked swivel castors 1-4 at front-left, front-right, back-left, back-right; wheels trail inward."""
     fr = RACK["frame"]
     ca = fr["castor"]
+    part = ca["part"]
+    bolt = fr["castor_plate"]["holes"]["castor_bolt"]
     h = fr["castor_height"]
     W, D, inset = fr["width"], fr["depth"], ca["inset"]
     head_r, wheel_r = ca["head_diameter"] / 2, ca["wheel"] / 2
     tw, off = ca["tread_width"], ca["offset"]
 
     def build():
-        """The castor with its wheel trailing towards +y; the back ones are turned half round."""
+        """The castor with its wheel trailing towards +y and the brake pedal
+        behind the wheel's top; the back ones are turned half round. The
+        pedal's size and place are drawn by eye."""
         bm = bmesh.new()
         bm_cylinder(bm, (0, 0, m(h - 4)), m(head_r), m(8), "z")
         bm_cylinder(bm, (0, 0, m(h - 12)), m(head_r * 0.7), m(8), "z")
@@ -836,19 +857,63 @@ def build_castors(mats, colls, frame_root):
             mm_box(bm, k * ox, k * (ox + 3), off - 18, off + 12, wheel_r - 8, h - 16)
         bm_cylinder(bm, (0, m(off), m(wheel_r)), m(wheel_r), m(tw), "x")
         bm_cylinder(bm, (0, m(off), m(wheel_r)), m(6), m(2 * ox + 8), "x", segments=12)
-        return to_mesh("mesh.castor.plain", bm, mats["castor"])
+        mm_box(bm, -3, 3, off + 12, off + wheel_r, h - 22, h - 18)
+        mm_box(bm, -12, 12, off + wheel_r - 5, off + wheel_r + 10, h - 24, h - 18)
+        return to_mesh(f"mesh.{part}", bm, mats["castor"])
 
     for n, (sx, sy) in enumerate(corners(), 1):
         cx = inset if sx > 0 else W - inset
         cy = inset if sy > 0 else D - inset
         assert head_r <= cx <= W - head_r and head_r <= cy <= D - head_r, "castor head outside"
         world = orient_ab((cx, cy, 0), sy * X, sy * Y)
-        obj = place_at(f"castor.plain.{n}", shared("castor.plain", build), colls["castors"], world, frame_root,
-                       "castor.plain")
-        w = RACK["fasteners"]["washers"]["washer.m8"]["h"]
+        obj = place_at(f"{part}.{n}", shared(part, build), colls["castors"], world, frame_root, part)
+        w = RACK["fasteners"]["washers"][bolt["washer"]]["h"]
         face = h - ca["top_plate"]
-        fastener("washer.m8", (cx, cy, face), Z, obj)
-        fastener("screw.m8x20_socket", (cx, cy, face - w), Z, obj)
+        fastener(bolt["washer"], (cx, cy, face), Z, obj)
+        fastener(bolt["bolt"], (cx, cy, face - w), Z, obj)
+
+
+def check_dimensions():
+    """Stop the build unless the dimensions of rack.json fit together: the
+    uprights fill the space between the bars, the plates and angles stack, the
+    gap above the tallest box is the same on every level, the core bolts stay
+    inside the thread and the castor bolt reaches through its lock nut without
+    touching the bottom bars' top."""
+    fr, a = RACK["frame"], RACK["angles"]
+    sec, t, leg = fr["profile"]["section"], a["section"]["thickness"], a["section"]["leg"]
+    bb, tb, up, cp = fr["bottom_bar"], fr["top_bar"], fr["upright"], fr["castor_plate"]
+    ux = fr["upright_x"]
+    assert cp["bottom"] == fr["castor_height"] and cp["top"] == cp["bottom"] + cp["thickness"] == bb["bottom"], cp
+    assert bb["top"] - bb["bottom"] == tb["top"] - tb["bottom"] == sec, (bb, tb)
+    assert up["bottom"] == bb["top"] and up["top"] == tb["bottom"] and up["length"] == up["top"] - up["bottom"], up
+    for lvl, bar in (("bottom", bb), ("top", tb)):
+        assert fr["depth_beam"][lvl] == {"bottom": bar["bottom"], "top": bar["top"]}, lvl
+    assert all(b - a_ == fr["bay_clear_width"] + sec for a_, b in zip(ux, ux[1:])), ux
+    assert fr["width"] == ux[-1] + sec == bb["length"] == tb["length"] == RACK["outer"]["width"], fr["width"]
+    assert RACK["outer"]["height"] == tb["top"], RACK["outer"]
+    assert a["clear_width_between_hanging_legs"] == fr["bay_clear_width"] - 2 * t, a
+    assert a["clear_width_between_leg_tips"] == fr["bay_clear_width"] - 2 * leg, a
+    tp = RACK["top_plate"]
+    assert tp["width"] == fr["width"] + 2 * tp["overhang"] and tp["top"] == tb["top"] + tp["thickness"], tp
+    classes = RACK["box_envelope"]["height_classes"]
+    assert a["base"]["flat_leg_top"] == bb["top"] + t == RACK["levels"][0]["floor"], a["base"]
+    tops = [lv["floor"] for lv in RACK["levels"][1:]] + [RACK["tip_guard"]["flat_leg_bottom"] + t]
+    for lv, next_top in zip(RACK["levels"], tops):
+        gap = next_top - t - (lv["floor"] + classes[lv["class"]]["max"])
+        assert gap == a["gap_above_box_max"], (lv, gap)
+    assert RACK["tip_guard"]["flat_leg_bottom"] + t == tb["bottom"], RACK["tip_guard"]
+    screws = RACK["fasteners"]["screws"]
+    ct = fr["core_thread"]
+    engaged = {"bottom": screws[ct["bolts"]["bottom"]]["length"] - sec,
+               "top": screws[ct["bolts"]["top"]]["length"] - (sec - fr["bar_holes"]["top_counterbore"]["depth"])}
+    for end, e in engaged.items():
+        assert 0 < e <= ct["depth"] - 2, f"{end} core bolt engages {e} mm in a {ct['depth']} mm thread"
+    bolt = cp["holes"]["castor_bolt"]
+    w = RACK["fasteners"]["washers"][bolt["washer"]]["h"]
+    tip = fr["castor_height"] - fr["castor"]["top_plate"] - w + screws[bolt["bolt"]]["length"]
+    nut_top = cp["top"] + w + RACK["fasteners"]["nuts"][bolt["nut"]]["height"]
+    assert nut_top + 2 <= tip < bb["top"], f"castor bolt tip {tip} against nut top {nut_top} and bar top {bb['top']}"
+    print("dimension check: core bolts engage", engaged, "castor bolt tip", tip)
 
 
 # ---------------------------------------------------------------- boxes
@@ -1575,10 +1640,13 @@ def explode_world(obj, memo):
     if mesh_part:
         out = -(world.to_3x3() @ Z).normalized()  # back out of the hole
         f = RACK["fasteners"]
-        if mesh_part in f["screws"]:
+        if obj.parent is not None and obj.parent.get("part") == fr["castor"]["part"]:
+            d = 0  # the castor bolt and its washer stay in the castor; backing out would cross the wheel
+        elif mesh_part in f["screws"]:
             d = E["screw_lengths_out"] * f["screws"][mesh_part]["length"]
         elif mesh_part in f["nuts"]:
-            d = E["nuts_out"]
+            # a hex nut sits on a washer and moves past it
+            d = E["nuts_out"] + (E["washers_out"] if f["nuts"][mesh_part]["type"] == "hex" else 0)
         elif mesh_part in f["washers"]:
             d = E["washers_out"]
         else:
@@ -1722,6 +1790,7 @@ def main():
     global SECTION
     sec = RACK["frame"]["profile"]["section"]
     SECTION = rect_section(sec, sec)
+    check_dimensions()
     scene = reset_scene()
     mats = make_materials()
     MATS.update(mats)

@@ -2,10 +2,13 @@
 
 Run from anywhere: python bom/build_bom.py
 
-The cut list packs every profile and angle piece into stock bars. For each
-material and each candidate stock length of rack.json -> stock, the cuts are
-packed first-fit decreasing; the candidate with the least bought length wins,
-then the least waste, then the fewest bars, then the shorter stock length.
+The cut list packs every profile and angle piece into stock bars. A material
+whose stock is cut to size (rack.json -> stock -> cut_to_size) gets one row per
+piece instead. For every other material and each candidate stock length the
+cuts are packed first-fit decreasing, after the bar's end trim, with one kerf
+before each further cut, leaving no rest or at least the stock's min_rest; the
+candidate with the least bought length wins, then the least waste, then the
+fewest bars, then the shorter stock length.
 """
 
 import csv
@@ -26,7 +29,7 @@ CUT_CATEGORIES = ("profile", "angle")
 # Material string -> stock key, read from the section that defines the material.
 STOCK_SOURCES = (
     (("frame", "profile", "type"), "profile_30x30"),
-    (("angles", "section", "type"), "angle_50x50x3"),
+    (("angles", "section", "type"), "angle_40x40x4"),
 )
 
 
@@ -73,17 +76,23 @@ def validate(parts):
             fail(f"{part['id']}: quantity {quantity!r} is not a positive integer")
 
 
-def pack(cuts, length, kerf):
+def fits(used, length, min_rest):
+    rest = length - used
+    return rest == 0 or rest >= min_rest
+
+
+def pack(cuts, length, stock):
     """First-fit decreasing; cuts are (cut_length, part_id), sorted by caller."""
+    kerf, trim, min_rest = stock["kerf"], stock.get("trim", 0), stock.get("min_rest", 0)
     bars = []
     for cut in cuts:
         for bar in bars:
-            if bar["used"] + kerf + cut[0] <= length:
+            if fits(bar["used"] + kerf + cut[0], length, min_rest):
                 bar["cuts"].append(cut)
                 bar["used"] += kerf + cut[0]
                 break
         else:
-            bars.append({"cuts": [cut], "used": cut[0]})
+            bars.append({"cuts": [cut], "used": trim + cut[0]})
     return bars
 
 
@@ -91,9 +100,9 @@ def best_packing(material, cuts, stock):
     longest = cuts[0][0]
     candidates = []
     for length in sorted(stock["lengths"]):
-        if longest > length:
+        if not fits(stock.get("trim", 0) + longest, length, stock.get("min_rest", 0)):
             continue
-        bars = pack(cuts, length, stock["kerf"])
+        bars = pack(cuts, length, stock)
         bought = length * len(bars)
         cut_total = sum(c[0] for c in cuts)
         candidates.append((bought, bought - cut_total, len(bars), length, bars))
@@ -121,18 +130,24 @@ def main():
     for material in sorted(by_material):
         stock = rack["stock"][mapping[material]]
         cuts = sorted(by_material[material], key=lambda c: (-c[0], c[1]))
+        cut_total = sum(c[0] for c in cuts)
+        if stock.get("cut_to_size"):
+            for number, (cut_length, part_id) in enumerate(cuts, start=1):
+                rows.append([material, number, cut_length, part_id, cut_length, 0])
+            summary.append(f"{material}: {len(cuts)} pieces cut to size, {cut_total} mm")
+            continue
         bought, waste, count, length, bars = best_packing(material, cuts, stock)
         for number, bar in enumerate(bars, start=1):
-            start = 0
+            start = stock.get("trim", 0)
             for cut_length, part_id in bar["cuts"]:
                 rows.append([material, number, length, part_id, cut_length, start])
                 start += cut_length + stock["kerf"]
-        cut_total = sum(c[0] for c in cuts)
-        summary.append((material, count, length, cut_total, waste, 100 * waste / bought))
+        summary.append(f"{material}: {count} x {length} mm, cut {cut_total} mm, "
+                       f"waste {waste} mm ({100 * waste / bought:.1f} %)")
     write_csv(CUTLIST_CSV, CUTLIST_HEADER, rows)
 
-    for material, count, length, cut_total, waste, percent in summary:
-        print(f"{material}: {count} x {length} mm, cut {cut_total} mm, waste {waste} mm ({percent:.1f} %)")
+    for line in summary:
+        print(line)
 
 
 if __name__ == "__main__":
