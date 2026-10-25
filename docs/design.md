@@ -468,15 +468,33 @@ glTF in metres, Y up, as Blender's exporter writes it: rack `x` stays glTF `x`,
 rack `z` becomes glTF `y`, rack `y` becomes glTF `-z`. The front is rack `-y`,
 which is glTF `+z`.
 
-| Node name                                        | Holds                                                                               | glTF extras                                                                                                                                                                |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `frame`                                          | uprights, bars, depth beams, castor plates, brackets, angles, castors               | `{ "kind": "frame" }`                                                                                                                                                      |
-| `box.L<level>.C<column>`                         | one box and, as children, its inserts and its ColorClip rings; 15 nodes             | `{ "kind": "box", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1], "sides": ["front", "back"] }` |
-| `insert.L<level>.C<column>.R<row>.<cell>.<type>` | one insert, child of its box node                                                   | `{ "kind": "insert" }`                                                                                                                                                     |
-| `clip.L<level>.C<column>.<colour>`               | the ColorClip rings of both handles, child of its box node                          | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                               |
-| `plate.top`                                      | the top plate                                                                       | `{ "kind": "plate", "status": "build", "plywood": { … } }`                                                                                                                 |
+| Node name                                                                                   | Holds                                                                           | glTF extras                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `frame`                                                                                     | every part of the rack but the boxes and the plate, as children                 | `{ "kind": "frame" }`                                                                                                                                                                                        |
+| `upright.<n>.<side>`, `bar.<top/bottom>.<side>`, `beam.depth.<top/bottom>.<n>`              | one profile, child of `frame`; side is `front` or `back`                        | `{ "part": "profile.upright" }` and so on                                                                                                                                                                    |
+| `angle.base.L1.C<column>.<left/right>`, `angle.support.L<level>…`, `angle.guard.C<column>…` | one angle, child of `frame`                                                     | `{ "part": "angle.base" }` and so on                                                                                                                                                                         |
+| `bracket.<n>`, `bracket.plate.<side>.<n>`, `plate.castor.<n>`, `castor.plain.<n>`           | one bracket, castor plate or castor, child of `frame`                           | `{ "part": "<part ID>" }`                                                                                                                                                                                    |
+| `<part ID>.<n>`                                                                             | one screw, hammer nut, washer or end cap, child of the part it sits in or holds | none; its mesh carries `{ "part": "<part ID>", "kind": "fastener" or "cap" }`                                                                                                                                |
+| `bracket.plate.fixing.<part ID>.<n>`                                                        | the screw or hammer nut of a plate bracket's fixing set, child of the bracket   | `{ "part_of": "bracket.plate" }`; its mesh as above                                                                                                                                                          |
+| `box.L<level>.C<column>`                                                                    | one box and, as children, its inserts and its ColorClip rings; 15 nodes         | `{ "kind": "box", "part": "box.e120" or "box.e220", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1], "sides": ["front", "back"] }` |
+| `insert.L<level>.C<column>.R<row>.<cell>.<type>`                                            | one insert, child of its box node                                               | `{ "kind": "insert", "type": "<type>", "part": "insert.set_half" or "insert.set_quarter" }`                                                                                                                  |
+| `clip.L<level>.C<column>.<colour>`                                                          | the ColorClip rings of both handles, child of its box node                      | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                                                                 |
+| `plate.top`                                                                                 | the top plate                                                                   | `{ "kind": "plate", "part": "plate.top", "status": "build", "plywood": { … } }`                                                                                                                              |
 
-There are no panel and no back stop nodes. The scene's extras carry
+Every part of the parts list is drawn: `build_rack.py` stops unless the count
+per part ID equals `rack.json` → `parts` (an insert set counts once per box,
+a ColorClip set once per box, a fixing-set piece not at all). Parts of one
+kind share one mesh; a right-hand angle or a back castor is its left or front
+twin turned half round, not mirrored. A screw, nut, washer or cap carries its
+part ID on its mesh, not on its node, which keeps its 484 nodes small; three.js
+merges the mesh extras into the node's `userData`, so the viewer reads
+`kind` and `part` there alike.
+
+`export_web.py` compacts the file after Blender's exporter: normals as
+normalized 8-bit integers and positions of the meshes within 1 m of their
+origin as normalized 16-bit integers (`KHR_mesh_quantization`, required), the
+long bars as floats on a 0.01 mm grid, node transforms rounded to 1e-6 m and
+1e-7, the JSON without spaces. There are no panel and no back stop nodes. The scene's extras carry
 `{ "rack_schema": 3, "outer_mm": [1068, 435, 986] }`. Columns count 1-3 from
 the left seen from the front, levels 1-5 from the bottom. `pull_axis` points to
 the front; moving a box node by `travel` along it pulls the box, its inserts
@@ -484,4 +502,5 @@ and its rings out together. When `sides` contains `"back"`, the viewer pulls
 the box the other way, along `-pull_axis`, for a click on its back half.
 
 Material names: `aluminium`, `box_anthracite`, `insert_grey`, `clip_blue`,
-`clip_turquoise`, `clip_lightgreen`, `castor`, `plywood`.
+`clip_turquoise`, `clip_lightgreen`, `castor`, `plywood`, `steel` (the
+zinc-plated screws, nuts and washers), `cap_black` (the end caps).

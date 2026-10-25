@@ -142,7 +142,8 @@ esbuild inlines, so a change there needs a rebuild:
   comment.
 - A literal `</script` in the bundle is escaped.
 
-The model is `web/rack.glb`, exported by `blender/build_rack.py` (step 0003).
+The model is `web/rack.glb`, exported by `blender/export_web.py` from the
+`rack.blend` that `blender/build_rack.py` writes (step 0003).
 The build stops with a message if it is missing. The environment variable
 `RACK_GLB` points the build at another file, for example a stand-in model:
 
@@ -157,16 +158,22 @@ Remove-Item env:RACK_GLB
 The viewer relies only on the node names and extras of `docs/design.md` →
 *Contracts* → *Model objects and the web export*:
 
-| Read from                  | Used for                                                       |
-| -------------------------- | -------------------------------------------------------------- |
-| `kind: "box"`              | the clickable boxes                                            |
-| `level`, `column`, `class` | the ColorClip level of a box                                   |
-| `travel`                   | how far a box moves                                            |
-| `pull_axis`                | the direction towards the front (`[0, 0, 1]`, glTF +z)         |
-| `sides`                    | the sides a box pulls out to, `["front", "back"]` (schema 3)   |
-| `kind: "plate"`, `plywood` | the top plate, always shown, and its procedural plywood        |
-| `kind: "clip"`             | the rings the ColorClips panel recolours                       |
-| scene extras `outer_mm`    | the scene framing                                              |
+| Read from                   | Used for                                                         |
+| --------------------------- | ---------------------------------------------------------------- |
+| `kind: "box"`               | the clickable boxes                                              |
+| `level`, `column`, `class`  | the ColorClip level of a box                                     |
+| `travel`                    | how far a box moves                                              |
+| `pull_axis`                 | the direction towards the front (`[0, 0, 1]`, glTF +z)           |
+| `sides`                     | the sides a box pulls out to, `["front", "back"]` (schema 3)     |
+| `kind: "plate"`, `plywood`  | the top plate, always shown, and its procedural plywood          |
+| `kind: "clip"`              | the rings the ColorClips panel recolours                         |
+| `kind: "fastener"`, `"cap"` | screws, nuts, washers and end caps, which a click passes through |
+| scene extras `outer_mm`     | the scene framing                                                |
+
+A screw, nut, washer or cap carries its extras on its glTF mesh, not on its
+node; `GLTFLoader` merges them into the object's `userData`. The model needs
+`KHR_mesh_quantization` (16-bit positions, 8-bit normals), which three.js's
+`GLTFLoader` reads.
 
 The inserts and the ColorClip rings are children of their box node, so moving
 the box node moves them too. The viewer clones the materials under every box,

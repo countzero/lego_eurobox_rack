@@ -48,6 +48,8 @@ COLOURS = {
     "box_anthracite": ((0.040, 0.041, 0.043, 1), 0.0, 0.5, 1.49),
     "insert_grey": ((0.22, 0.23, 0.24, 1), 0.0, 0.4, 1.59),
     "castor": ((0.06, 0.06, 0.07, 1), 0.0, 0.6, 1.5),
+    "steel": ((0.70, 0.71, 0.72, 1), 1.0, 0.35, 1.5),  # zinc-plated
+    "cap_black": ((0.02, 0.02, 0.02, 1), 0.0, 0.5, 1.5),
     "plywood": ((0.609, 0.331, 0.117, 1), 0.0, 0.55, 1.5),  # linear mean of PLY_FACE
     "floor": ((0.45, 0.45, 0.45, 1), 0.0, 0.85, 1.5),
 }
@@ -339,78 +341,324 @@ def rect_section(wa, wb):
 
 
 SECTION = None
+X, Y, Z = Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))
+MATS = {}
+MESHES = {}
+NAMES = {}
 
 
-def profile(name, axis, centre_a, centre_b, start, end, mat, coll, parent, section=None):
-    """Slotted profile along axis from start to end (mm); section in the other two axes."""
-    section = section or SECTION
+def mm_vec(p):
+    return Vector((m(p[0]), m(p[1]), m(p[2])))
+
+
+def orient(origin_mm, z_dir, x_hint=None):
+    """World matrix at origin_mm (mm) with local z along z_dir and local x along
+    x_hint made square to it."""
+    z = Vector(z_dir).normalized()
+    if x_hint is None:
+        x_hint = X if abs(z.x) < 0.9 else Y
+    x = Vector(x_hint)
+    x = (x - z * x.dot(z)).normalized()
+    mat = Matrix((x, z.cross(x), z)).transposed().to_4x4()
+    mat.translation = mm_vec(origin_mm)
+    return mat
+
+
+def world_of(obj):
+    """World matrix from the matrix_basis chain; every parent inverse is identity."""
+    mat = obj.matrix_basis.copy()
+    while obj.parent is not None:
+        obj = obj.parent
+        mat = obj.matrix_basis @ mat
+    return mat
+
+
+def place_at(name, mesh, coll, world, parent=None, part=None):
+    """Object at the world matrix world, kept there under parent."""
+    obj = bpy.data.objects.new(name, mesh)
+    coll.objects.link(obj)
+    if parent is not None:
+        obj.parent = parent
+        world = world_of(parent).inverted() @ world
+    obj.matrix_basis = world
+    if part:
+        obj["part"] = part
+    return obj
+
+
+def shared(key, build):
+    """One mesh per kind of part, built on first use."""
+    if key not in MESHES:
+        MESHES[key] = build()
+    return MESHES[key]
+
+
+def bm_cone(bm, base_mm, axis, r0, r1, length, segments=16):
+    """Cone or cylinder from base_mm along axis for length (mm); radius r0 at the
+    base, r1 at the far end."""
+    mat = orient(base_mm, axis)
+    mat = mat @ Matrix.Translation((0, 0, m(length) / 2))
+    bmesh.ops.create_cone(bm, cap_ends=True, segments=segments, radius1=m(r0), radius2=m(r1),
+                          depth=m(length), matrix=mat)
+
+
+def profile_bm(length):
+    """Slotted 30 x 30 profile along +z from 0 to length (mm), section centred on the axis."""
     bm = bmesh.new()
-    rings = []
-    for t in (m(start), m(end)):
-        ring = []
-        for a, b in section:
-            a, b = a + m(centre_a), b + m(centre_b)
-            p = {"x": (t, a, b), "y": (a, t, b), "z": (a, b, t)}[axis]
-            ring.append(bm.verts.new(p))
-        rings.append(ring)
-    n = len(section)
+    rings = [[bm.verts.new((a, b, t)) for a, b in SECTION] for t in (0.0, m(length))]
+    n = len(SECTION)
     for i in range(n):
         j = (i + 1) % n
         bm.faces.new((rings[0][i], rings[0][j], rings[1][j], rings[1][i]))
     bm.faces.new(rings[0])
     bm.faces.new(rings[1][::-1])
-    return finish(name, bm, mat, coll, parent)
+    return bm
+
+
+def profile_mesh(length):
+    return shared(f"profile.{length}",
+                  lambda: to_mesh(f"mesh.profile.{length}", profile_bm(length), MATS["aluminium"]))
+
+
+def bar_mesh(top):
+    """Bar along +z with the through holes of the core bolts, the top bar also
+    with their counterbores; in its frame local y is up (rack z)."""
+    def build():
+        fr = RACK["frame"]
+        holes = fr["bar_holes"]
+        cb, h = holes["top_counterbore"], fr["profile"]["section"] / 2
+        length = fr["top_bar" if top else "bottom_bar"]["length"]
+        cutter = bmesh.new()
+        for x in fr["upright_x"]:
+            if top:
+                bm_cone(cutter, (0, h + 1, x + h), -Y, cb["diameter"] / 2, cb["diameter"] / 2, cb["depth"] + 1)
+            bm_cone(cutter, (0, h + 1, x + h), -Y, holes["diameter"] / 2, holes["diameter"] / 2, 2 * h + 2)
+        name = "bar.top" if top else "bar.bottom"
+        return to_mesh(f"mesh.{name}", boolean_cut(profile_bm(length), cutter), MATS["aluminium"])
+    return shared("bar.top" if top else "bar.bottom", build)
+
+
+def orient_ab(origin_mm, a, b):
+    """World matrix at origin_mm with local x along a and local y along b."""
+    a, b = Vector(a).normalized(), Vector(b).normalized()
+    mat = Matrix((a, b, a.cross(b))).transposed().to_4x4()
+    mat.translation = mm_vec(origin_mm)
+    return mat
+
+
+def at(origin_mm, *steps):
+    """origin_mm plus each (direction, mm) step, in mm."""
+    p = Vector(origin_mm)
+    for d, mm in steps:
+        p += Vector(d) * mm
+    return p
+
+
+def prism_ab(bm, pts, c0, c1):
+    loft(bm, [[(m(a), m(b), m(c)) for a, b in pts] for c in (c0, c1)], closed=False)
+
+
+def profile(name, part, length, start_mm, axis, coll, parent):
+    return place_at(name, profile_mesh(length), coll, orient(start_mm, axis), parent, part)
+
+
+# ---------------------------------------------------------------- fasteners
+
+def screw_mesh(part):
+    """Screw along +z, the way it goes in: origin on the bearing face, so a
+    socket, button or pan head lies at z < 0 and a countersunk head at
+    0 < z < head_k, flush with the face."""
+    s = RACK["fasteners"]["screws"][part]
+    d, length, dk, k = s["d"], s["length"], s["head_d"], s["head_k"]
+    bm = bmesh.new()
+    if s["head"] == "countersunk":
+        bm_cone(bm, (0, 0, 0), Z, dk / 2, d / 2, k)
+        bm_cone(bm, (0, 0, k), Z, d / 2, d / 2, length - k, segments=12)
+    else:
+        top = {"socket": dk / 2, "button": dk * 0.3, "pan": dk * 0.4}[s["head"]]
+        bm_cone(bm, (0, 0, -k), Z, top, dk / 2, k)
+        bm_cone(bm, (0, 0, 0), Z, d / 2, d / 2, length, segments=12)
+    return to_mesh(f"mesh.{part}", bm, MATS["steel"])
+
+
+def nut_mesh(part):
+    """Hammer nut turned across the slot: origin on the slot face, +z into the
+    profile, its top lip below the face."""
+    n = RACK["fasteners"]["nuts"][part]
+    lip = RACK["frame"]["slot"]["lip"]
+    bm = bmesh.new()
+    mm_box(bm, -n["length"] / 2, n["length"] / 2, -n["width"] / 2, n["width"] / 2, lip, lip + n["height"])
+    return to_mesh(f"mesh.{part}", bm, MATS["steel"])
+
+
+def washer_mesh(part):
+    w = RACK["fasteners"]["washers"][part]
+    bm = bmesh.new()
+    bm_cone(bm, (0, 0, -w["h"]), Z, w["d2"] / 2, w["d2"] / 2, w["h"], segments=20)
+    return to_mesh(f"mesh.{part}", bm, MATS["steel"])
+
+
+def cap_mesh(part):
+    """End cap flange, +z out of the bar end."""
+    c = RACK["fasteners"]["cap"]
+    h = c["size"] / 2
+    bm = bmesh.new()
+    mm_box(bm, -h, h, -h, h, 0, c["thickness"])
+    return to_mesh(f"mesh.{part}", bm, MATS["cap_black"])
+
+
+def fastener_mesh(part):
+    """One mesh per screw, nut, washer or cap; it carries the part ID and the
+    kind, so its 484 objects need no custom property of their own (in
+    rack.blend and as glTF mesh extras, which three.js gives every node)."""
+    f = RACK["fasteners"]
+    if part in f["screws"]:
+        build = screw_mesh
+    elif part in f["nuts"]:
+        build = nut_mesh
+    elif part in f["washers"]:
+        build = washer_mesh
+    else:
+        build = cap_mesh
+
+    def tagged():
+        mesh = build(part)
+        mesh["part"] = part
+        mesh["kind"] = "cap" if part == f["cap"]["part"] else "fastener"
+        return mesh
+    return shared(part, tagged)
+
+
+def fastener(part, origin_mm, direction, host, x_hint=None, part_of=None):
+    """A screw, nut, washer or cap at origin_mm, going in along direction, held by host.
+
+    part_of: the part whose fixing set it belongs to (host is that part); the
+    object then says so, and object_part counts it with that part."""
+    key = part_of or part
+    NAMES[(key, part)] = NAMES.get((key, part), 0) + 1
+    n = NAMES[(key, part)]
+    name = f"{part_of}.fixing.{part}.{n}" if part_of else f"{part}.{n}"
+    obj = place_at(name, fastener_mesh(part), COLLS["fasteners"], orient(origin_mm, direction, x_hint), host)
+    if part_of:
+        obj["part_of"] = part_of
+    return obj
+
+
+def object_part(obj):
+    """The part ID an object counts as: its own, else its mesh's; none for a
+    piece of a fixing set."""
+    if obj.get("part_of"):
+        return None
+    if obj.get("part"):
+        return obj["part"]
+    return obj.data.get("part") if obj.type == "MESH" else None
+
+
+def nut(part, face_mm, direction, slot_dir, host, part_of=None):
+    """Hammer nut behind face_mm in a slot running along slot_dir, turned across it."""
+    across = Vector(direction).cross(Vector(slot_dir))
+    return fastener(part, face_mm, direction, host, across, part_of)
+
+
+COLLS = {}
 
 
 # ---------------------------------------------------------------- the rack
 
+FRAME = {}  # the frame's profiles by role, for the fasteners that sit in them
+
+
 def build_frame(mats, colls, frame_root):
+    """Profiles, the core bolts of the upright joints and the end caps."""
     fr = RACK["frame"]
     sec = fr["profile"]["section"]
     h = sec / 2
-    al, coll = mats["aluminium"], colls["frame"]
+    coll = colls["frame"]
     ux, uy = fr["upright_x"], fr["upright_y"]
     up = fr["upright"]
     for i, x in enumerate(ux):
         for y, side in zip(uy, ("front", "back")):
-            profile(f"upright.{i + 1}.{side}", "z", x + h, y + h, up["bottom"], up["top"],
-                    al, coll, frame_root)
+            FRAME[("upright", i, side)] = profile(f"upright.{i + 1}.{side}", "profile.upright", up["length"],
+                                                  (x + h, y + h, up["bottom"]), Z, coll, frame_root)
     bb, tb = fr["bottom_bar"], fr["top_bar"]
-    bar_section = rect_section(bb["depth"], bb["height"])
     for y, side in zip(uy, ("front", "back")):
-        profile(f"bar.bottom.{side}", "x", y + bb["depth"] / 2, (bb["bottom"] + bb["top"]) / 2,
-                0, bb["length"], al, coll, frame_root, section=bar_section)
-        profile(f"bar.top.{side}", "x", y + h, (tb["bottom"] + tb["top"]) / 2,
-                0, tb["length"], al, coll, frame_root)
+        for top, bar in ((False, bb), (True, tb)):
+            key = "top" if top else "bottom"
+            zc = (bar["bottom"] + bar["top"]) / 2
+            obj = place_at(f"bar.{key}.{side}", bar_mesh(top), coll, orient_ab((0, y + h, zc), Y, Z),
+                           frame_root, f"profile.bar_{key}")
+            FRAME[("bar", key, side)] = obj
+            for x0, out in ((0, -X), (bar["length"], X)):
+                fastener("cap.end_30", (x0, y + h, zc), out, obj)
+        for x in ux:
+            fastener("screw.m8x70_socket", (x + h, y + h, bb["bottom"]), Z, FRAME[("bar", "bottom", side)])
+            fastener("screw.m8x50_socket", (x + h, y + h, tb["top"] - fr["bar_holes"]["top_counterbore"]["depth"]),
+                     -Z, FRAME[("bar", "top", side)])
     db = fr["depth_beam"]
     for i, x in enumerate(ux):
         for lvl in ("bottom", "top"):
-            zz = db[lvl]
-            profile(f"beam.depth.{lvl}.{i + 1}", "y", x + h, (zz["bottom"] + zz["top"]) / 2,
-                    uy[0] + sec, uy[1], al, coll, frame_root)
+            FRAME[("beam", lvl, i)] = profile(f"beam.depth.{lvl}.{i + 1}", "profile.beam_depth", db["length"],
+                                              (x + h, uy[0] + sec, (db[lvl]["bottom"] + db[lvl]["top"]) / 2),
+                                              Y, coll, frame_root)
 
 
-def angle(name, x_face, inward, z_flat_lo, flat_up, mats, coll, parent):
-    """L angle along y. x_face: upright face, inward: +1 or -1.
+def angle_mesh(kind):
+    """L angle along +y from 0 to its length, the upright face at x 0, the leg
+    inward along +x; z 0 is the inner face of the flat leg. base: flat leg
+    below, leg up; support (also the guard): flat leg on top, leg down. The
+    holes go through the leg against the upright, countersunk on the box side."""
+    def build():
+        a = RACK["angles"]
+        leg, t, length = a["section"]["leg"], a["section"]["thickness"], a["length"]
+        if kind == "base":
+            outline = [(0, -t), (leg, -t), (leg, 0), (t, 0), (t, leg - t), (0, leg - t)]
+        else:
+            outline = [(0, t - leg), (t, t - leg), (t, 0), (leg, 0), (leg, t), (0, t)]
+        holes = a["holes"]
+        s = RACK["fasteners"]["screws"][holes["screw"]]
+        cutter = bmesh.new()
+        for y, z in angle_holes(kind):
+            bm_cone(cutter, (t + 0.01, y, z), -X, s["head_d"] / 2 + 0.01, holes["diameter"] / 2,
+                    (s["head_d"] - holes["diameter"]) / 2)
+            bm_cone(cutter, (t + 1, y, z), -X, holes["diameter"] / 2, holes["diameter"] / 2, t + 2)
+        body = prism_y(outline, 0, length)
+        return to_mesh(f"mesh.angle.{kind}", boolean_cut(body, cutter), MATS["aluminium"])
+    return shared(f"angle.{kind}", build)
 
-    flat_up=True: flat leg on top at z_flat_lo..+t, hanging leg down.
-    flat_up=False: flat leg at the bottom, vertical leg up.
-    """
+
+def angle_holes(kind):
+    """(y, z) of the holes in the angle's own frame."""
     a = RACK["angles"]
-    leg, t, length = a["section"]["leg"], a["section"]["thickness"], a["length"]
-    zf0, zf1 = z_flat_lo, z_flat_lo + t
-    zl0, zl1 = (zf1 - leg, zf1) if flat_up else (zf0, zf0 + leg)
-    bm = bmesh.new()
-    mm_box(bm, x_face, x_face + inward * leg, 0, length, zf0, zf1)
-    mm_box(bm, x_face, x_face + inward * t, 0, length, zl0, zl1)
-    bmesh.ops.remove_doubles(bm, verts=bm.verts[:], dist=1e-6)
-    return finish(name, bm, mats["aluminium"], coll, parent)
+    holes = a["holes"]
+    sign = 1 if kind == "base" else -1
+    return [(y, sign * dz) for y in (holes["from_end"], a["length"] - holes["from_end"])
+            for dz in holes["from_flat_leg"]]
 
 
 def bay_faces(c):
+    """The two upright faces of bay c: (x of the face, inward sign, side, upright index)."""
     fr = RACK["frame"]
     ux, sec = fr["upright_x"], fr["profile"]["section"]
-    return ((ux[c] + sec, +1, "left"), (ux[c + 1], -1, "right"))
+    return ((ux[c] + sec, +1, "left", c), (ux[c + 1], -1, "right", c + 1))
+
+
+def angle(name, part, kind, x_face, inward, z_ref, upright, coll, parent):
+    """An angle against the upright face x_face, its leg pointing inward (+1 or
+    -1), z_ref the inner face of its flat leg, with its four screws and nuts.
+    The right-hand angle is the left one turned half round, not mirrored."""
+    a = RACK["angles"]
+    t, length = a["section"]["thickness"], a["length"]
+    if inward > 0:
+        world = orient_ab((x_face, 0, z_ref), X, Y)
+    else:
+        world = orient_ab((x_face, length, z_ref), -X, -Y)
+    obj = place_at(name, angle_mesh(kind), coll, world, parent, part)
+    for y_local, z in angle_holes(kind):
+        y = y_local if inward > 0 else length - y_local
+        side = "front" if y < length / 2 else "back"
+        fastener(a["holes"]["screw"], (x_face + inward * t, y, z_ref + z), -inward * X, obj)
+        nut("tnut.m5", (x_face, y, z_ref + z), -inward * X, Z, FRAME[("upright", upright, side)])
+    return obj
 
 
 def build_angles(mats, colls, frame_root):
@@ -418,57 +666,96 @@ def build_angles(mats, colls, frame_root):
     t = a["section"]["thickness"]
     for c in range(fr["columns"]):
         for lv in RACK["levels"]:
-            for x_face, inward, side in bay_faces(c):
+            for x_face, inward, side, up in bay_faces(c):
                 if lv["angle"] == "angle.base":
-                    angle(f"angle.base.L{lv['level']}.C{c + 1}.{side}", x_face, inward,
-                          a["base"]["flat_leg_top"] - t, False, mats, colls["angles"], frame_root)
+                    angle(f"angle.base.L{lv['level']}.C{c + 1}.{side}", "angle.base", "base", x_face, inward,
+                          a["base"]["flat_leg_top"], up, colls["angles"], frame_root)
                 else:
-                    angle(f"angle.support.L{lv['level']}.C{c + 1}.{side}", x_face, inward,
-                          lv["floor"] - t, True, mats, colls["angles"], frame_root)
-        for x_face, inward, side in bay_faces(c):
-            angle(f"angle.guard.C{c + 1}.{side}", x_face, inward,
-                  RACK["tip_guard"]["flat_leg_bottom"], True, mats, colls["angles"], frame_root)
+                    angle(f"angle.support.L{lv['level']}.C{c + 1}.{side}", "angle.support", "support", x_face,
+                          inward, lv["floor"] - t, up, colls["angles"], frame_root)
+        for x_face, inward, side, up in bay_faces(c):
+            angle(f"angle.guard.C{c + 1}.{side}", "angle.guard", "support", x_face, inward,
+                  RACK["tip_guard"]["flat_leg_bottom"], up, colls["angles"], frame_root)
+
+
+def bracket_mesh():
+    """motedis S8BBR30 in its own frame: corner on the origin, leg A along +x
+    against a face whose normal is +y, leg B along +y against a face whose
+    normal is +x, the width along z."""
+    def build():
+        b = RACK["brackets"]["inside_30"]
+        leg, t, hw, sw, edge = b["leg"], b["thickness"], b["width"] / 2, b["side_wall"], b["side_wall_edge"]
+        body = bmesh.new()
+        prism_ab(body, [(0, 0), (leg, 0), (leg, t), (0, t)], -hw, hw)
+        prism_ab(body, [(0, 0), (t, 0), (t, leg), (0, leg)], -hw, hw)
+        wall = [(0, 0), (leg, 0), (leg, edge - leg), (edge - leg, leg), (0, leg)]
+        for z0, z1 in ((-hw, -hw + sw), (hw - sw, hw)):
+            prism_ab(body, wall, z0, z1)
+        hole = b["hole"]
+        r, c0, c1 = hole["width"] / 2, hole["from"] + hole["width"] / 2, hole["to"] - hole["width"] / 2
+        cutter = bmesh.new()
+        for u in (c0, c1):
+            bm_cone(cutter, (u, t + 1, 0), -Y, r, r, t + 2, segments=12)
+            bm_cone(cutter, (t + 1, u, 0), -X, r, r, t + 2, segments=12)
+        mm_box(cutter, c0, c1, -1, t + 1, -r, r)
+        mm_box(cutter, -1, t + 1, c0, c1, -r, r)
+        return to_mesh("mesh.bracket.inside_30", boolean_cut(body, cutter), MATS["aluminium"])
+    return shared("bracket", build)
+
+
+def bracket(name, part, corner_mm, a, b, parent, slot_a, slot_b, part_of=None, screw_b=True):
+    """A bracket in the inside corner at corner_mm, leg A along a, leg B along b,
+    with a screw and a hammer nut in each leg; slot_a and slot_b are the
+    directions of the slots the legs sit on. screw_b False leaves leg B free."""
+    br = RACK["brackets"]["inside_30"]
+    obj = place_at(name, bracket_mesh(), COLLS["frame"], orient_ab(corner_mm, a, b), parent, part)
+    mid, t = (br["hole"]["from"] + br["hole"]["to"]) / 2, br["thickness"]
+    a, b = Vector(a), Vector(b)
+    legs = [(a, b, slot_a)] + ([(b, a, slot_b)] if screw_b else [])
+    for along, off, slot in legs:
+        face = at(corner_mm, (along, mid))
+        fastener("screw.m6x12_button", at(face, (off, t)), -off, obj, part_of=part_of)
+        host = slot  # the profile that holds the nut
+        nut("tnut.m6", face, -off, host[1], host[0], part_of=part_of)
+    return obj
 
 
 def build_brackets(mats, colls, frame_root):
-    """Inside brackets 30: L of two 30 mm legs, 3 thick, 20 wide, per the joints of rack.json."""
+    """The 28 inside brackets of the joints and the 20 plate brackets."""
     fr = RACK["frame"]
     sec = fr["profile"]["section"]
     ux, uy = fr["upright_x"], fr["upright_y"]
     db, tb = fr["depth_beam"], fr["top_bar"]
-    leg, t, w = 30, 3, 20
     last = len(ux) - 1
-    pieces = []
-    for y_face, dy in ((uy[0] + sec, +1), (uy[1], -1)):
-        ya, yt, yl = y_face, y_face + dy * t, y_face + dy * leg
+    zc_top, zc_bottom = (tb["bottom"] + tb["top"]) / 2, (db["bottom"]["bottom"] + db["bottom"]["top"]) / 2
+    n = 0
+    for y_face, dy, side in ((uy[0] + sec, +1, "front"), (uy[1], -1, "back")):
+        bar_top, bar_bottom = FRAME[("bar", "top", side)], FRAME[("bar", "bottom", side)]
         for i, x in enumerate(ux):
-            xm0, xm1 = x + (sec - w) / 2, x + (sec + w) / 2
-            # upright to top depth beam: vertical leg on the upright, flat leg under the beam
-            zt = db["top"]["bottom"]
-            pieces.append([(xm0, xm1, ya, yt, zt - leg, zt), (xm0, xm1, ya, yl, zt - t, zt)])
-            # top depth beam to bar, on the beam's bay side
+            up = FRAME[("upright", i, side)]
+            # upright to top depth beam: leg A down the upright, leg B under the beam
+            n += 1
+            bracket(f"bracket.{n}", "bracket.inside_30", (x + sec / 2, y_face, db["top"]["bottom"]), -Z, dy * Y,
+                    frame_root, (up, Z), (FRAME[("beam", "top", i)], Y))
+            # depth beam to bar on the beam's bay side, and at the middle
+            # uprights a second one at the bottom on the other side
             xf, dx = (x, -1) if i == last else (x + sec, +1)
-            z0 = (tb["bottom"] + tb["top"] - w) / 2
-            pieces.append([(xf, xf + dx * leg, ya, yt, z0, z0 + w), (xf, xf + dx * t, ya, yl, z0, z0 + w)])
-            # bottom depth beam to bar, flush like the top pair: on the beam's bay
-            # side, and at the middle uprights a second one on the other side
-            z0 = (db["bottom"]["bottom"] + db["bottom"]["top"] - w) / 2
-            sides = [(xf, dx)] + ([(x, -1)] if 0 < i < last else [])
-            for xs, ds in sides:
-                pieces.append([(xs, xs + ds * leg, ya, yt, z0, z0 + w), (xs, xs + ds * t, ya, yl, z0, z0 + w)])
-        # plate brackets in the bar's inner slot, the free leg flush with the bar
-        # top under the top plate
-        mounts = RACK["top_plate"]["mounts"]
-        zt = tb["top"]
-        for xc in mounts["x"]:
-            x0, x1 = xc - w / 2, xc + w / 2
-            pieces.append([(x0, x1, ya, yt, zt - leg, zt), (x0, x1, ya, yl, zt - t, zt)])
-    for n, boxes in enumerate(pieces, 1):
-        bm = bmesh.new()
-        for b in boxes:
-            mm_box(bm, *b)
-        bmesh.ops.remove_doubles(bm, verts=bm.verts[:], dist=1e-6)
-        finish(f"bracket.{n}", bm, mats["aluminium"], colls["frame"], frame_root)
+            for zc, bar, lvl, sides in ((zc_top, bar_top, "top", [(xf, dx)]),
+                                        (zc_bottom, bar_bottom, "bottom",
+                                         [(xf, dx)] + ([(x, -1)] if 0 < i < last else []))):
+                for xs, ds in sides:
+                    n += 1
+                    bracket(f"bracket.{n}", "bracket.inside_30", (xs, y_face, zc), ds * X, dy * Y, frame_root,
+                            (bar, X), (FRAME[("beam", lvl, i)], Y))
+        # plate brackets in the top bar's inner slot, leg B flush with the bar
+        # top under the plate, held to the plate by one wood screw
+        br = RACK["brackets"]["inside_30"]
+        mid, t = (br["hole"]["from"] + br["hole"]["to"]) / 2, br["thickness"]
+        for k, xc in enumerate(RACK["top_plate"]["mounts"]["x"], 1):
+            obj = bracket(f"bracket.plate.{side}.{k}", "bracket.plate", (xc, y_face, tb["top"]), -Z, dy * Y,
+                          frame_root, (bar_top, X), None, part_of="bracket.plate", screw_b=False)
+            fastener("screw.wood_4_5x16", (xc, y_face + dy * mid, tb["top"] - t), Z, obj)
+    assert n == 28, n
 
 
 def corners():
@@ -476,18 +763,57 @@ def corners():
     return ((+1, +1), (-1, +1), (+1, -1), (-1, -1))
 
 
+def corner_frame(sx, sy):
+    """Unit vectors (u, v) from a frame corner inward, u along the bar and v along
+    the depth beam where that is a right-handed turn; else the two swap, which the
+    plate's pattern, symmetric about its diagonal, allows."""
+    u, v = sx * X, sy * Y
+    return (u, v) if sx * sy > 0 else (v, u)
+
+
+def castor_plate_mesh():
+    """Castor plate from its outer corner at the origin into +x and +y, 0 to its thickness in z."""
+    def build():
+        cp = RACK["frame"]["castor_plate"]
+        holes, s, t = cp["holes"], cp["size"], cp["thickness"]
+        body = bmesh.new()
+        mm_box(body, 0, s, 0, s, 0, t)
+        cutter = bmesh.new()
+        sink = RACK["fasteners"]["screws"]["screw.m6x16_countersunk"]
+        for u, v in holes["screws"]["at"]:
+            d = holes["screws"]["diameter"]
+            bm_cone(cutter, (u, v, -0.01), Z, sink["head_d"] / 2 + 0.01, d / 2, (sink["head_d"] - d) / 2)
+            bm_cone(cutter, (u, v, -1), Z, d / 2, d / 2, t + 2, segments=12)
+        u, v = holes["bolt_clearance"]["at"]
+        r = holes["bolt_clearance"]["diameter"] / 2
+        bm_cone(cutter, (u, v, -1), Z, r, r, t + 2)
+        u, v = holes["castor_thread"]["at"]
+        bm_cone(cutter, (u, v, -1), Z, 4, 4, t + 2, segments=12)
+        return to_mesh("mesh.plate.castor", boolean_cut(body, cutter), MATS["aluminium"])
+    return shared("plate.castor", build)
+
+
 def build_castor_plates(mats, colls, frame_root):
     fr = RACK["frame"]
     cp = fr["castor_plate"]
-    W, D, s = fr["width"], fr["depth"], cp["size"]
+    W, D = fr["width"], fr["depth"]
+    plates = []
     for n, (sx, sy) in enumerate(corners(), 1):
         x0 = 0 if sx > 0 else W
         y0 = 0 if sy > 0 else D
-        assert min(x0, x0 + sx * s) >= 0 and max(x0, x0 + sx * s) <= W
-        assert min(y0, y0 + sy * s) >= 0 and max(y0, y0 + sy * s) <= D
-        bm = bmesh.new()
-        mm_box(bm, x0, x0 + sx * s, y0, y0 + sy * s, cp["bottom"], cp["top"])
-        finish(f"plate.castor.{n}", bm, mats["aluminium"], colls["frame"], frame_root)
+        u, v = corner_frame(sx, sy)
+        obj = place_at(f"plate.castor.{n}", castor_plate_mesh(), colls["frame"],
+                       orient_ab((x0, y0, cp["bottom"]), u, v), frame_root, "plate.castor")
+        plates.append(obj)
+        side = "front" if sy > 0 else "back"
+        beam = FRAME[("beam", "bottom", 0 if sx > 0 else len(fr["upright_x"]) - 1)]
+        for a, b in cp["holes"]["screws"]["at"]:
+            along_bar = b < a  # (60, 15), (80, 15) run along the bar
+            p = at((x0, y0, 0), (sx * X, a), (sy * Y, b))
+            fastener("screw.m6x16_countersunk", (p.x, p.y, cp["bottom"]), Z, obj)
+            host = FRAME[("bar", "bottom", side)] if along_bar else beam
+            nut("tnut.m6", (p.x, p.y, cp["top"]), Z, X if along_bar else Y, host)
+    return plates
 
 
 def build_castors(mats, colls, frame_root):
@@ -498,21 +824,31 @@ def build_castors(mats, colls, frame_root):
     W, D, inset = fr["width"], fr["depth"], ca["inset"]
     head_r, wheel_r = ca["head_diameter"] / 2, ca["wheel"] / 2
     tw, off = ca["tread_width"], ca["offset"]
-    for n, (sx, sy) in enumerate(corners(), 1):
-        cx = inset if sx > 0 else W - inset
-        cy = inset if sy > 0 else D - inset
-        assert head_r <= cx <= W - head_r and head_r <= cy <= D - head_r, "castor head outside"
+
+    def build():
+        """The castor with its wheel trailing towards +y; the back ones are turned half round."""
         bm = bmesh.new()
         bm_cylinder(bm, (0, 0, m(h - 4)), m(head_r), m(8), "z")
         bm_cylinder(bm, (0, 0, m(h - 12)), m(head_r * 0.7), m(8), "z")
         ox = tw / 2 + 4
-        mm_box(bm, -ox - 3, ox + 3, -12, sy * off + sy * 12, h - 22, h - 16)
+        mm_box(bm, -ox - 3, ox + 3, -12, off + 12, h - 22, h - 16)
         for k in (-1, 1):
-            mm_box(bm, k * ox, k * (ox + 3), sy * (off - 18), sy * (off + 12), wheel_r - 8, h - 16)
-        bm_cylinder(bm, (0, m(sy * off), m(wheel_r)), m(wheel_r), m(tw), "x")
-        bm_cylinder(bm, (0, m(sy * off), m(wheel_r)), m(6), m(2 * ox + 8), "x", segments=12)
-        obj = finish(f"castor.plain.{n}", bm, mats["castor"], colls["castors"], frame_root)
-        obj.location = (m(cx), m(cy), 0)
+            mm_box(bm, k * ox, k * (ox + 3), off - 18, off + 12, wheel_r - 8, h - 16)
+        bm_cylinder(bm, (0, m(off), m(wheel_r)), m(wheel_r), m(tw), "x")
+        bm_cylinder(bm, (0, m(off), m(wheel_r)), m(6), m(2 * ox + 8), "x", segments=12)
+        return to_mesh("mesh.castor.plain", bm, mats["castor"])
+
+    for n, (sx, sy) in enumerate(corners(), 1):
+        cx = inset if sx > 0 else W - inset
+        cy = inset if sy > 0 else D - inset
+        assert head_r <= cx <= W - head_r and head_r <= cy <= D - head_r, "castor head outside"
+        world = orient_ab((cx, cy, 0), sy * X, sy * Y)
+        obj = place_at(f"castor.plain.{n}", shared("castor.plain", build), colls["castors"], world, frame_root,
+                       "castor.plain")
+        w = RACK["fasteners"]["washers"]["washer.m8"]["h"]
+        face = h - ca["top_plate"]
+        fastener("washer.m8", (cx, cy, face), Z, obj)
+        fastener("screw.m8x20_socket", (cx, cy, face - w), Z, obj)
 
 
 # ---------------------------------------------------------------- boxes
@@ -937,6 +1273,7 @@ def build_inserts(mats, colls, boxes):
                             parent=box, location=loc)
                 obj["kind"] = "insert"
                 obj["type"] = t
+                obj["part"] = ins["sets"][layout_name]
                 y += l
 
 
@@ -1163,14 +1500,38 @@ def render(scene, cam, filename):
     print("rendered", filename)
 
 
+def check_parts():
+    """Stop the build unless the model holds every build part of the catalog as
+    often as the parts list says. An insert set counts once per box, a ColorClip
+    set once per box (both rings are one object)."""
+    ins = RACK["inserts"]
+    per_set = {ins["sets"][k]: sum(len(row) for row in layout) for k, layout in ins["layouts"].items()}
+    counts = {}
+    for obj in bpy.data.objects:
+        part = object_part(obj)
+        if obj.get("kind") == "clip":
+            part = f"clip.{obj['colour']}"
+        if part:
+            counts[part] = counts.get(part, 0) + 1
+    for part, n in per_set.items():
+        counts[part] = counts.get(part, 0) / n
+    want = {p["id"]: p["quantity"] for p in RACK["parts"] if p["status"] == "build" and p["unit"] == "piece"}
+    wrong = {p: (counts.get(p, 0), q) for p, q in want.items() if counts.get(p, 0) != q}
+    extra = sorted(set(counts) - set(want))
+    assert not wrong and not extra, f"model counts (drawn, listed): {wrong}; not in the parts list: {extra}"
+    print("parts check:", sum(want.values()), "pieces of", len(want), "part IDs")
+
+
 def main():
     global SECTION
     sec = RACK["frame"]["profile"]["section"]
     SECTION = rect_section(sec, sec)
     scene = reset_scene()
     mats = make_materials()
-    names = ["frame", "angles", "castors", "boxes", "inserts", "top_plate", "stage"]
+    MATS.update(mats)
+    names = ["frame", "angles", "fasteners", "castors", "boxes", "inserts", "top_plate", "stage"]
     colls = {n: collection(scene, n) for n in names}
+    COLLS.update(colls)
 
     frame_root = bpy.data.objects.new("frame", None)
     frame_root["kind"] = "frame"
@@ -1182,7 +1543,11 @@ def main():
     build_castors(mats, colls, frame_root)
     boxes = build_boxes(mats, colls)
     build_inserts(mats, colls, boxes)
-    build_top_plate(mats, colls)
+    plate = build_top_plate(mats, colls)
+    plate["part"] = "plate.top"
+    for box, _ in boxes.values():
+        box["part"] = "box.e120" if box["class"] == "120" else "box.e220"
+    check_parts()
 
     scene["rack_schema"] = RACK["schema"]
     out = RACK["outer"]
