@@ -61,6 +61,8 @@
             "head_diameter": 46,
             "head_diameter_status": "SECONDARY, read as text from motedis' drawing of the same castor",
             "inset": 45,
+            "top_plate": 4,
+            "top_plate_status": "UNVERIFIED, the castor's top plate; the washer and the head of the M8x20 sit under it inside the housing",
             "at": "under a castor plate at each corner, centre 45 from both outer faces"
         },
         "castor_plate": {
@@ -73,7 +75,7 @@
             "holes": {
                 "castor_thread": { "at": [45, 45], "thread": "M8" },
                 "bolt_clearance": { "at": [15, 15], "diameter": 14 },
-                "screws": { "at": [[60, 15], [80, 15], [15, 60], [15, 80]], "screw": "M6 countersunk from below" }
+                "screws": { "at": [[60, 15], [80, 15], [15, 60], [15, 80]], "screw": "M6 countersunk from below", "diameter": 6.6 }
             }
         },
         "bottom_bar": { "type": "30x30 B-type slot 8", "depth": 30, "height": 30, "bottom": 135, "top": 165, "length": 1068 },
@@ -82,7 +84,58 @@
         "upright_x": [0, 346, 692, 1038],
         "upright_y": [0, 405],
         "depth_beam": { "length": 375, "bottom": { "bottom": 135, "top": 165 }, "top": { "bottom": 956, "top": 986 } },
-        "castors_at": "the four corners, each under a castor plate below the bottom bar and the bottom depth beam"
+        "castors_at": "the four corners, each under a castor plate below the bottom bar and the bottom depth beam",
+        "bar_holes": {
+            "diameter": 8.5,
+            "at": "the upright centres, on the centre line of the bar's depth",
+            "top_counterbore": { "diameter": 14, "depth": 8 },
+            "status": "diameter and places from the assembly guide; the counterbore depth is UNVERIFIED, chosen so the M8 head (k 8) sits flush with the top"
+        },
+        "slot": {
+            "lip": 2.2,
+            "status": "UNVERIFIED, a typical lip of a B-type slot 8 in a 30 profile; a hammer nut's top sits this far below the face. The model draws the slot 8 wide and 6 deep without the undercut"
+        }
+    },
+    "brackets": {
+        "inside_30": {
+            "part": "bracket.inside_30",
+            "product": "motedis S8BBR30",
+            "leg": 27,
+            "width": 28,
+            "thickness": 6,
+            "side_wall": 3,
+            "side_wall_edge": 32.5,
+            "hole": { "from": 7.0, "to": 20.7, "width": 6.7 },
+            "status": "VERIFIED, read from motedis' CAD file Motedis_S8BBR30.stp: legs 27 long, 6 thick and 28 wide; a side wall 3 thick on each edge, a triangle cut off where the distances along both legs add up to 32.5; in each leg an elongated hole 7.0 to 20.7 from the corner, 6.4 to 7.0 wide (drafted, drawn 6.7). The model leaves out the centring pins (2.4 high) and the small chamfers; a screw sits in the middle of the hole, or on the slot's centre line where the leg crosses the slot"
+        },
+        "plate": {
+            "part": "bracket.plate",
+            "shape": "inside_30",
+            "fixing_set": { "screw": "screw.m6x12_button", "nut": "tnut.m6" },
+            "status": "UNVERIFIED: Dold's Winkel 30 mit Befestigungssatz is drawn in the shape of motedis S8BBR30, its fixing screw and nut with the shapes of the parts named; they are counted as part of bracket.plate"
+        }
+    },
+    "fasteners": {
+        "screws": {
+            "screw.m8x70_socket": { "standard": "ISO 4762", "head": "socket", "d": 8, "length": 70, "head_d": 13, "head_k": 8 },
+            "screw.m8x50_socket": { "standard": "ISO 4762", "head": "socket", "d": 8, "length": 50, "head_d": 13, "head_k": 8 },
+            "screw.m8x20_socket": { "standard": "ISO 4762", "head": "socket", "d": 8, "length": 20, "head_d": 13, "head_k": 8 },
+            "screw.m6x12_button": { "standard": "ISO 7380-1", "head": "button", "d": 6, "length": 12, "head_d": 10.5, "head_k": 3.3 },
+            "screw.m6x16_countersunk": { "standard": "ISO 10642", "head": "countersunk", "d": 6, "length": 16, "head_d": 12, "head_k": 3 },
+            "screw.m5x10_countersunk": { "standard": "ISO 10642", "head": "countersunk", "d": 5, "length": 10, "head_d": 10, "head_k": 2.5 },
+            "screw.wood_4_5x16": { "standard": "none", "head": "pan", "d": 4.5, "length": 16, "head_d": 9, "head_k": 3.5 }
+        },
+        "screws_status": "head_d and head_k of ISO 4762 M8 (13, 8) and ISO 7380-1 M6 (10.5, 3.3) VERIFIED from the standards' tables; ISO 10642 head_d is the DIN 7991 dk max (10, 12), VERIFIED, and head_k = (head_d - d) / 2 for the 90 degree head, DERIVED; length is the nominal length, which includes the head only for a countersunk screw; the wood screw's head is UNVERIFIED, no product is chosen",
+        "nuts": {
+            "tnut.m6": { "length": 16.4, "width": 8, "height": 6, "d": 6 },
+            "tnut.m5": { "length": 16.4, "width": 8, "height": 6, "d": 5 }
+        },
+        "nuts_status": "VERIFIED, read from motedis' CAD files Motedis_S8BHASNM6.stp and Motedis_S8BHASNM5.stp: 16.4 x 8 x 6; drawn as a block across the slot",
+        "washers": {
+            "washer.m8": { "standard": "ISO 7089", "d1": 8.4, "d2": 16, "h": 1.6 }
+        },
+        "washers_status": "VERIFIED, Böllhoff's ISO 7089 data sheet",
+        "cap": { "part": "cap.end_30", "size": 30, "thickness": 3, "colour": "black", "status": "UNVERIFIED, the flange of a pressed-in end cap, which stands this far proud of the bar end; the model draws the flange only. Black as profilzuschnitt24's cap; Dold's colour is not read" }
     },
     "angles": {
         "section": { "leg": 50, "thickness": 3, "type": "50x50x3 EN AW-6060" },
@@ -90,6 +143,13 @@
         "clear_width_between_hanging_legs": 310,
         "clear_width_between_leg_tips": 216,
         "gap_above_box_max": 8,
+        "holes": {
+            "from_end": 15,
+            "from_flat_leg": [15, 35],
+            "diameter": 5.5,
+            "screw": "screw.m5x10_countersunk",
+            "status": "UNVERIFIED, the assembly guide's proposal: in the leg against the upright, 15 from each end and 15 and 35 from the inner face of the flat leg, countersunk on the box side"
+        },
         "base": { "orientation": "flat leg at the bottom on the bottom bars, vertical leg up", "flat_leg_top": 168 },
         "support_and_guard": { "orientation": "flat leg on top, hanging leg down along the upright" }
     },

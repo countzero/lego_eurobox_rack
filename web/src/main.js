@@ -80,7 +80,7 @@ function pick(event) {
   pointer.set(((event.clientX - r.left) / r.width) * 2 - 1, -((event.clientY - r.top) / r.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
   for (const hit of raycaster.intersectObjects(scene.children, true)) {
-    if (!hit.object.visible) continue;
+    if (!solid(hit)) continue;
     for (let o = hit.object; o; o = o.parent) {
       const box = boxes.find((b) => b.node === o);
       if (box) return { box, side: sideOf(box, hit.point) };
@@ -88,6 +88,14 @@ function pick(event) {
     return null;
   }
   return null;
+}
+
+// Screws, nuts, washers and end caps let a click through to what lies behind.
+const passThrough = new Set(["fastener", "cap"]);
+function solid(hit) {
+  if (!hit.object.visible) return false;
+  for (let o = hit.object; o; o = o.parent) if (passThrough.has(o.userData.kind)) return false;
+  return true;
 }
 
 // The side of the box's current centre the hit lies on, in the box's parent space.
@@ -165,7 +173,7 @@ function zoomTo(event) {
   pointer.set(((event.clientX - r.left) / r.width) * 2 - 1, -((event.clientY - r.top) / r.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
   const root = model();
-  const hit = root && raycaster.intersectObject(root, true).find((h) => h.object.visible);
+  const hit = root && raycaster.intersectObject(root, true).find(solid);
   const target = hit ? hit.point.clone() : controls.target.clone();
   const fromTarget = controls.target.clone();
   const from = camera.position.clone();
