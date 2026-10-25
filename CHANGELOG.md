@@ -3,6 +3,21 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-10-25
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, the depth of motedis' M8 core thread is not yet confirmed, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: every frame dimension changes. Do not order from the old parts list, cut list or price list; order the new ones, all metal parts and castors from motedis. The rack now takes NextGen 2.0 boxes only._
+
+### Changed
+
+- **Breaking:** buy every metal part and the castors from motedis in one order, cut by the shop, about 480 € and 2–4 working days: 40 × 40 × 4 angles instead of 50 × 50 × 3, 318 mm bays and 1074 mm bars, 797 mm uprights, 8 mm castor plates with a lock nut on the castor bolt, four braked castors, stainless M8 core bolts and 24 instead of 28 joint brackets; the frame is 1074 × 435 × 990 mm and the top plate 1114 × 483 mm, and the box envelope narrows to NextGen 2.0 boxes ([#28](https://github.com/countzero/lego_eurobox_rack/pull/28))
+- Halve the web model with meshopt compression and cleaner box meshes, 94 kB deflated ([#27](https://github.com/countzero/lego_eurobox_rack/pull/27))
+
+### Fixed
+
+- Keep the castor bolt clear of the corner bracket, which it ran into, and in its castor in the exploded view instead of through the wheel ([#28](https://github.com/countzero/lego_eurobox_rack/pull/28))
+
 ## [0.5.2] - 2026-10-25
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
