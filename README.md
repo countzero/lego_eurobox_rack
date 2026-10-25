@@ -11,9 +11,11 @@ and to the back, so the rack stands free in the room. Frame 1068 × 435 ×
 top at 1007 mm.
 
 **[Open the 3D viewer](https://countzero.github.io/lego_eurobox_rack/)**: turn
-the rack, pull the boxes out, pick the ColorClip colours.
+the rack, pull the boxes out, draw it apart, pick the ColorClip colours.
 
 ![The rack, three-quarter view, one box pulled out, with the birch top plate](renders/drawer_out.png)
+
+![The rack drawn apart: every profile, angle, bracket, screw and nut, the boxes pulled out to the front](renders/exploded.png)
 
 > [!WARNING]
 > Not ready to build. The box geometry is provisional until the boxes are

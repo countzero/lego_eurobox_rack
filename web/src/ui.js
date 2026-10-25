@@ -8,6 +8,7 @@ const $ = (id) => document.getElementById(id);
 const TIPS = {
   reset: () => "Reset <kbd>Esc</kbd>",
   colours: () => "Colours <kbd>C</kbd>",
+  explode: () => "Explode <kbd>E</kbd>",
   fullscreen: () => (document.fullscreenElement ? "Exit full screen" : "Full screen"),
 };
 

@@ -19,9 +19,19 @@ const { renderer, scene, camera, controls, sun, moving, composer, taa, resize: r
 // Read live, so a change in the system settings applies at once.
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const boxes = [];
+// Every node with an `explode` extra: where it is assembled and its moves in
+// the exploded view, one offset per step in its parent's space; the steps run
+// one after the other, the boxes out first (docs/design.md → *Contracts*).
+const parts = [];
 let centre = new THREE.Vector3();
 let radius = 1;
 let tween = null;
+// The exploded view: k runs from 0 (assembled) to 1 (exploded).
+const explosion = { k: 0, from: 0, to: 0, t: 1, centre: new THREE.Vector3(), radius: 1 };
+const exploded = () => explosion.to === 1;
+const EXPLODE_SECONDS = 1.8; // three steps of 0.6 s
+const steps = (list) => (list ?? []).map((v) => new THREE.Vector3(...v));
+const explodeButton = document.getElementById("explode");
 
 async function unpack(bytes) {
   const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
@@ -44,26 +54,57 @@ const directions = {
   three: [-0.8, 0.55, 1],
 };
 
-function view(name) {
-  const dir = new THREE.Vector3(...directions[name === "reset" ? "three" : name]).normalize();
-  const fit = radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) / Math.min(1, camera.aspect);
-  const to = centre.clone().addScaledVector(dir, fit * 1.05);
+// The camera fits the rack as it is, or as it will be once the exploded view
+// has moved; dir keeps the current direction when not given.
+function fit(dir) {
+  const r = exploded() ? explosion.radius : radius;
+  const target = exploded() ? explosion.centre : centre;
+  dir ??= camera.position.clone().sub(controls.target).normalize();
+  const d = r / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) / Math.min(1, camera.aspect);
+  const to = target.clone().addScaledVector(dir, d * 1.05);
   const from = camera.position.clone();
   const fromTarget = controls.target.clone();
   tween = { t: 0, step: (k) => {
     camera.position.lerpVectors(from, to, k);
-    controls.target.lerpVectors(fromTarget, centre, k);
+    controls.target.lerpVectors(fromTarget, target, k);
   } };
+}
+
+function view(name) {
+  fit(new THREE.Vector3(...directions[name === "reset" ? "three" : name]).normalize());
 }
 
 const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 
-// side is +1 (front, along pull_axis) or -1 (back, against it).
+// side is +1 (front, along pull_axis) or -1 (back, against it). A box's pull
+// is apart from the exploded view's move, so the two add up.
 function setOut(box, out, side = 1) {
   box.out = out;
-  box.from = box.node.position.clone();
-  box.to = box.home.clone().addScaledVector(box.axis, out ? side * box.travel : 0);
+  box.from = box.pull.clone();
+  box.to = new THREE.Vector3().addScaledVector(box.axis, out ? side * box.travel : 0);
   box.t = 0;
+}
+
+// Adds the exploded move at k (0 to 1) to v: each step takes its share of k in turn.
+function addMove(v, steps, k) {
+  steps.forEach((s, i) => v.addScaledVector(s, THREE.MathUtils.clamp(k * steps.length - i, 0, 1)));
+  return v;
+}
+
+function placeBox(box) {
+  addMove(box.node.position.copy(box.home).add(box.pull), box.explode, explosion.k);
+}
+
+// Draws the rack apart or puts it together; open boxes close first.
+function setExploded(on) {
+  if (on === exploded()) return;
+  if (on) for (const box of boxes) if (box.out) setOut(box, false);
+  explosion.from = explosion.k;
+  explosion.to = on ? 1 : 0;
+  explosion.t = 0;
+  explodeButton.setAttribute("aria-pressed", String(on));
+  fit();
+  redraw();
 }
 
 function highlight(box, on) {
@@ -117,7 +158,7 @@ canvas.addEventListener("pointermove", (event) => {
   canvas.style.cursor = box ? "pointer" : "";
   if (box) {
     clearCursor();
-    hint.show(box, box.out ? "Close" : "Open", event.clientX, event.clientY);
+    hint.show(box, exploded() ? "Assemble" : box.out ? "Close" : "Open", event.clientX, event.clientY);
   } else hint.hide();
 });
 
@@ -142,7 +183,11 @@ canvas.addEventListener("pointerup", (event) => {
   if (box) {
     clearTimeout(single?.timer);
     single = null;
-    setOut(box, !box.out, side);
+    if (exploded()) {
+      setExploded(false);
+      hint.hide();
+      announce("Assembled");
+    } else setOut(box, !box.out, side);
     return;
   }
   if (single) {
@@ -218,7 +263,7 @@ const levelList = () => [...new Set(boxes.map((b) => b.level))].sort((a, b) => a
 const screenX = (box) => new THREE.Box3().setFromObject(box.node).getCenter(new THREE.Vector3()).project(camera).x;
 const stateOf = (box) => {
   if (!box.out) return "closed";
-  const d = box.to.clone().sub(box.home).dot(box.axis);
+  const d = box.to.dot(box.axis);
   return d < 0 ? "out to the back" : "out to the front";
 };
 const where = (box) => `Level ${box.level}, column ${box.column}`;
@@ -266,6 +311,12 @@ canvas.addEventListener("keydown", (ev) => {
     const back = ev.key === "Enter" && ev.shiftKey;
     if (back && !cursor.back) return;
     if (ev.shiftKey && !back) return;
+    if (exploded()) {
+      setExploded(false);
+      announce("Assembled");
+      ev.preventDefault();
+      return;
+    }
     if (cursor.out) setOut(cursor, false);
     else setOut(cursor, true, back ? -1 : 1);
     announce(`${where(cursor)}, ${cursor.out ? stateOf(cursor) : "pushed in"}`);
@@ -294,12 +345,24 @@ window.addEventListener("keydown", (ev) => {
     document.getElementById("colours").click();
     announce(isPanelOpen() ? "Colours shown" : "Colours hidden");
   }
+  if ((ev.key === "e" || ev.key === "E") && inViewer(ev) && !ev.repeat) {
+    ev.preventDefault();
+    explodeButton.click();
+  }
+});
+
+explodeButton.addEventListener("click", () => {
+  setExploded(!exploded());
+  announce(exploded() ? "Exploded" : "Assembled");
 });
 
 for (const button of document.querySelectorAll("[data-view]")) {
   button.addEventListener("click", () => {
+    if (button.dataset.view === "reset") {
+      setExploded(false);
+      for (const box of boxes) if (box.out) setOut(box, false);
+    }
     view(button.dataset.view);
-    if (button.dataset.view === "reset") for (const box of boxes) if (box.out) setOut(box, false);
   });
 }
 
@@ -320,13 +383,24 @@ renderer.setAnimationLoop((now) => {
   last = now;
   let busy = resized;
   resized = false;
-  for (const box of boxes) {
-    if (box.t >= 1) continue;
-    box.t = Math.min(1, box.t + dt / 0.45);
-    box.node.position.lerpVectors(box.from, box.to, ease(box.t));
-    renderer.shadowMap.needsUpdate = true;
+  const exploding = explosion.t < 1;
+  if (exploding) {
+    explosion.t = Math.min(1, explosion.t + dt / EXPLODE_SECONDS);
+    explosion.k = explosion.from + (explosion.to - explosion.from) * ease(explosion.t);
+    for (const p of parts) addMove(p.node.position.copy(p.home), p.steps, explosion.k);
     busy = true;
   }
+  for (const box of boxes) {
+    const pulling = box.t < 1;
+    if (!pulling && !exploding) continue;
+    if (pulling) {
+      box.t = Math.min(1, box.t + dt / 0.45);
+      box.pull.lerpVectors(box.from, box.to, ease(box.t));
+    }
+    placeBox(box);
+    busy = true;
+  }
+  if (busy) renderer.shadowMap.needsUpdate = true;
   if (tween) {
     tween.t = Math.min(1, tween.t + dt / 0.6);
     tween.step(ease(tween.t));
@@ -386,10 +460,14 @@ async function load() {
         travel: x.travel ?? 0.4,
         back: (x.sides ?? ["front"]).includes("back"),
         home: o.position.clone(),
+        pull: new THREE.Vector3(),
+        explode: steps(x.explode),
         materials,
         out: false,
         t: 1,
       });
+    } else if (x.explode) {
+      parts.push({ node: o, home: o.position.clone(), steps: steps(x.explode) });
     }
   });
   root.updateMatrixWorld(true);
@@ -406,9 +484,21 @@ async function load() {
   root.traverse((o) => { if (["frame", "plate"].includes(o.userData.kind)) rack.expandByObject(o); });
   centre = (rack.isEmpty() ? bounds : rack).getCenter(new THREE.Vector3());
 
+  // The exploded rack's size, measured once with every part moved out.
+  for (const p of parts) addMove(p.node.position.copy(p.home), p.steps, 1);
+  for (const box of boxes) addMove(box.node.position.copy(box.home), box.explode, 1);
+  root.updateMatrixWorld(true);
+  const apart = new THREE.Box3().setFromObject(root);
+  explosion.radius = apart.getBoundingSphere(new THREE.Sphere()).radius;
+  explosion.centre = apart.getCenter(new THREE.Vector3());
+  for (const p of parts) p.node.position.copy(p.home);
+  for (const box of boxes) box.node.position.copy(box.home);
+  root.updateMatrixWorld(true);
+  const reach = Math.max(radius, explosion.radius + explosion.centre.distanceTo(centre));
+
   const floorY = bounds.min.y;
   const ground = new THREE.Mesh(
-    new THREE.CircleGeometry(radius * 4, 64).rotateX(-Math.PI / 2),
+    new THREE.CircleGeometry(reach * 4, 64).rotateX(-Math.PI / 2),
     new THREE.MeshStandardMaterial({ color: 0x737373, roughness: 0.85 }),
   );
   ground.position.set(centre.x, floorY, centre.z);
@@ -417,8 +507,8 @@ async function load() {
   sun.target.position.copy(centre);
   sun.position.copy(centre).add(new THREE.Vector3(-1.5, 4, 3));
   const cam = sun.shadow.camera;
-  cam.left = cam.bottom = -radius * 1.5;
-  cam.right = cam.top = radius * 1.5;
+  cam.left = cam.bottom = -reach * 1.5;
+  cam.right = cam.top = reach * 1.5;
   cam.near = 0.1;
   cam.far = 10;
   cam.updateProjectionMatrix();

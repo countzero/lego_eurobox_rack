@@ -460,6 +460,7 @@ render but `inserts_top`:
 | `renders/drawer_out.png`    | Three-quarter, box `L3.C2` pulled out by `pull_out.travel` (270 mm)                   |
 | `renders/inserts_top.png`   | Orthographic from above, the twelve 120 boxes with their inserts, staged in four rows |
 | `renders/angle_detail.png`  | Close-up of one support angle with the boxes above and below                          |
+| `renders/exploded.png`      | Perspective, front left from above, the rack exploded (`explode` at 1)                |
 
 ### Model objects and the web export
 
@@ -478,7 +479,7 @@ which is glTF `+z`.
 | `bracket.plate.fixing.<part ID>.<n>`                                                        | the screw or hammer nut of a plate bracket's fixing set, child of the bracket   | `{ "part_of": "bracket.plate" }`; its mesh as above                                                                                                                                                          |
 | `box.L<level>.C<column>`                                                                    | one box and, as children, its inserts and its ColorClip rings; 15 nodes         | `{ "kind": "box", "part": "box.e120" or "box.e220", "level": 1-5, "column": 1-3, "class": "120" or "220", "model": "<box_models key>", "travel": 0.27, "pull_axis": [0, 0, 1], "sides": ["front", "back"] }` |
 | `insert.L<level>.C<column>.R<row>.<cell>.<type>`                                            | one insert, child of its box node                                               | `{ "kind": "insert", "type": "<type>", "part": "insert.set_half" or "insert.set_quarter" }`                                                                                                                  |
-| `clip.L<level>.C<column>.<colour>`                                                          | the ColorClip rings of both handles, child of its box node                      | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                                                                 |
+| `clip.L<level>.C<column>.<colour>.<front/back>`                                             | the ColorClip ring of one handle, child of its box node                         | `{ "kind": "clip", "colour": "<color_clips.levels value>" }`                                                                                                                                                 |
 | `plate.top`                                                                                 | the top plate                                                                   | `{ "kind": "plate", "part": "plate.top", "status": "build", "plywood": { … } }`                                                                                                                              |
 
 Every part of the parts list is drawn: `build_rack.py` stops unless the count
@@ -489,6 +490,21 @@ twin turned half round, not mirrored. A screw, nut, washer or cap carries its
 part ID on its mesh, not on its node, which keeps its 484 nodes small; three.js
 merges the mesh extras into the node's `userData`, so the viewer reads
 `kind` and `part` there alike.
+
+The exploded view: `rack.blend` has a scene property `explode` from 0 to 1,
+run in three steps, each a third of the range, so no part passes through
+another: (1) the boxes straight out to the front, past the frame and the
+plate's overhang (the build checks this); (2) the boxes up and aside, each
+level higher than the one below; (3) everything else: the frame apart, the
+fasteners out of their holes, the inserts out of their boxes, the rings off
+the handles. Every part that moves has one simple-expression driver per
+moving axis on its delta location, in its parent's axes, a sum of
+`<metres>*clamp(e*3-<step>,0,1)`; Blender runs them without Python auto-run,
+and the file is saved at 0. `export_web.py` reads the drivers back and writes
+each moving node's move as the glTF extra `{ "explode": [[x, y, z], …] }`,
+one offset per step, in metres, glTF axes, its parent's space; the glb holds
+the rack assembled. A child that only moves with its parent carries none.
+The distances are `rack.json` → `explode`.
 
 `export_web.py` compacts the file after Blender's exporter: normals as
 normalized 8-bit integers and positions of the meshes within 1 m of their

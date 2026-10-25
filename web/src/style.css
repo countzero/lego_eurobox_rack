@@ -53,12 +53,18 @@ body:has(#view:focus-visible)::after {
 
 /* The title is a button-like link to the repository, as tall as the toolbar
    buttons; its contrast does not depend on the scene behind it. It stops
-   short of the three toolbar buttons. */
+   short of the toolbar: reset, colours and explode, and full screen on a
+   touch screen. */
 #title {
   position: fixed;
   top: var(--edge);
   left: var(--edge);
   max-width: calc(100% - 3 * var(--edge) - 3 * var(--tool-size) - 2 * var(--wa-space-xs));
+}
+#title:has(~ main #fullscreen:not([hidden])) {
+  max-width: calc(100% - 3 * var(--edge) - 4 * var(--tool-size) - 3 * var(--wa-space-xs));
+}
+#title {
   /* It comes before the view in the page, which would paint over it. */
   z-index: 1;
 }
@@ -123,7 +129,7 @@ h1 { margin: 0; font-size: var(--wa-font-size-l); }
 .tool:hover { background: var(--wa-color-surface-raised); }
 .tool [data-icon] { display: contents; }
 .tool .icon { width: 1.25rem; height: 1.25rem; fill: currentColor; }
-#colours[aria-expanded="true"] {
+#colours[aria-expanded="true"], #explode[aria-pressed="true"] {
   background: var(--wa-color-brand-fill-loud);
   border-color: var(--wa-color-brand-fill-loud);
   color: var(--wa-color-brand-on-loud);

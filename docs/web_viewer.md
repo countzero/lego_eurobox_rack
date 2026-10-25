@@ -10,10 +10,12 @@ request. The published copy is at
 - Orbit, pan and zoom with mouse or touch (three.js `OrbitControls`).
 - A toolbar of icon buttons at the top right, in this order: Reset
   (`rotate-left`) returns the view, closes the boxes and sets the ColorClips
-  back to the current colours of `design/rack.json`; Colours (`palette`)
-  shows or hides the ColorClips panel (*ColorClips* below), which is hidden at
-  the start on every screen; Full screen (`expand`, `compress` while full
-  screen) is shown only on a touch screen (*Controls* below).
+  back to the current colours of `design/rack.json`, and puts an exploded
+  rack together; Colours (`palette`) shows or hides the ColorClips panel
+  (*ColorClips* below), which is hidden at the start on every screen; Explode
+  (`bomb`) draws the rack apart or puts it together (*Exploded view* below);
+  Full screen (`expand`, `compress` while full screen) is shown only on a
+  touch screen (*Controls* below).
 - The title at the top left is a link to the repository on GitHub, drawn as a
   panel as tall as the toolbar buttons. The buttons and the title are 80 %
   white, so the scene shows faintly through them. Below it a status line shows
@@ -45,6 +47,27 @@ request. The published copy is at
   tooltips and the box hint its tooltip tokens, and keys its `kbd` style; the
   page text is `--wa-font-size-s` (14 px) instead of the body's 16 px, since
   it is a compact tool over a 3D view.
+
+## Exploded view
+
+Explode moves every node that carries a glTF extra `explode` from its place
+by its offsets, one per step and the steps one after the other (glTF axes, in
+its parent's space), over 1.8 s with the boxes' easing, and back. The offsets
+come from `rack.json` → `explode` through the Blender drivers
+(`docs/design.md` → *Contracts*). First the boxes slide straight out to the
+front, then up and aside, so none passes through the rack; then the castor
+plates, the frames, the top bars and the plate move up, the front and the
+back frame apart, the angles towards the middle of their bay, every screw out
+of its hole, every nut and washer the other way, the end caps out of the
+bars, the inserts up out of their boxes and the rings off the handles.
+
+- Open boxes close first; a box's pull and the explode offset add up.
+- While exploded, hovering a box shows "Assemble", and a click on a box, Enter
+  or Space puts the rack together.
+- The camera fits the exploded rack when it explodes and the assembled one
+  when it comes back, keeping its direction. The ground and the sun's shadow
+  are sized for the exploded rack from the start.
+- Under `prefers-reduced-motion` the move ends in the frame it starts.
 
 ## ColorClips
 
@@ -84,14 +107,15 @@ take it, on both handles.
 
 The buttons are native `<button>` elements with Font Awesome Free icons,
 named by `aria-label`; Colours carries `aria-expanded` and `aria-controls`,
-Full screen `aria-pressed` under a constant name. A tooltip on hover and on
-keyboard focus shows the name and key ("Reset Esc", "Colours C"). Each button
-is 2.75rem (about 44 px) square.
+Explode and Full screen `aria-pressed` under a constant name. A tooltip on
+hover and on keyboard focus shows the name and key ("Reset Esc", "Colours C",
+"Explode E"). Each button is 2.75rem (about 44 px) square.
 
 | Input                         | Where                                | Does                                             |
 | ----------------------------- | ------------------------------------ | ------------------------------------------------ |
 | Esc                           | anywhere                             | hides a hint, closes the panel or resets (below) |
 | C                             | the view or a toolbar button focused | shows or hides the ColorClips panel              |
+| E                             | the view or a toolbar button focused | draws the rack apart or puts it together         |
 | Arrow keys                    | the view focused                     | move the box cursor over levels and columns      |
 | Enter or Space                | the view focused                     | pulls the box out to the front or pushes it back |
 | Shift+Enter                   | the view focused                     | pulls the box out to the back                    |
@@ -168,6 +192,7 @@ The viewer relies only on the node names and extras of `docs/design.md` →
 | `kind: "plate"`, `plywood`  | the top plate, always shown, and its procedural plywood          |
 | `kind: "clip"`              | the rings the ColorClips panel recolours                         |
 | `kind: "fastener"`, `"cap"` | screws, nuts, washers and end caps, which a click passes through |
+| `explode`                   | the node's move in the exploded view                             |
 | scene extras `outer_mm`     | the scene framing                                                |
 
 A screw, nut, washer or cap carries its extras on its glTF mesh, not on its
