@@ -19,6 +19,7 @@ what the viewer shows:
 import array
 import json
 import os
+import re
 import struct
 
 import bpy
@@ -59,6 +60,37 @@ def export():
     )
 
 
+TERM = re.compile(r"^(-?[\d.e+-]+)\*clamp\(e\*(\d+)-(\d+),0,1\)$")
+
+
+def explode_offsets():
+    """Each object's exploded move, in glTF axes and its parent's space, as one
+    offset per step: build_rack.py drives delta_location with a sum of
+    `<metres>*clamp(e*<steps>-<step>,0,1)` per axis, and the exporter turns
+    Blender's (x, y, z) into glTF's (x, z, -y)."""
+    out = {}
+    for obj in bpy.data.objects:
+        ad = obj.animation_data
+        if not ad:
+            continue
+        steps = {}
+        count = 1
+        for fc in ad.drivers:
+            if fc.data_path != "delta_location":
+                continue
+            for term in fc.driver.expression.split("+"):
+                found = TERM.match(term)
+                assert found, fc.driver.expression
+                d, count, k = float(found.group(1)), int(found.group(2)), int(found.group(3))
+                steps.setdefault(k, [0.0, 0.0, 0.0])[fc.array_index] = d
+        if steps:
+            full = [[0.0, 0.0, 0.0] for _ in range(count)]
+            for k, v in steps.items():
+                full[k] = [v[0], v[2], -v[1]]
+            out[obj.name] = full
+    return out
+
+
 def read_glb(path):
     data = open(path, "rb").read()
     jlen = struct.unpack("<I", data[12:16])[0]
@@ -87,8 +119,11 @@ def short(values, digits):
     return [float(f"{v:.{digits}f}") + 0.0 for v in values]
 
 
-def compact(path):
+def compact(path, offsets):
     doc, old = read_glb(path)
+    for node in doc["nodes"]:
+        if node.get("name") in offsets:
+            node.setdefault("extras", {})["explode"] = [short(v, 6) for v in offsets[node["name"]]]
     views, accessors = doc["bufferViews"], doc["accessors"]
     roles = {}
     for mesh in doc["meshes"]:
@@ -154,9 +189,12 @@ def compact(path):
 
 
 def main():
+    bpy.context.scene["explode"] = 0.0
+    bpy.context.view_layer.update()
+    offsets = explode_offsets()
     export()
     before = os.path.getsize(OUT)
-    compact(OUT)
+    compact(OUT, offsets)
     print("wrote", OUT, before, "->", os.path.getsize(OUT), "bytes")
 
 

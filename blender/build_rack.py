@@ -1151,9 +1151,9 @@ def cycle_box(bx, mat, name):
     return mesh
 
 
-def clip_ring(bx):
-    """ColorClip round the grip pocket on the face of the handle frame, both
-    short sides; origin as the box."""
+def clip_ring(bx, sy):
+    """ColorClip round the grip pocket on the face of the handle frame of one
+    short side, sy -1 the front, +1 the back; origin as the box."""
     s = RACK["box_shape"]
     hd, cl = s["handle"], s["clip"]
     H, Y = bx["height"], bx["length"] / 2
@@ -1163,11 +1163,10 @@ def clip_ring(bx):
     outer = offset_outline(rr_outline(ow, oh, cl["outer_radius"]), 0, zc)
     hole = offset_outline(rr_outline(ow - band_w, oh - band_w, cl["inner_radius"]), 0, zc)
     bm = bmesh.new()
-    for sy in (-1, 1):
-        y0, y1 = sy * (Y + FRAME_PROUD), sy * (Y + FRAME_PROUD + cl["thickness"])
-        if sy < 0:
-            y0, y1 = y1, y0
-        merge(bm, prism_y(outer, y0, y1, holes=hole), CLIP_EDGE_ROUND)
+    y0, y1 = sy * (Y + FRAME_PROUD), sy * (Y + FRAME_PROUD + cl["thickness"])
+    if sy < 0:
+        y0, y1 = y1, y0
+    merge(bm, prism_y(outer, y0, y1, holes=hole), CLIP_EDGE_ROUND)
     bmesh.ops.translate(bm, verts=bm.verts[:], vec=(0, m(Y), 0))
     return bm
 
@@ -1217,12 +1216,16 @@ def build_boxes(mats, colls):
             obj["pull_axis"] = [0, 0, 1]
             obj["sides"] = list(RACK["pull_out"]["sides"])
             colour = clip_colour(lv["level"])
-            ck = (key, colour)
-            if ck not in clip_meshes:
-                clip_meshes[ck] = to_mesh(f"mesh.clip.{key}.{colour}", clip_ring(bx), mats[f"clip_{colour}"])
-            clip = place(f"clip.L{lv['level']}.C{c + 1}.{colour}", clip_meshes[ck], colls["boxes"], parent=obj)
-            clip["kind"] = "clip"
-            clip["colour"] = colour
+            # one ring per handle, so the exploded view can take each off its own side
+            for sy, side in ((-1, "front"), (1, "back")):
+                ck = (key, colour, side)
+                if ck not in clip_meshes:
+                    clip_meshes[ck] = to_mesh(f"mesh.clip.{key}.{colour}.{side}", clip_ring(bx, sy),
+                                              mats[f"clip_{colour}"])
+                clip = place(f"clip.L{lv['level']}.C{c + 1}.{colour}.{side}", clip_meshes[ck], colls["boxes"],
+                             parent=obj)
+                clip["kind"] = "clip"
+                clip["colour"] = colour
             boxes[(lv["level"], c + 1)] = (obj, bx)
     return boxes
 
@@ -1435,8 +1438,8 @@ def camera(scene, coll, name, location, target, ortho_scale=None, lens=50):
     return obj
 
 
-def model_center(exclude=()):
-    """Centre of the bounding box of all visible meshes outside `exclude`."""
+def model_bounds(exclude=()):
+    """Bounding box (lo, hi) of all visible meshes outside `exclude`."""
     lo = [float("inf")] * 3
     hi = [float("-inf")] * 3
     for obj in bpy.context.scene.objects:
@@ -1449,7 +1452,32 @@ def model_center(exclude=()):
             for i in range(3):
                 lo[i] = min(lo[i], w[i])
                 hi[i] = max(hi[i], w[i])
-    return Vector((l + h) / 2 for l, h in zip(lo, hi))
+    return Vector(lo), Vector(hi)
+
+
+def fit_camera(cam, lo, hi, margin=1.0):
+    """Move a perspective camera along its view axis until the box lo..hi fits
+    the render's frame; its direction and aim stay."""
+    scene = bpy.context.scene
+    data = cam.data
+    aspect = scene.render.resolution_x / scene.render.resolution_y
+    half_w = data.sensor_width / 2 / data.lens  # tan of the half field of view across
+    half_h = half_w / aspect
+    rot = cam.rotation_euler.to_matrix()  # matrix_world is stale until the next update
+    right, up, back = rot.col[0], rot.col[1], rot.col[2]
+    aim = (lo + hi) / 2
+    need = 0.0
+    for i in range(8):
+        c = Vector((hi.x if i & 1 else lo.x, hi.y if i & 2 else lo.y, hi.z if i & 4 else lo.z)) - aim
+        x, y, z = c.dot(right), c.dot(up), c.dot(back)
+        need = max(need, z + abs(x) * margin / half_w, z + abs(y) * margin / half_h)
+    cam.location = aim + back * need
+
+
+def model_center(exclude=()):
+    """Centre of the bounding box of all visible meshes outside `exclude`."""
+    lo, hi = model_bounds(exclude)
+    return (lo + hi) / 2
 
 
 def center_rotation():
@@ -1500,12 +1528,143 @@ def render(scene, cam, filename):
     print("rendered", filename)
 
 
+# ---------------------------------------------------------------- exploded view
+
+EXPLODE_STEPS = 3  # the boxes out to the front; the boxes up and aside; everything else
+
+
+def explode_world(obj, memo):
+    """Where the exploded view moves obj, world vectors in mm, one per step
+    (rack.json → explode). The boxes leave first: straight out to the front of
+    their bay, then up and aside, clear of the rack; only then does the rest
+    move, so no part passes through another. A screw, nut, washer or cap moves
+    with the part that holds it and then out of its hole; the inserts lift out
+    of their box and the rings come off its handles in the last step."""
+    if obj.name in memo:
+        return memo[obj.name]
+    E, fr = RACK["explode"], RACK["frame"]
+    up, top = E["frame_up"], E["frame_up"] + E["top_up"]
+    world = world_of(obj)
+    loc = world.translation * 1000
+    side = -1 if loc.y < fr["depth"] / 2 else 1  # the front frame moves to the front, -y
+    name = obj.name
+    mesh_part = obj.data.get("part") if obj.type == "MESH" else None
+    steps = [Vector() for _ in range(EXPLODE_STEPS)]
+    last = steps[-1]
+    if mesh_part:
+        out = -(world.to_3x3() @ Z).normalized()  # back out of the hole
+        f = RACK["fasteners"]
+        if mesh_part in f["screws"]:
+            d = E["screw_lengths_out"] * f["screws"][mesh_part]["length"]
+        elif mesh_part in f["nuts"]:
+            d = E["nuts_out"]
+        elif mesh_part in f["washers"]:
+            d = E["washers_out"]
+        else:
+            out, d = -out, E["caps_out"]  # a cap's own axis points out of the bar end
+        steps = [v.copy() for v in explode_world(obj.parent, memo)]
+        steps[-1] += out * d
+    elif name.startswith(("upright.", "bar.bottom.")):
+        last[:] = (0, side * E["frames_apart"], up)
+    elif name.startswith("bar.top."):
+        last[:] = (0, side * E["frames_apart"], top)
+    elif name.startswith("beam.depth."):
+        last[:] = (0, 0, top if ".top." in name else up)
+    elif name.startswith("bracket.plate."):
+        last[:] = (0, side * E["frames_apart"], top + E["plate_brackets_up"])
+    elif name.startswith("bracket."):
+        last[:] = (0, side * E["brackets_apart"], top if loc.z > fr["top_bar"]["bottom"] - 40 else up)
+    elif name.startswith("angle."):
+        last[:] = ((1 if name.endswith(".left") else -1) * E["angles_in"], 0, up)
+    elif name.startswith("plate.castor."):
+        last[:] = (0, 0, E["castor_plates_up"])
+    elif name == "plate.top":
+        last[:] = (0, 0, top + E["plate_up"])
+    elif name.startswith("box."):
+        # out of the bay to the front, then up, each level further than the one
+        # below so its inserts clear the box above, and aside past the rack
+        steps[0][:] = (0, -E["boxes_forward"], 0)
+        steps[1][:] = (E["boxes_aside"], 0, up + (obj["level"] - 1) * E["box_levels_apart"])
+    elif name.startswith("insert."):
+        steps = [v.copy() for v in explode_world(obj.parent, memo)]
+        steps[-1] += Vector((0, 0, E["inserts_up"]))
+    elif name.startswith("clip."):
+        out = -1 if name.endswith(".front") else 1
+        steps = [v.copy() for v in explode_world(obj.parent, memo)]
+        steps[-1] += Vector((0, out * E["clips_off"], 0))
+    elif obj.parent is not None:
+        steps = explode_world(obj.parent, memo)
+    memo[obj.name] = steps
+    return steps
+
+
+def check_boxes_clear():
+    """Stop the build unless a box pulled out by boxes_forward has left the rack:
+    its back clear of the frame's front, the top plate's overhang and the rings."""
+    E, tp = RACK["explode"], RACK["top_plate"]
+    overhang = (tp["depth"] - RACK["frame"]["depth"]) / 2
+    back = RACK["box_position"]["front_y"] + max(b["length"] for b in RACK["box_models"].values())
+    ring = RACK["box_shape"]["clip"]["thickness"]
+    assert back + ring - E["boxes_forward"] < -overhang, "boxes_forward does not take the boxes out of the rack"
+
+
+def build_explode(scene, colls):
+    """A scene property `explode` from 0 to 1 drives every part from its place to
+    its exploded place in EXPLODE_STEPS steps, each a third of the range: one
+    simple-expression driver per moving axis on the object's delta location, in
+    its parent's axes, `<metres>*clamp(e*3-<step>,0,1)` summed over the steps,
+    so Blender runs them without Python auto-run. export_web.py reads them back
+    for the viewer."""
+    check_boxes_clear()
+    scene["explode"] = 0.0
+    scene.id_properties_ui("explode").update(min=0.0, max=1.0, soft_min=0.0, soft_max=1.0, step=10,
+                                             description="0 assembled, 1 exploded (rack.json → explode)")
+    memo = {}
+    drivers = 0
+    n = EXPLODE_STEPS
+    for obj in bpy.data.objects:
+        if any(c.name == "stage" for c in obj.users_collection):
+            continue
+        steps = explode_world(obj, memo)
+        if obj.parent is not None:
+            inv = world_of(obj.parent).to_3x3().inverted()
+            steps = [inv @ (v - p) for v, p in zip(steps, explode_world(obj.parent, memo))]
+        for i in range(3):
+            terms = []
+            for k, v in enumerate(steps):
+                d = round(m(v[i]), 6)
+                if abs(d) >= 1e-6:
+                    terms.append(f"{d:g}*clamp(e*{n}-{k},0,1)")
+            if not terms:
+                continue
+            drv = obj.driver_add("delta_location", i).driver
+            drv.type = "SCRIPTED"
+            var = drv.variables.new()
+            var.name = "e"
+            var.targets[0].id_type = "SCENE"
+            var.targets[0].id = scene
+            var.targets[0].data_path = '["explode"]'
+            drv.expression = "+".join(terms)
+            assert drv.is_simple_expression, drv.expression
+            drivers += 1
+    print("explode drivers:", drivers)
+
+
+def set_explode(scene, k):
+    """Set `explode` and evaluate the drivers, so matrix_world follows at once."""
+    scene["explode"] = k
+    scene.update_tag()
+    bpy.context.view_layer.update()
+    scene.frame_set(scene.frame_current)
+
+
 def check_parts():
     """Stop the build unless the model holds every build part of the catalog as
     often as the parts list says. An insert set counts once per box, a ColorClip
-    set once per box (both rings are one object)."""
+    set (two rings, one per handle) once per box."""
     ins = RACK["inserts"]
     per_set = {ins["sets"][k]: sum(len(row) for row in layout) for k, layout in ins["layouts"].items()}
+    per_set.update({f"clip.{c}": 2 for c in set(RACK["color_clips"]["levels"].values())})
     counts = {}
     for obj in bpy.data.objects:
         part = object_part(obj)
@@ -1554,6 +1713,7 @@ def main():
     scene["outer_mm"] = [out["width"], out["depth"], out["height"]]
 
     build_stage(scene, mats, colls)
+    build_explode(scene, colls)
 
     W, D, H = m(out["width"]), m(out["depth"]), m(out["height"])
     cx, cy, cz = m(RACK["frame"]["width"]) / 2, D / 2, H / 2
@@ -1619,6 +1779,16 @@ def main():
     detail = camera(scene, cams, "cam.angle_detail", (ax + 0.16, -0.45, az + 0.10),
                     (ax + 0.02, 0.0, az - 0.01), lens=45)
     render(scene, detail, "angle_detail.png")
+
+    # Exploded, from the front left and above, just far enough back that every
+    # corner of the exploded model's bounding box is inside the 4:3 picture.
+    set_explode(scene, 1.0)
+    lo, hi = model_bounds(exclude=("stage",))
+    aim = (lo + hi) / 2
+    exploded = camera(scene, cams, "cam.exploded", aim + Vector((-2.4, -1.5, 1.4)), aim, lens=42)
+    fit_camera(exploded, lo, hi, margin=1.06)
+    render(scene, exploded, "exploded.png")
+    set_explode(scene, 0.0)
 
 
 main()
