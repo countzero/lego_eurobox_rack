@@ -1537,13 +1537,16 @@ def explode_world(obj, memo):
     """Where the exploded view moves obj, world vectors in mm, one per step
     (rack.json → explode). The boxes leave first: straight out to the front of
     their bay, clear of the rack, then their levels spread upwards; only then
-    does the rest move, so no part passes through another. A screw, nut, washer or cap moves
+    does the rest move, so no part passes through another. The uprights lift off
+    the bottom bars as the top bars lift off the uprights. A screw, nut, washer or cap moves
     with the part that holds it and then out of its hole; the inserts lift out
     of their box and the rings come off its handles in the last step."""
     if obj.name in memo:
         return memo[obj.name]
     E, fr = RACK["explode"], RACK["frame"]
-    up, top = E["frame_up"], E["frame_up"] + E["top_up"]
+    base = E["frame_up"]  # the bottom bars, the bottom depth beams and their brackets
+    up = base + E["uprights_up"]  # the uprights, lifted off the bottom bars, and what hangs on them
+    top = up + E["top_up"]
     world = world_of(obj)
     loc = world.translation * 1000
     side = -1 if loc.y < fr["depth"] / 2 else 1  # the front frame moves to the front, -y
@@ -1564,16 +1567,18 @@ def explode_world(obj, memo):
             out, d = -out, E["caps_out"]  # a cap's own axis points out of the bar end
         steps = [v.copy() for v in explode_world(obj.parent, memo)]
         steps[-1] += out * d
-    elif name.startswith(("upright.", "bar.bottom.")):
+    elif name.startswith("upright."):
         last[:] = (0, side * E["frames_apart"], up)
+    elif name.startswith("bar.bottom."):
+        last[:] = (0, side * E["frames_apart"], base)
     elif name.startswith("bar.top."):
         last[:] = (0, side * E["frames_apart"], top)
     elif name.startswith("beam.depth."):
-        last[:] = (0, 0, top if ".top." in name else up)
+        last[:] = (0, 0, top if ".top." in name else base)
     elif name.startswith("bracket.plate."):
         last[:] = (0, side * E["frames_apart"], top + E["plate_brackets_up"])
     elif name.startswith("bracket."):
-        last[:] = (0, side * E["brackets_apart"], top if loc.z > fr["top_bar"]["bottom"] - 40 else up)
+        last[:] = (0, side * E["brackets_apart"], top if loc.z > fr["top_bar"]["bottom"] - 40 else base)
     elif name.startswith("angle."):
         last[:] = ((1 if name.endswith(".left") else -1) * E["angles_in"], 0, up)
     elif name.startswith("plate.castor."):

@@ -165,9 +165,10 @@
     "pull_out": { "travel": 270, "removal": 400, "sides": ["front", "back"] },
     "outer": { "width": 1068, "depth": 435, "height": 986 },
     "explode": {
-        "note": "the exploded view, mm a part moves from its place, in three steps so nothing passes through another part: the boxes straight out to the front, far enough that they stay in front of the rack while the rest moves (the build checks this), then their levels spread upwards (box_levels_apart) so each level's inserts clear the box above; then the rest, the inserts lifting out and the rings coming off. Castors stay on the floor, so every part moves up from the one below it. Set by eye, no fact",
+        "note": "the exploded view, mm a part moves from its place, in three steps so nothing passes through another part: the boxes straight out to the front, far enough that they stay in front of the rack while the rest moves (the build checks this), then their levels spread upwards (box_levels_apart) so each level's inserts clear the box above; then the rest, the uprights lifting off the bottom bars (uprights_up) as the top bars lift off the uprights (top_up), the inserts lifting out and the rings coming off. Castors stay on the floor, so every part moves up from the one below it. Set by eye, no fact",
         "castor_plates_up": 80,
         "frame_up": 160,
+        "uprights_up": 100,
         "top_up": 100,
         "plate_brackets_up": 150,
         "plate_up": 300,

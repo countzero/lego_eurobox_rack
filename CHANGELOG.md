@@ -3,6 +3,14 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2026-10-25
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+### Fixed
+
+- Lift the uprights off the bottom bars in the exploded view, as the top bars lift off the uprights, so both bar joints show apart; `renders/exploded.png` follows ([`f46effb`](https://github.com/countzero/lego_eurobox_rack/commit/f46effb))
+
 ## [0.5.1] - 2026-10-25
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
