@@ -53,9 +53,9 @@ sorted by ID; the order of work follows from the status.
 | 0014 | [Castor plates, open back](#0014-castor-plates-open-back)    | Done                 | [#12](https://github.com/countzero/lego_eurobox_rack/pull/12) |
 | 0016 | [Ribbed boxes, top plate](#0016-ribbed-boxes-top-plate)      | Done                 | [#16](https://github.com/countzero/lego_eurobox_rack/pull/16) |
 | 0017 | [No joint plates](#0017-no-joint-plates)                     | Done                 | [#15](https://github.com/countzero/lego_eurobox_rack/pull/15) |
-| 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Planned              |                                                               |
+| 0018 | [Every part in the model](#0018-every-part-in-the-model)     | Done                 | [#22](https://github.com/countzero/lego_eurobox_rack/pull/22) |
 | 0019 | [Viewer controls](#0019-viewer-controls)                     | Done                 | [#19](https://github.com/countzero/lego_eurobox_rack/pull/19) |
-| 0020 | [Exploded view](#0020-exploded-view)                         | Blocked by 0018      |                                                               |
+| 0020 | [Exploded view](#0020-exploded-view)                         | Planned              |                                                               |
 | 0021 | [Model size](#0021-model-size)                               | Blocked by 0020      |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
