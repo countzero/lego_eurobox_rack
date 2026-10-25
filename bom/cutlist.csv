@@ -1,57 +1,57 @@
 material,bar,stock_length,part_id,cut_length,start
-30x30 B-type slot 8,1,3000,profile.bar_bottom,1068,0
-30x30 B-type slot 8,1,3000,profile.bar_bottom,1068,1071
-30x30 B-type slot 8,1,3000,profile.upright,791,2142
-30x30 B-type slot 8,2,3000,profile.bar_top,1068,0
-30x30 B-type slot 8,2,3000,profile.bar_top,1068,1071
-30x30 B-type slot 8,2,3000,profile.upright,791,2142
-30x30 B-type slot 8,3,3000,profile.upright,791,0
-30x30 B-type slot 8,3,3000,profile.upright,791,794
-30x30 B-type slot 8,3,3000,profile.upright,791,1588
-30x30 B-type slot 8,3,3000,profile.beam_depth,375,2382
-30x30 B-type slot 8,4,3000,profile.upright,791,0
-30x30 B-type slot 8,4,3000,profile.upright,791,794
-30x30 B-type slot 8,4,3000,profile.upright,791,1588
-30x30 B-type slot 8,4,3000,profile.beam_depth,375,2382
-30x30 B-type slot 8,5,3000,profile.beam_depth,375,0
-30x30 B-type slot 8,5,3000,profile.beam_depth,375,378
-30x30 B-type slot 8,5,3000,profile.beam_depth,375,756
-30x30 B-type slot 8,5,3000,profile.beam_depth,375,1134
-30x30 B-type slot 8,5,3000,profile.beam_depth,375,1512
-30x30 B-type slot 8,5,3000,profile.beam_depth,375,1890
-50x50x3 EN AW-6060,1,6000,angle.base,435,0
-50x50x3 EN AW-6060,1,6000,angle.base,435,438
-50x50x3 EN AW-6060,1,6000,angle.base,435,876
-50x50x3 EN AW-6060,1,6000,angle.base,435,1314
-50x50x3 EN AW-6060,1,6000,angle.base,435,1752
-50x50x3 EN AW-6060,1,6000,angle.base,435,2190
-50x50x3 EN AW-6060,1,6000,angle.guard,435,2628
-50x50x3 EN AW-6060,1,6000,angle.guard,435,3066
-50x50x3 EN AW-6060,1,6000,angle.guard,435,3504
-50x50x3 EN AW-6060,1,6000,angle.guard,435,3942
-50x50x3 EN AW-6060,1,6000,angle.guard,435,4380
-50x50x3 EN AW-6060,1,6000,angle.guard,435,4818
-50x50x3 EN AW-6060,1,6000,angle.support,435,5256
-50x50x3 EN AW-6060,2,6000,angle.support,435,0
-50x50x3 EN AW-6060,2,6000,angle.support,435,438
-50x50x3 EN AW-6060,2,6000,angle.support,435,876
-50x50x3 EN AW-6060,2,6000,angle.support,435,1314
-50x50x3 EN AW-6060,2,6000,angle.support,435,1752
-50x50x3 EN AW-6060,2,6000,angle.support,435,2190
-50x50x3 EN AW-6060,2,6000,angle.support,435,2628
-50x50x3 EN AW-6060,2,6000,angle.support,435,3066
-50x50x3 EN AW-6060,2,6000,angle.support,435,3504
-50x50x3 EN AW-6060,2,6000,angle.support,435,3942
-50x50x3 EN AW-6060,2,6000,angle.support,435,4380
-50x50x3 EN AW-6060,2,6000,angle.support,435,4818
-50x50x3 EN AW-6060,2,6000,angle.support,435,5256
-50x50x3 EN AW-6060,3,6000,angle.support,435,0
-50x50x3 EN AW-6060,3,6000,angle.support,435,438
-50x50x3 EN AW-6060,3,6000,angle.support,435,876
-50x50x3 EN AW-6060,3,6000,angle.support,435,1314
-50x50x3 EN AW-6060,3,6000,angle.support,435,1752
-50x50x3 EN AW-6060,3,6000,angle.support,435,2190
-50x50x3 EN AW-6060,3,6000,angle.support,435,2628
-50x50x3 EN AW-6060,3,6000,angle.support,435,3066
-50x50x3 EN AW-6060,3,6000,angle.support,435,3504
-50x50x3 EN AW-6060,3,6000,angle.support,435,3942
+30x30 B-type slot 8,1,1074,profile.bar_bottom,1074,0
+30x30 B-type slot 8,2,1074,profile.bar_bottom,1074,0
+30x30 B-type slot 8,3,1074,profile.bar_top,1074,0
+30x30 B-type slot 8,4,1074,profile.bar_top,1074,0
+30x30 B-type slot 8,5,797,profile.upright,797,0
+30x30 B-type slot 8,6,797,profile.upright,797,0
+30x30 B-type slot 8,7,797,profile.upright,797,0
+30x30 B-type slot 8,8,797,profile.upright,797,0
+30x30 B-type slot 8,9,797,profile.upright,797,0
+30x30 B-type slot 8,10,797,profile.upright,797,0
+30x30 B-type slot 8,11,797,profile.upright,797,0
+30x30 B-type slot 8,12,797,profile.upright,797,0
+30x30 B-type slot 8,13,375,profile.beam_depth,375,0
+30x30 B-type slot 8,14,375,profile.beam_depth,375,0
+30x30 B-type slot 8,15,375,profile.beam_depth,375,0
+30x30 B-type slot 8,16,375,profile.beam_depth,375,0
+30x30 B-type slot 8,17,375,profile.beam_depth,375,0
+30x30 B-type slot 8,18,375,profile.beam_depth,375,0
+30x30 B-type slot 8,19,375,profile.beam_depth,375,0
+30x30 B-type slot 8,20,375,profile.beam_depth,375,0
+40x40x4 anodised,1,1980,angle.base,435,3
+40x40x4 anodised,1,1980,angle.base,435,442
+40x40x4 anodised,1,1980,angle.base,435,881
+40x40x4 anodised,1,1980,angle.base,435,1320
+40x40x4 anodised,2,1980,angle.base,435,3
+40x40x4 anodised,2,1980,angle.base,435,442
+40x40x4 anodised,2,1980,angle.guard,435,881
+40x40x4 anodised,2,1980,angle.guard,435,1320
+40x40x4 anodised,3,1980,angle.guard,435,3
+40x40x4 anodised,3,1980,angle.guard,435,442
+40x40x4 anodised,3,1980,angle.guard,435,881
+40x40x4 anodised,3,1980,angle.guard,435,1320
+40x40x4 anodised,4,1980,angle.support,435,3
+40x40x4 anodised,4,1980,angle.support,435,442
+40x40x4 anodised,4,1980,angle.support,435,881
+40x40x4 anodised,4,1980,angle.support,435,1320
+40x40x4 anodised,5,1980,angle.support,435,3
+40x40x4 anodised,5,1980,angle.support,435,442
+40x40x4 anodised,5,1980,angle.support,435,881
+40x40x4 anodised,5,1980,angle.support,435,1320
+40x40x4 anodised,6,1980,angle.support,435,3
+40x40x4 anodised,6,1980,angle.support,435,442
+40x40x4 anodised,6,1980,angle.support,435,881
+40x40x4 anodised,6,1980,angle.support,435,1320
+40x40x4 anodised,7,1980,angle.support,435,3
+40x40x4 anodised,7,1980,angle.support,435,442
+40x40x4 anodised,7,1980,angle.support,435,881
+40x40x4 anodised,7,1980,angle.support,435,1320
+40x40x4 anodised,8,1980,angle.support,435,3
+40x40x4 anodised,8,1980,angle.support,435,442
+40x40x4 anodised,8,1980,angle.support,435,881
+40x40x4 anodised,8,1980,angle.support,435,1320
+40x40x4 anodised,9,1980,angle.support,435,3
+40x40x4 anodised,9,1980,angle.support,435,442
+40x40x4 anodised,9,1980,angle.support,435,881
+40x40x4 anodised,9,1980,angle.support,435,1320
