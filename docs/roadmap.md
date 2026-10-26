@@ -58,7 +58,7 @@ sorted by ID; the order of work follows from the status.
 | 0020 | [Exploded view](#0020-exploded-view)                         | Done                 | [#23](https://github.com/countzero/lego_eurobox_rack/pull/23) |
 | 0021 | [Model size](#0021-model-size)                               | Done                 | [#27](https://github.com/countzero/lego_eurobox_rack/pull/27) |
 | 0022 | [Switch to motedis](#0022-switch-to-motedis)                 | Done                 | [#28](https://github.com/countzero/lego_eurobox_rack/pull/28) |
-| 0023 | [Angle-bracket frame](#0023-angle-bracket-frame)             | In progress          |                                                               |
+| 0023 | [Angle-bracket frame](#0023-angle-bracket-frame)             | Done                 | [#30](https://github.com/countzero/lego_eurobox_rack/pull/30) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
