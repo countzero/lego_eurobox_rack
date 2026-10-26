@@ -1,24 +1,22 @@
 id,category,description,material,length,width,quantity,unit,status
-profile.upright,profile,"Upright between the bars, motedis' standard M8 core thread at both ends",30x30 B-type slot 8,797,,8,piece,build
-profile.bar_top,profile,"Top bar, front and back, one piece over all three columns; 4 through holes 8.5 with 14 mm counterbore",30x30 B-type slot 8,1074,,2,piece,build
-profile.bar_bottom,profile,"Bottom bar, front and back, one piece over all three columns, flush with the bottom depth beams; shares the middle uprights' load with the top plate and top bar; 4 through holes 8.5",30x30 B-type slot 8,1074,,2,piece,build
+profile.upright,profile,"Upright between the bars, no machining; each end held by the base or guard angle beside it",30x30 B-type slot 8,797,,8,piece,build
+profile.bar_top,profile,"Top bar, front and back, one piece over all three columns, no holes; the guard angles are screwed up into its bottom slot",30x30 B-type slot 8,1074,,2,piece,build
+profile.bar_bottom,profile,"Bottom bar, front and back, one piece over all three columns, flush with the bottom depth beams; shares the middle uprights' load with the top plate and top bar; no holes, the base angles are screwed down into its top slot",30x30 B-type slot 8,1074,,2,piece,build
 profile.beam_depth,profile,"Depth beam between the front and the back bar at each upright, the top one flush with the top bars, the bottom one flush with the underside of the bottom bars",30x30 B-type slot 8,375,,8,piece,build
-angle.base,angle,"Level 1 support, flat leg at the bottom on the bottom bars",40x40x4 anodised,435,,6,piece,build
+angle.base,angle,"Level 1 support, flat leg at the bottom on the bottom bars; also the bottom joint of the uprights: 4 holes in the vertical leg into the uprights and 4 in the flat leg into the bars",40x40x4 anodised,435,,6,piece,build
 angle.support,angle,"Level 2-5 support, flat leg on top, hanging leg guides the box below",40x40x4 anodised,435,,24,piece,build
-angle.guard,angle,"Tip guard above level 5, same section and orientation as angle.support",40x40x4 anodised,435,,6,piece,build
+angle.guard,angle,"Tip guard above level 5, same section and orientation as angle.support; also the top joint of the uprights: 4 holes in the hanging leg into the uprights and 4 in the flat leg up into the bars",40x40x4 anodised,435,,6,piece,build
 bracket.inside_30,connector,"Inside angle bracket 30 for B-type slot 8 (motedis Winkel 30 B-Typ Nut 8): upright to top depth beam (8), top depth beam to bar (8), bottom depth beam to bar on the beam's bay side at the middle uprights (4) and a second one on the other side there (4); at the corners the castor plate joins bottom bar and beam",die-cast zinc or aluminium,,,24,piece,build
-plate.castor,connector,"Castor plate 90x90x8 under each corner, screwed into the bottom slots of the bottom bar and the bottom depth beam; 9 mm hole at 45/45 for the castor bolt, 14 mm hole at 15/15 for the corner bolt head, 4 countersunk holes for M6","EN AW-5083, motedis Aluminium Plaettchen 8x90",90,90,4,piece,build
+plate.castor,connector,"Castor plate 90x90x8 under each corner, screwed into the bottom slots of the bottom bar and the bottom depth beam; 9 mm hole at 45/45 for the castor bolt, 4 countersunk holes for M6","EN AW-5083, motedis Aluminium Plaettchen 8x90",90,90,4,piece,build
 screw.m6x12_button,fastener,"ISO 7380 M6x12, 2 per bracket.inside_30 (48) and 1 per bracket.plate (20)","steel 8.8, zinc-plated",,,68,piece,build
 screw.m6x16_countersunk,fastener,"ISO 10642 M6x16 from below through the castor plates into the bottom slots, 4 per plate","steel 8.8, zinc-plated",,,16,piece,build
 tnut.m6,fastener,"Hammer nut M6 B-type slot 8 for the brackets (48), the plate brackets (20) and the castor plates (16)","steel, zinc-plated",,,84,piece,build
-screw.m5x12_countersunk,fastener,"ISO 10642 M5x12 for the angles, flush in a countersunk hole so the hanging leg stays smooth","steel 8.8, zinc-plated",,,144,piece,build
-tnut.m5,fastener,Hammer nut M5 B-type slot 8 for the angles,"steel, zinc-plated",,,144,piece,build
-screw.m8x50_socket,fastener,"ISO 4762 (DIN 912) M8x50 from below through the bottom bar into an upright's core thread, 20 mm engaged; at a corner its head sits in the castor plate's 14 mm hole","stainless A2, at least A2-50",,,8,piece,build
-screw.m8x40_socket,fastener,"ISO 4762 (DIN 912) M8x40 through the top bar into an upright, head sunk in the counterbore, 18 mm engaged","stainless A2, at least A2-50",,,8,piece,build
+screw.m5x12_countersunk,fastener,"ISO 10642 M5x12 for the angles, flush in a countersunk hole so the hanging leg stays smooth: 4 per support angle, 8 per base and guard angle (4 into the uprights, 4 into the bars)","steel 8.8, zinc-plated",,,192,piece,build
+tnut.m5,fastener,"Hammer nut M5 B-type slot 8 for the angles, in the uprights' slots (144) and the bars' slots (48)","steel, zinc-plated",,,192,piece,build
 screw.m8x35_socket,fastener,ISO 4762 (DIN 912) M8x35 from inside the castor housing up through the back hole and the castor plate's 9 mm hole into a lock nut,"stainless A2, at least A2-50",,,4,piece,build
 washer.m8,fastener,"ISO 7089 (DIN 125 A) washer 8.4, one under the castor bolt's head inside the housing and one under its lock nut on the plate","steel, zinc-plated",,,8,piece,build
 nut.m8_lock,fastener,"DIN 985 M8 lock nut on top of the castor plate, holding the castor bolt","steel 8, zinc-plated",,,4,piece,build
-castor.brake,castor,"Swivel castor 100 mm with total-lock brake (motedis 1748), 125 high, back hole 11, offset 28, 70 kg, under a castor plate at each corner",PU tread on PP,,,4,piece,build
+castor.brake_125,castor,"Swivel castor 125 mm with total-lock brake (motedis 996), 160 high, back hole 11, offset 41, 100 kg, under a castor plate at each corner",PU tread on PP,,,4,piece,build
 cap.end_30,finish,End cap 30x30 for the ends of the top and the bottom bars,"plastic PA, black",,,8,piece,build
 box.e120,box,"Eurobox NextGen 2.0 Cycle 400x300x120, closed handles, anthracite (C2G43-12)",r-PP,,,12,piece,build
 box.e220,box,"Eurobox NextGen 2.0 Cycle 400x300x220, closed handles, anthracite (C2G43-22), no inserts",r-PP,,,3,piece,build

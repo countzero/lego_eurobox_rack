@@ -420,24 +420,6 @@ def profile_mesh(length):
                   lambda: to_mesh(f"mesh.profile.{length}", profile_bm(length), MATS["aluminium"]))
 
 
-def bar_mesh(top):
-    """Bar along +z with the through holes of the core bolts, the top bar also
-    with their counterbores; in its frame local y is up (rack z)."""
-    def build():
-        fr = RACK["frame"]
-        holes = fr["bar_holes"]
-        cb, h = holes["top_counterbore"], fr["profile"]["section"] / 2
-        length = fr["top_bar" if top else "bottom_bar"]["length"]
-        cutter = bmesh.new()
-        for x in fr["upright_x"]:
-            if top:
-                bm_cone(cutter, (0, h + 1, x + h), -Y, cb["diameter"] / 2, cb["diameter"] / 2, cb["depth"] + 1)
-            bm_cone(cutter, (0, h + 1, x + h), -Y, holes["diameter"] / 2, holes["diameter"] / 2, 2 * h + 2)
-        name = "bar.top" if top else "bar.bottom"
-        return to_mesh(f"mesh.{name}", boolean_cut(profile_bm(length), cutter), MATS["aluminium"])
-    return shared("bar.top" if top else "bar.bottom", build)
-
-
 def orient_ab(origin_mm, a, b):
     """World matrix at origin_mm with local x along a and local y along b."""
     a, b = Vector(a).normalized(), Vector(b).normalized()
@@ -574,7 +556,7 @@ FRAME = {}  # the frame's profiles by role, for the fasteners that sit in them
 
 
 def build_frame(mats, colls, frame_root):
-    """Profiles, the core bolts of the upright joints and the end caps."""
+    """Profiles and the end caps."""
     fr = RACK["frame"]
     sec = fr["profile"]["section"]
     h = sec / 2
@@ -590,16 +572,11 @@ def build_frame(mats, colls, frame_root):
         for top, bar in ((False, bb), (True, tb)):
             key = "top" if top else "bottom"
             zc = (bar["bottom"] + bar["top"]) / 2
-            obj = place_at(f"bar.{key}.{side}", bar_mesh(top), coll, orient_ab((0, y + h, zc), Y, Z),
+            obj = place_at(f"bar.{key}.{side}", profile_mesh(bar["length"]), coll, orient_ab((0, y + h, zc), Y, Z),
                            frame_root, f"profile.bar_{key}")
             FRAME[("bar", key, side)] = obj
             for x0, out in ((0, -X), (bar["length"], X)):
                 fastener("cap.end_30", (x0, y + h, zc), out, obj)
-        bolts = fr["core_thread"]["bolts"]
-        for x in ux:
-            fastener(bolts["bottom"], (x + h, y + h, bb["bottom"]), Z, FRAME[("bar", "bottom", side)])
-            fastener(bolts["top"], (x + h, y + h, tb["top"] - fr["bar_holes"]["top_counterbore"]["depth"]),
-                     -Z, FRAME[("bar", "top", side)])
     db = fr["depth_beam"]
     for i, x in enumerate(ux):
         for lvl in ("bottom", "top"):
@@ -611,8 +588,9 @@ def build_frame(mats, colls, frame_root):
 def angle_mesh(kind):
     """L angle along +y from 0 to its length, the upright face at x 0, the leg
     inward along +x; z 0 is the inner face of the flat leg. base: flat leg
-    below, leg up; support (also the guard): flat leg on top, leg down. The
-    holes go through the leg against the upright, countersunk on the box side."""
+    below, leg up; support and guard: flat leg on top, leg down. The holes go
+    through the leg against the upright, on the base and the guard also through
+    the flat leg, countersunk on the box side."""
     def build():
         a = RACK["angles"]
         leg, t, length = a["section"]["leg"], a["section"]["thickness"], a["length"]
@@ -622,11 +600,15 @@ def angle_mesh(kind):
             outline = [(0, t - leg), (t, t - leg), (t, 0), (leg, 0), (leg, t), (0, t)]
         holes = a["holes"]
         s = RACK["fasteners"]["screws"][holes["screw"]]
+        r, sink = holes["diameter"] / 2, (s["head_d"] - holes["diameter"]) / 2
         cutter = bmesh.new()
         for y, z in angle_holes(kind):
-            bm_cone(cutter, (t + 0.01, y, z), -X, s["head_d"] / 2 + 0.01, holes["diameter"] / 2,
-                    (s["head_d"] - holes["diameter"]) / 2)
-            bm_cone(cutter, (t + 1, y, z), -X, holes["diameter"] / 2, holes["diameter"] / 2, t + 2)
+            bm_cone(cutter, (t + 0.01, y, z), -X, s["head_d"] / 2 + 0.01, r, sink)
+            bm_cone(cutter, (t + 1, y, z), -X, r, r, t + 2)
+        into = -Z if kind == "base" else Z
+        for x, y in flat_leg_holes(kind):
+            bm_cone(cutter, (x, y, -into.z * 0.01), into, s["head_d"] / 2 + 0.01, r, sink)
+            bm_cone(cutter, (x, y, -into.z), into, r, r, t + 2)
         body = prism_y(outline, 0, length)
         return to_mesh(f"mesh.angle.{kind}", boolean_cut(body, cutter), MATS["aluminium"])
     return shared(f"angle.{kind}", build)
@@ -639,6 +621,15 @@ def angle_holes(kind):
     sign = 1 if kind == "base" else -1
     return [(y, sign * dz) for y in (holes["from_end"], a["length"] - holes["from_end"])
             for dz in holes["from_flat_leg"]]
+
+
+def flat_leg_holes(kind):
+    """(x, y) of the holes in the flat leg in the angle's own frame; none on a support angle."""
+    a = RACK["angles"]
+    fl = a["holes"]["flat_leg"]
+    if f"angle.{kind}" not in fl["angles"]:
+        return []
+    return [(dx, y) for y in (fl["from_end"], a["length"] - fl["from_end"]) for dx in fl["from_upright_face"]]
 
 
 def bay_faces(c):
@@ -664,6 +655,21 @@ def angle(name, part, kind, x_face, inward, z_ref, upright, coll, parent):
         side = "front" if y < length / 2 else "back"
         fastener(a["holes"]["screw"], (x_face + inward * t, y, z_ref + z), -inward * X, obj)
         nut("tnut.m5", (x_face, y, z_ref + z), -inward * X, Z, FRAME[("upright", upright, side)])
+    fr = RACK["frame"]
+    leg, h = a["section"]["leg"], fr["profile"]["section"] / 2
+    head_r = RACK["fasteners"]["screws"][a["holes"]["screw"]]["head_d"] / 2
+    if kind == "base":
+        into, bar, face = -Z, "bottom", fr["bottom_bar"]["top"]
+    else:
+        into, bar, face = Z, "top", fr["top_bar"]["bottom"]
+    for dx, y_local in flat_leg_holes(kind):
+        y = y_local if inward > 0 else length - y_local
+        x = x_face + inward * dx
+        side = "front" if y < length / 2 else "back"
+        assert y == fr["upright_y"][0 if side == "front" else 1] + h, f"{name}: flat-leg hole y {y} off the slot line"
+        assert t + head_r <= dx <= leg - head_r and 0 < x < fr[f"{bar}_bar"]["length"], f"{name}: flat-leg hole {dx}"
+        fastener(a["holes"]["screw"], (x, y, z_ref), into, obj)
+        nut("tnut.m5", (x, y, face), into, X, FRAME[("bar", bar, side)])
     return obj
 
 
@@ -680,7 +686,7 @@ def build_angles(mats, colls, frame_root):
                     angle(f"angle.support.L{lv['level']}.C{c + 1}.{side}", "angle.support", "support", x_face,
                           inward, lv["floor"] - t, up, colls["angles"], frame_root)
         for x_face, inward, side, up in bay_faces(c):
-            angle(f"angle.guard.C{c + 1}.{side}", "angle.guard", "support", x_face, inward,
+            angle(f"angle.guard.C{c + 1}.{side}", "angle.guard", "guard", x_face, inward,
                   RACK["tip_guard"]["flat_leg_bottom"], up, colls["angles"], frame_root)
 
 
@@ -794,9 +800,6 @@ def castor_plate_mesh():
             d = holes["screws"]["diameter"]
             bm_cone(cutter, (u, v, -0.01), Z, sink["head_d"] / 2 + 0.01, d / 2, (sink["head_d"] - d) / 2)
             bm_cone(cutter, (u, v, -1), Z, d / 2, d / 2, t + 2, segments=12)
-        u, v = holes["bolt_clearance"]["at"]
-        r = holes["bolt_clearance"]["diameter"] / 2
-        bm_cone(cutter, (u, v, -1), Z, r, r, t + 2)
         u, v = holes["castor_bolt"]["at"]
         r = holes["castor_bolt"]["diameter"] / 2
         bm_cone(cutter, (u, v, -1), Z, r, r, t + 2, segments=12)
@@ -876,9 +879,8 @@ def build_castors(mats, colls, frame_root):
 def check_dimensions():
     """Stop the build unless the dimensions of rack.json fit together: the
     uprights fill the space between the bars, the plates and angles stack, the
-    gap above the tallest box is the same on every level, the core bolts stay
-    inside the thread and the castor bolt reaches through its lock nut without
-    touching the bottom bars' top."""
+    gap above the tallest box is the same on every level and the castor bolt
+    reaches through its lock nut without touching the bottom bars' top."""
     fr, a = RACK["frame"], RACK["angles"]
     sec, t, leg = fr["profile"]["section"], a["section"]["thickness"], a["section"]["leg"]
     bb, tb, up, cp = fr["bottom_bar"], fr["top_bar"], fr["upright"], fr["castor_plate"]
@@ -903,17 +905,35 @@ def check_dimensions():
         assert gap == a["gap_above_box_max"], (lv, gap)
     assert RACK["tip_guard"]["flat_leg_bottom"] + t == tb["bottom"], RACK["tip_guard"]
     screws = RACK["fasteners"]["screws"]
-    ct = fr["core_thread"]
-    engaged = {"bottom": screws[ct["bolts"]["bottom"]]["length"] - sec,
-               "top": screws[ct["bolts"]["top"]]["length"] - (sec - fr["bar_holes"]["top_counterbore"]["depth"])}
-    for end, e in engaged.items():
-        assert 0 < e <= ct["depth"] - 2, f"{end} core bolt engages {e} mm in a {ct['depth']} mm thread"
     bolt = cp["holes"]["castor_bolt"]
     w = RACK["fasteners"]["washers"][bolt["washer"]]["h"]
-    tip = fr["castor_height"] - fr["castor"]["top_plate"] - w + screws[bolt["bolt"]]["length"]
     nut_top = cp["top"] + w + RACK["fasteners"]["nuts"][bolt["nut"]]["height"]
-    assert nut_top + 2 <= tip < bb["top"], f"castor bolt tip {tip} against nut top {nut_top} and bar top {bb['top']}"
-    print("dimension check: core bolts engage", engaged, "castor bolt tip", tip)
+    for metal in (0, 13, fr["castor"]["top_plate"]):
+        tip = fr["castor_height"] - metal - w + screws[bolt["bolt"]]["length"]
+        assert nut_top + 2 <= tip < bb["top"], f"castor bolt tip {tip} against nut top {nut_top} and bar top {bb['top']}"
+    print("dimension check: levels", [lv["floor"] for lv in RACK["levels"]], "gap", a["gap_above_box_max"],
+          "castor bolt tip", tip)
+
+
+def check_slot_nuts():
+    """Stop the build if two hammer nuts in one bar slot overlap along it."""
+    nuts = RACK["fasteners"]["nuts"]
+    slots = {}
+    for obj in bpy.data.objects:
+        part = obj.data.get("part") if obj.type == "MESH" else None
+        if part not in nuts or nuts[part]["type"] != "hammer" or not obj.parent.name.startswith("bar."):
+            continue
+        world = world_of(obj)
+        p, d = world.translation * 1000, world.to_3x3() @ Z
+        key = (obj.parent.name, tuple(round(c) for c in d), round(p.y, 1), round(p.z, 1))
+        slots.setdefault(key, []).append((p.x, nuts[part]["length"]))
+    n = 0
+    for key, row in slots.items():
+        row.sort()
+        for (x0, l0), (x1, l1) in zip(row, row[1:]):
+            assert x1 - x0 >= (l0 + l1) / 2, f"nuts overlap in {key} at x {x0:.1f} and {x1:.1f}"
+        n += len(row)
+    print("slot nut check:", n, "hammer nuts in", len(slots), "bar slots, none overlap")
 
 
 # ---------------------------------------------------------------- boxes
@@ -1806,6 +1826,7 @@ def main():
     build_brackets(mats, colls, frame_root)
     build_castor_plates(mats, colls, frame_root)
     build_castors(mats, colls, frame_root)
+    check_slot_nuts()
     boxes = build_boxes(mats, colls)
     build_inserts(mats, colls, boxes)
     plate = build_top_plate(mats, colls)

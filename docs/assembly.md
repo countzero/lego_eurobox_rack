@@ -11,13 +11,16 @@ front, levels 1-5 from the bottom.
 ![Three-quarter view](../renders/three_quarter.png)
 
 The renders show the top plate on the frame. It is part of the structure and
-is fitted before the rack is loaded (step 11).
+is fitted before the rack is loaded (step 9).
 
-The rack is two flat frames, front (`y` 0-30) and back (`y` 405-435), each a
-bottom bar, a top bar and four uprights, joined by eight depth beams and
-covered by a structural top plate. It
-stands on four braked castors under castor plates at the corners and holds 15
-Eurobox NextGen 2.0 Cycle 400 × 300, short side with the handle at the front:
+The rack has a front (`y` 0-30) and a back (`y` 405-435) row, each a bottom
+bar, a top bar and four uprights. Nothing is drilled in any profile: each
+upright end stands against its bar and is held by the angle beside it, which
+works as a bracket (`angle.base` at the bottom, `angle.guard` at the top) and
+runs the full depth, so it also ties the front row to the back row. Eight
+depth beams and a structural top plate complete the frame. It stands on four
+braked castors under castor plates at the corners and holds 15 Eurobox
+NextGen 2.0 Cycle 400 × 300, short side with the handle at the front:
 3 × 220 on level 1 and 12 × 120 on levels 2-5. The back is open: a box comes
 out at the front and at the back. Every metal part and the castors come from
 motedis in one order (`docs/prices.md`).
@@ -28,37 +31,35 @@ motedis in one order (`docs/prices.md`).
 
 | Part ID                   | Quantity | Used in step |
 | ------------------------- | -------- | ------------ |
-| `profile.bar_top`         | 2        | 1, 6         |
-| `profile.bar_bottom`      | 2        | 1, 6         |
-| `profile.upright`         | 8        | 2, 6         |
-| `profile.beam_depth`      | 8        | 7            |
-| `angle.base`              | 6        | 3, 9         |
-| `angle.support`           | 24       | 3, 9         |
-| `angle.guard`             | 6        | 3, 9         |
-| `plate.castor`            | 4        | 4, 8         |
-| `tnut.m5`                 | 144      | 5, 9         |
-| `tnut.m6`                 | 84       | 5, 7, 8, 11  |
-| `screw.m8x50_socket`      | 8        | 6            |
-| `screw.m8x40_socket`      | 8        | 6            |
-| `bracket.inside_30`       | 24       | 7            |
-| `screw.m6x12_button`      | 68       | 7, 11        |
-| `screw.m6x16_countersunk` | 16       | 8            |
-| `castor.brake`            | 4        | 8            |
-| `screw.m8x35_socket`      | 4        | 8            |
-| `washer.m8`               | 8        | 8            |
-| `nut.m8_lock`             | 4        | 8            |
-| `screw.m5x12_countersunk` | 144      | 9            |
-| `cap.end_30`              | 8        | 10           |
-| `plate.top`               | 1        | 11           |
-| `bracket.plate`           | 20       | 11           |
-| `screw.wood_4_5x16`       | 20       | 11           |
-| `box.e220`                | 3        | 12           |
-| `box.e120`                | 12       | 12           |
-| `clip.blue`               | 3        | 12           |
-| `clip.turquoise`          | 6        | 12           |
-| `clip.lightgreen`         | 6        | 12           |
-| `insert.set_quarter`      | 6        | 12           |
-| `insert.set_half`         | 6        | 12           |
+| `profile.bar_top`         | 2        | 5            |
+| `profile.bar_bottom`      | 2        | 5            |
+| `profile.upright`         | 8        | 1, 5         |
+| `profile.beam_depth`      | 8        | 5            |
+| `angle.base`              | 6        | 2, 5         |
+| `angle.support`           | 24       | 2, 7         |
+| `angle.guard`             | 6        | 2, 5         |
+| `plate.castor`            | 4        | 3, 6         |
+| `tnut.m5`                 | 192      | 4, 5, 7      |
+| `tnut.m6`                 | 84       | 4, 5, 6, 9   |
+| `bracket.inside_30`       | 24       | 5            |
+| `screw.m6x12_button`      | 68       | 5, 9         |
+| `screw.m6x16_countersunk` | 16       | 6            |
+| `castor.brake_125`        | 4        | 6            |
+| `screw.m8x35_socket`      | 4        | 6            |
+| `washer.m8`               | 8        | 6            |
+| `nut.m8_lock`             | 4        | 6            |
+| `screw.m5x12_countersunk` | 192      | 5, 7         |
+| `cap.end_30`              | 8        | 8            |
+| `plate.top`               | 1        | 9            |
+| `bracket.plate`           | 20       | 9            |
+| `screw.wood_4_5x16`       | 20       | 9            |
+| `box.e220`                | 3        | 10           |
+| `box.e120`                | 12       | 10           |
+| `clip.blue`               | 3        | 10           |
+| `clip.turquoise`          | 6        | 10           |
+| `clip.lightgreen`         | 6        | 10           |
+| `insert.set_quarter`      | 6        | 10           |
+| `insert.set_half`         | 6        | 10           |
 
 Buy about ten spare `tnut.m5` and `tnut.m6`. Both are hammer nuts for B-type
 slot 8: they go into a slot from its open face, also where the slot is closed
@@ -71,43 +72,36 @@ made, and a forgotten one is added later without taking the frame apart.
 - Profiles cut to size by motedis, one piece each: 8 × 797
   (`profile.upright`), 4 × 1074 (`profile.bar_top`, `profile.bar_bottom`),
   8 × 375 (`profile.beam_depth`), all 30 × 30 B-type slot 8
-  ([motedis 30x30][mo-30]). The cut list is `bom/cutlist.csv`.
-- motedis' "M8" machining at **both ends of each of the 8 uprights**. motedis
-  states no thread depth; the design takes 25 mm (`UNVERIFIED`, asked by
-  email), and the bolts engage 20 mm at the bottom and 18 mm at the top.
+  ([motedis 30x30][mo-30]). The cut list is `bom/cutlist.csv`. Cut to size
+  only, no machining or holes.
 - Angles 40 × 40 × 4, anodised ([motedis angle][mo-angle]): 9 bars of
   1980 mm, cut by motedis to 4 × 435 each ("Zuschnitt ganzer Stab"),
   36 pieces: 6 `angle.base`, 24 `angle.support`, 6 `angle.guard`. Their holes
-  are drilled at home (step 3).
+  are drilled at home (step 2).
 - Castor plates: motedis Aluminium Plättchen 8 × 90, EN AW-5083, one 740 mm
   bar cut to 4 × 90 ([motedis plate][mo-plate]), 4 pieces of 90 × 90 × 8. Their
-  holes are drilled at home (step 4).
+  holes are drilled at home (step 3).
 - Top plate: 21 mm birch plywood cut to 1114 × 483, grain along the 1114
-  length (`docs/prices.md`); its corners are rounded at home (step 11).
-- The through holes in the bars are drilled at home (step 1); motedis offers
-  machining only at the profile ends.
+  length (`docs/prices.md`); its corners are rounded at home (step 9).
 
 ### Tools
 
-| Tool                                     | For                                                   |
-| ---------------------------------------- | ----------------------------------------------------- |
-| Hex keys 3, 4, 5 and 6 mm (or bits)      | M5 and M6 countersunk, M6 button and M8 socket screws |
-| 13 mm spanner                            | The castors' lock nuts                                |
-| Drill stand, 8.5 mm HSS bit              | Through holes in the bars, square to the profile      |
-| 14 mm counterbore (or flat drill)        | Sinking the M8 heads in the top bars                  |
-| 14 mm HSS bit                            | Corner bolt head hole in the castor plates            |
-| 9 mm HSS bit                             | Castor bolt hole in the castor plates                 |
-| 6.6 mm HSS bit                           | Clearance holes for M6 in the castor plates           |
-| Drill, 5.5 mm HSS bit                    | Clearance holes in the angles                         |
-| 90° countersink bit, at least 13 mm      | Countersinking the angles and the castor plates       |
-| Deburring tool or fine file              | Cut ends and drilled holes                            |
-| Steel square, tape measure, steel rule   | Marking and squaring                                  |
-| Fine marker, centre punch                | Marking heights and holes                             |
-| Spirit level, at least 600 mm            | Levels horizontal, uprights plumb                     |
-| Two clamps, a few wooden blocks          | Holding a beam while a bracket or plate is fitted     |
-| Medium threadlocker, optional            | The 16 M8 core bolts of the frames (step 6)           |
-| Drill, 2.5 mm wood bit with a depth stop | Pilot holes in the top plate, at most 14 mm deep      |
-| Jigsaw or rasp, sandpaper                | R10 corners and round edges of the top plate          |
+| Tool                                     | For                                                        |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| Hex keys 3, 4, 5 and 6 mm (or bits)      | M5 and M6 countersunk, M6 button and M8 socket screws      |
+| Small torque screwdriver, about 3 N·m    | The M5 angle screws (`UNVERIFIED` value; or a gentle hand) |
+| 13 mm spanner(s)                         | The castors' lock nuts                                     |
+| Hand drill, 5.5 mm HSS bit               | Clearance holes in the angles                              |
+| 6.6 mm HSS bit                           | Clearance holes for M6 in the castor plates                |
+| 9 mm HSS bit                             | Castor bolt hole in the castor plates                      |
+| 90° countersink bit, at least 13 mm      | Countersinking the angles and the castor plates            |
+| Deburring tool or fine file              | Cut ends and drilled holes                                 |
+| Steel square, tape measure, steel rule   | Marking and squaring                                       |
+| Fine marker, centre punch                | Marking heights and holes                                  |
+| Spirit level, at least 600 mm            | Levels horizontal, uprights plumb                          |
+| Clamps, a few wooden blocks              | Holding the frame square while the angles are fitted       |
+| Drill, 2.5 mm wood bit with a depth stop | Pilot holes in the top plate, at most 14 mm deep           |
+| Jigsaw or rasp, sandpaper                | R10 corners and round edges of the top plate               |
 
 Work on a flat, clean floor with a blanket or cardboard under the profiles.
 
@@ -117,98 +111,81 @@ Deburr every cut end of profiles, angles and plates, and both sides of every
 drilled hole. A burr on a hanging leg catches the rim of a box; a burr on a
 profile end keeps the joint from closing.
 
-## Step 1: Mark and drill the bars
-
-**Parts:** `profile.bar_top` × 2, `profile.bar_bottom` × 2.
-
-Each bar carries four uprights, one under or over each through hole. The holes
-are vertical (along `z`), on the centre line of the bar's depth, at the
-upright centres.
-
-| Bar                  | Hole        | Hole centres, `x` from the left end | Head side              |
-| -------------------- | ----------- | ----------------------------------- | ---------------------- |
-| `profile.bar_top`    | 8.5 through | 15, 363, 711, 1059                  | top, 14 mm counterbore |
-| `profile.bar_bottom` | 8.5 through | 15, 363, 711, 1059                  | underside              |
-
-1. Lay the bars side by side, ends flush, and mark all four with the square in
-   one go, so the holes of front and back match.
-2. Punch, then drill 8.5 mm in the drill stand, square to the face, through
-   the full 30 mm of each bar.
-3. Counterbore the top bars from the top face, 14 mm, 8 mm deep, so the head
-   of a `screw.m8x40_socket` sits flush (`UNVERIFIED`; try on the first hole).
-4. Deburr.
-
-**Check:** a bolt passes each hole square; laid end to end, front and back
-holes line up.
-
-## Step 2: Mark the uprights
+## Step 1: Mark the uprights
 
 **Parts:** `profile.upright` × 8.
 
-1. Check that each upright is 797 long with an M8 core thread at both ends.
-   Screw an M8 bolt into each thread by hand and measure how far it goes: it
-   must take at least 22 mm, or the bolts of step 6 stop before the joint is
-   tight (`UNVERIFIED` thread depth). Either end can be the bottom (`z` 163);
-   the other is the top (`z` 960).
+1. Check that each upright is 797 long with square ends. Either end can be the
+   bottom (`z` 198); the other is the top (`z` 995).
 2. Name the uprights by position: front row `F0`, `F1`, `F2`, `F3` at `x` 0,
    348, 696, 1044 (left edge of the profile), back row `B0` to `B3` at the same
    `x`, `y` 405. Write the name on a piece of tape at the top end.
-3. Measured from the bottom end (`z` 163 on the rack is 0 on the upright), mark
+3. Measured from the bottom end (`z` 198 on the rack is 0 on the upright), mark
    on each face that carries angles (the inner `x` faces; `F1`, `F2`, `B1`,
    `B2` have two) the flat leg of each angle:
 
 | Angle           | Level | Flat leg | Fixing leg on the upright | Mark on the upright (from bottom end) |
 | --------------- | ----- | -------- | ------------------------- | ------------------------------------- |
-| `angle.base`    | 1     | 163-167  | 163-203, leg up           | 0 (underside of flat leg, on the bar) |
-| `angle.support` | 2     | 408-412  | 372-412, leg down         | 249 (top of flat leg)                 |
-| `angle.support` | 3     | 545-549  | 509-549, leg down         | 386 (top of flat leg)                 |
-| `angle.support` | 4     | 682-686  | 646-686, leg down         | 523 (top of flat leg)                 |
-| `angle.support` | 5     | 819-823  | 783-823, leg down         | 660 (top of flat leg)                 |
-| `angle.guard`   | guard | 956-960  | 920-960, leg down         | 797 (top end, under the top bar)      |
+| `angle.base`    | 1     | 198-202  | 198-238, leg up           | 0 (underside of flat leg, on the bar) |
+| `angle.support` | 2     | 443-447  | 407-447, leg down         | 249 (top of flat leg)                 |
+| `angle.support` | 3     | 580-584  | 544-584, leg down         | 386 (top of flat leg)                 |
+| `angle.support` | 4     | 717-721  | 681-721, leg down         | 523 (top of flat leg)                 |
+| `angle.support` | 5     | 854-858  | 818-858, leg down         | 660 (top of flat leg)                 |
+| `angle.guard`   | guard | 991-995  | 955-995, leg down         | 797 (top end, under the top bar)      |
 
-The `z` of a mark is the mark plus 163.
+The `z` of a mark is the mark plus 198.
 
 **Check:** 8 uprights, every mark on the same face of every upright; laid side
 by side, the marks line up with the square.
 
-## Step 3: Drill and countersink the angles
+## Step 2: Drill and countersink the angles
 
 **Parts:** `angle.base` × 6, `angle.support` × 24, `angle.guard` × 6.
 
-Each angle has 4 holes, 2 per end, in the leg that lies against the upright
+Every angle has 4 holes, 2 per end, in the leg that lies against the upright
 (the vertical leg of `angle.base`, the hanging leg of the others), on the
 centre line of the upright's slot, 15 mm from each end of the angle (`y` 15
-and `y` 420), and 11 and 28 mm from the inner face of the flat leg. These hole
-positions are a proposal of this guide (`UNVERIFIED`), chosen so the heads
-clear the inner corner of the angle and the hole at 28 stays 8 mm from the tip
-of the 40 mm leg.
+and `y` 420), and 11 and 28 mm from the inner face of the flat leg.
 
-| Angle           | Level | Hole centres, `z` |
-| --------------- | ----- | ----------------- |
-| `angle.base`    | 1     | 178, 195          |
-| `angle.support` | 2     | 397, 380          |
-| `angle.support` | 3     | 534, 517          |
-| `angle.support` | 4     | 671, 654          |
-| `angle.support` | 5     | 808, 791          |
-| `angle.guard`   | guard | 945, 928          |
+| Angle           | Level | Hole centres in the upright leg, `z` |
+| --------------- | ----- | ------------------------------------ |
+| `angle.base`    | 1     | 213, 230                             |
+| `angle.support` | 2     | 432, 415                             |
+| `angle.support` | 3     | 569, 552                             |
+| `angle.support` | 4     | 706, 689                             |
+| `angle.support` | 5     | 843, 826                             |
+| `angle.guard`   | guard | 980, 963                             |
 
-In the leg that means 11 and 28 from the flat leg for every angle, so one
-template serves them all.
+`angle.base` and `angle.guard` are also the joints of the uprights, so they get
+4 more holes, 2 per end, in the flat leg: on the centre line of the bar's slot,
+15 mm from each end of the angle, and 14 and 32 mm from the upright face (the
+outer face of the upright leg), so the two hammer nuts, 16.5 long, keep 1.5
+between them. All hole positions are a proposal of this guide (`UNVERIFIED`),
+chosen so the heads clear the inner corner of the angle and the hole at 28
+stays 8 mm from the tip of the 40 mm leg.
 
-1. Mark one angle, punch, drill 5.5 mm. Use it as a drilling template for the
-   others, clamped end to end and flat leg to flat leg.
-2. Countersink each hole at 90° from the side that faces the box, that is the
-   side away from the upright. Sink until the head of a
-   `screw.m5x12_countersunk` sits flush or a hair below the surface; test on
-   the first hole. The head is 2.5 mm high in the 4 mm leg, so 1.5 mm of
-   aluminium stays under it.
-3. Deburr both sides.
+That makes 192 holes: 4 in each `angle.support`, 8 in each `angle.base` and
+`angle.guard`.
+
+1. Mark one `angle.support`, punch, drill 5.5 mm with the hand drill. Use it
+   as a drilling template for the other supports and for the upright leg of
+   the base and guard angles, clamped end to end and flat leg to flat leg.
+2. Mark one base angle's flat leg, drill it and use it as the second template
+   for the flat legs of the other base and the guard angles.
+3. Countersink each hole at 90° from the side that faces the box, that is the
+   side away from the upright, and in the flat leg the side away from the bar:
+   from above in `angle.base`, from below in `angle.guard`. Sink until the
+   head of a `screw.m5x12_countersunk` sits flush or a hair below the surface;
+   test on the first hole. The head is 2.5 mm high in the 4 mm leg, so 1.5 mm
+   of aluminium stays under it. In the flat leg of `angle.base` sink it
+   0.1-0.2 below flush: the boxes slide over these heads from both ends.
+4. Deburr both sides.
 
 **Check:** a screw in every hole of a test angle; run a fingernail along the
-leg: no head, no burr stands proud. The hanging leg must stay smooth for the
-box rim.
+leg: no head, no burr stands proud. The hanging leg and the base angles' flat
+leg must stay smooth for the box.
 
-## Step 4: Drill the castor plates
+## Step 3: Drill the castor plates
 
 **Parts:** `plate.castor` × 4.
 
@@ -220,7 +197,6 @@ runs along the bar, the second along the depth beam.
 | Hole                               | Centres from the outer corner | For                                                         |
 | ---------------------------------- | ----------------------------- | ----------------------------------------------------------- |
 | 9 through                          | (45, 45)                      | `screw.m8x35_socket` of the castor                          |
-| 14 through                         | (15, 15)                      | Head of the corner upright's `screw.m8x50_socket`           |
 | 6.6 through, countersunk 90° below | (60, 15), (80, 15)            | `screw.m6x16_countersunk` into the bar's bottom slot        |
 | 6.6 through, countersunk 90° below | (15, 60), (15, 80)            | `screw.m6x16_countersunk` into the depth beam's bottom slot |
 
@@ -228,128 +204,132 @@ The pattern is symmetric about the plate's diagonal through the outer corner,
 so all four plates are identical: for the other corners the plate is only
 turned, never made as a mirror image.
 
-1. Mark one plate, punch, drill in the drill stand, and use it as a template
-   for the other three.
-2. The 14 mm hole takes the ISO 4762 M8 head, 13 across and 8 high: in the
-   8 mm plate it sits exactly flush with the underside. Try a bolt head in the
-   first hole; a head that stands proud keeps the castor from sitting flat.
-3. Countersink the four M6 holes from the underside (the side away from the
+1. Mark one plate, punch, drill a small pilot hole at each mark with the hand
+   drill, then open to 6.6 and 9 mm. Use it as a template for the other three.
+2. Countersink the four M6 holes from the underside (the side away from the
    profiles) until a `screw.m6x16_countersunk` sits flush or a hair below.
-4. Deburr.
+3. Deburr.
 
-**Check:** a bolt head drops into the 14 mm hole and does not stand proud; an
-M8 bolt passes the 9 mm hole; no M6 head stands proud underneath.
+**Check:** an M8 bolt passes the 9 mm hole; no M6 head stands proud
+underneath.
 
-## Step 5: Hammer nuts
+## Step 4: Hammer nuts
 
-**Parts:** `tnut.m5` × 144, `tnut.m6` × 84.
+**Parts:** `tnut.m5` × 192, `tnut.m6` × 84.
 
-All nuts are hammer nuts, so each can go in when its part is fitted; putting
-the ones of a frame in before it stands up just saves bending later. Where
+All nuts are hammer nuts, so each can go in when its part is fitted. Where
 they go:
 
-| Slot                                                            | Nuts                                 |
-| --------------------------------------------------------------- | ------------------------------------ |
-| Each inner `x` face of an upright that carries angles (12)      | 12 × `tnut.m5` (6 angles × 2 screws) |
-| Inner `y` face of each upright, top end, under the top beam (8) | 1 × `tnut.m6`                        |
-| Each top depth beam (4)                                         | 4 × `tnut.m6`                        |
-| Each middle bottom depth beam, both sides (2)                   | 4 × `tnut.m6`                        |
-| Inner faces of the bars, at each depth beam end (16 brackets)   | 1 × `tnut.m6`                        |
-| Inner slot of the top bars, at each plate bracket (20)          | 1 × `tnut.m6`                        |
-| Bottom slots of bar and depth beam under each castor plate (4)  | 4 × `tnut.m6`                        |
+| Slot                                                              | Nuts                                 |
+| ----------------------------------------------------------------- | ------------------------------------ |
+| Each inner `x` face of an upright that carries angles (12)        | 12 × `tnut.m5` (6 angles × 2 screws) |
+| Top slot of each bottom bar, beside each base angle end (12)      | 2 × `tnut.m5`                        |
+| Bottom slot of each top bar, beside each guard angle end (12)     | 2 × `tnut.m5`                        |
+| Inner `y` face of each upright, top end, under the top beam (8)   | 1 × `tnut.m6`                        |
+| Each top depth beam (4)                                           | 4 × `tnut.m6`                        |
+| Each middle bottom depth beam, both sides (2)                     | 4 × `tnut.m6`                        |
+| Inner faces of the bars, at each depth beam end (16 brackets)     | 1 × `tnut.m6`                        |
+| Inner slot of the top bars, at each plate bracket (20)            | 1 × `tnut.m6`                        |
+| Bottom slots of bar and depth beam under each castor plate (4)    | 4 × `tnut.m6`                        |
 
-That is 144 `tnut.m5` for the angles (step 9) and 84 `tnut.m6`: 48 for the
-24 brackets (2 each, step 7), 16 for the 4 castor plates (step 8) and 20 for
-the plate brackets (step 11).
+That is 192 `tnut.m5` for the angles: 144 in the uprights' slots and 48 in
+the bars' slots (24 in the bottom bars' top slots, 24 in the top bars' bottom
+slots), used in steps 5 and 7. And 84 `tnut.m6`: 48 for the 24 brackets
+(2 each, step 5), 16 for the 4 castor plates (step 6) and 20 for the plate
+brackets (step 9).
 
 **Check:** count again before each step; a nut missing in a hidden spot is
 added from the slot face.
 
-## Step 6: Front and back frame
+## Step 5: Build the frame
 
 **Parts:** `profile.bar_bottom` × 2, `profile.bar_top` × 2,
-`profile.upright` × 8, `screw.m8x50_socket` × 8,
-`screw.m8x40_socket` × 8.
+`profile.upright` × 8, `profile.beam_depth` × 8, `angle.base` × 6,
+`angle.guard` × 6, `bracket.inside_30` × 24, `screw.m6x12_button` × 48,
+`screw.m5x12_countersunk` × 96, `tnut.m5` × 96, `tnut.m6` × 48.
 
 ![Front](../renders/front.png)
 
-Build each frame flat on the floor, outer face up. Nothing but the M8 core
-bolts holds a frame square (`design.md` → *Joints*), so the upright ends must
-sit flat and tight on the bars. If you use threadlocker, a medium-strength one
-such as Loctite 243 (blue, can be undone with hand tools; `UNVERIFIED`), put a
-few drops on the thread of each M8 bolt just before it goes in, and square and
-tighten the frame before it sets.
+The base and guard angles span the front and the back row (`y` 0-435), so the
+two rows cannot be built flat on their own: the frame is built standing, in
+one go. Nothing but the angles holds an upright to its bars (`design.md` →
+*Joints*), so the upright ends must sit flat and tight on the bars.
 
-1. **Bottom bar.** Lay a `profile.bar_bottom` (30 × 30) with its holes' head
-   side down.
-2. **Uprights.** Stand all four uprights (`F0` to `F3`, or `B0` to `B3`) on
-   the bar's top face over the holes and bolt each with a
-   `screw.m8x50_socket` from below into its core thread, 20 mm engaged. At the
-   corners the head stays proud of the bar's underside; it sits in the castor
-   plate's 14 mm hole in step 8.
-3. **Top bar.** Lay a `profile.bar_top` on the top ends, counterbores up, and
-   bolt all four uprights with a `screw.m8x40_socket` each, head sunk in the
-   counterbore, 18 mm engaged.
-4. Square the frame (diagonals equal within 1 mm), then tighten all eight M8
-   bolts firmly with the hex key, checking the diagonals again after each.
-   The bolts are stainless A2 (at least A2-50): firm, not brute force.
+One angle joint: per end, 2 `screw.m5x12_countersunk` through the upright leg
+into hammer nuts in the upright's slot and 2 through the flat leg into hammer
+nuts in the bar's slot. The middle uprights get an angle on each side, the
+corner uprights one on the inner side. Insert both hammer nuts of a pair
+before tightening either. Tighten to about 3 N·m (`UNVERIFIED`; motedis
+publishes no rating for its hammer nuts): firm, not brute force.
 
-**Check:** each frame 1074 wide and 857 high (`z` 133-990 once on castors);
-clear width 318 between neighbouring uprights at top and bottom; diagonals
-equal within 1 mm; no gap between an upright end and its bar.
+One bracket joint: one `bracket.inside_30` in the inside corner, each leg with
+one `screw.m6x12_button` into a `tnut.m6` ([motedis Winkel][mo-winkel]).
+Tighten firmly by hand with the hex key; do not use an impact driver, which
+can damage the slot lips ([cnc-zubehoer][cnc-hm]).
 
-## Step 7: Join the frames
-
-**Parts:** `profile.beam_depth` × 8, `bracket.inside_30` × 24,
-`screw.m6x12_button` × 48.
-
-One joint: one `bracket.inside_30` in the inside corner, each leg with one
-`screw.m6x12_button` into a `tnut.m6` ([motedis Winkel][mo-winkel]). Tighten
-firmly by hand with the hex key; do not use an impact driver, which can damage
-the slot lips ([cnc-zubehoer][cnc-hm]).
-
-1. Stand the front frame up, held by a helper object (a table, a wall), and the
-   back frame 435 behind it.
-2. **Bottom depth beams**, one under each upright pair, `z` 133-163, between
-   the inner faces of the bottom bars, flush with the bars top and bottom;
-   their tops are level with the upright feet (`z` 163).
-3. **Top depth beams**, one over each upright pair, `z` 960-990, flush with
-   the top bars.
-4. **Brackets, 24 in all:**
+1. **Bottom.** Lay both `profile.bar_bottom` on the floor, 435 apart outside
+   to outside, and the 8 bottom depth beams between their inner faces, one
+   under each upright position, flush with the bars top and bottom
+   (`z` 168-198). Fit the 8 brackets of the middle bottom beams: one on each
+   side of each middle beam, at both ends, in the corner with the bar's inner
+   face. The corner bottom beams have no bracket: the castor plate of step 6
+   joins each to its bars. Hold each corner square with a clamp across bar and
+   beam, flush top and bottom, until then. Plates and castors follow in
+   step 6, once the frame stands: their screws go in from below.
+2. **Uprights and base angles.** Stand the uprights on the bars' top faces
+   at their `x` (`F0` to `F3` on the front bar, `B0` to `B3` on the back one).
+   Lay each `angle.base` beside its pair of uprights, flat leg on the bottom
+   bars, vertical leg against the uprights' marks. Put the hammer nuts in, then
+   snug the upright leg screws and the flat leg screws, all by hand. Check each
+   upright plumb with the spirit level, both directions.
+3. **Top bars and guard angles.** Lay a `profile.bar_top` on the top ends of
+   each row of uprights. Fit each `angle.guard` the same way, hanging leg
+   against the uprights, flat leg under the top bars (`z` 991-995); its flat
+   leg screws go in from below, through the empty level 5 bay. Snug only.
+4. **Top depth beams.** Fit the 4 top depth beams between the top bars, one
+   over each upright pair, flush with the bars (`z` 995-1025), and their
+   16 brackets:
    - Upright to top depth beam, 8: on the upright's inner `y` face, under the
      top depth beam.
    - Top depth beam to bar, 8: on the side of the top depth beam towards its
      bay in the corner with the bar's inner face, above the guard (within
-     `z` 960-990).
-   - Middle bottom depth beams to bar, 8: one on each side of each middle
-     bottom beam, at both ends, in the corner with the bar's inner face
-     (within `z` 133-163).
+     `z` 995-1025).
    No bracket sits on an upright face that carries an angle, so the angles
    stay clear.
-5. **Corner bottom beams.** They have no bracket: the castor plate of step 8
-   joins each to its bars. Until then hold each with a clamp across the bar
-   and the beam, flush top and bottom, and go straight on to step 8.
-6. Tighten in diagonal order, checking square as you go.
+5. **Square and tighten.** With every screw snug, check the diagonals of the
+   front, the back, the top and the bottom. Then tighten in diagonal order to
+   about 3 N·m, checking the diagonals again as you go.
 
 **Check:**
 
-- Frame 1074 × 435 × 857; with the top plate 1114 × 483 at the top.
-- Diagonals of the top and the bottom equal within 2 mm.
-- Every upright plumb with the spirit level, both directions.
+- Frame 1074 × 435 × 857 (`z` 168-1025 once on castors); with the top plate
+  1114 × 483 at the top.
+- Clear width 318 between neighbouring uprights at top and bottom.
+- Diagonals of front, back, top and bottom equal within 2 mm.
+- Every upright plumb with the spirit level, both directions; no gap between an
+  upright end and its bar.
+- No screw head stands proud of a base angle's flat leg.
 
-## Step 8: Castor plates and castors
+## Step 6: Castor plates and castors
 
 **Parts:** `plate.castor` × 4, `screw.m6x16_countersunk` × 16, `tnut.m6` × 16,
-`castor.brake` × 4, `screw.m8x35_socket` × 4, `washer.m8` × 8,
+`castor.brake_125` × 4, `screw.m8x35_socket` × 4, `washer.m8` × 8,
 `nut.m8_lock` × 4.
+
+`castor.brake_125` is motedis 996, "Rolle 125 Rückenloch mit Bremse"
+([motedis castor][mo-castor]): wheel 125, back hole 11, offset 41, 160 high,
+100 kg, a total lock on wheel and swivel. Check one castor on arrival: the
+metal thickness at the back hole (the M8x35 fits from 0 to 13 mm,
+`UNVERIFIED`) and that its head (about ⌀45, `UNVERIFIED`) sits flat on the
+plate.
 
 1. Lay the frame on its back on a blanket, so the undersides of the bottom bars
    and the bottom depth beams are reachable.
 2. **Plates.** Lay a `plate.castor` under each corner, outer corner flush with
-   the frame corner, countersinks out, the corner bolt head in the 14 mm hole.
-   Screw it with 4 `screw.m6x16_countersunk` into hammer nuts in the bottom
-   slot of the bar (2) and of the depth beam (2). Now the plate holds the
-   corner bottom beam; take the clamp off.
+   the frame corner, countersinks out. Screw it with 4
+   `screw.m6x16_countersunk` into hammer nuts in the bottom slot of the bar (2)
+   and of the depth beam (2). Now the plate holds the corner bottom beam; take
+   the clamp off.
 3. **Castors.** Put a `washer.m8` on a `screw.m8x35_socket` and push it from
    inside the castor's housing up through its back hole (11 mm). Hold the
    castor on the plate, the bolt through the plate's 9 mm hole, and put a
@@ -361,18 +341,18 @@ the slot lips ([cnc-zubehoer][cnc-hm]).
 4. Stand the frame up on its castors and set the brakes.
 
 **Check:** each plate flush with the frame's outer faces and flat under bar
-and beam; every castor head (⌀46, `SECONDARY`) inside the frame outline seen
-from above; every castor swivels freely with the brake off, the wheel may
-swing out up to about 34 mm (`DERIVED`); every brake locks wheel and swivel;
-the frame stands level; the bottom bars run `z` 133-163, the top at 990.
+and beam; every castor head inside the frame outline seen from above; every
+castor swivels freely with the brake off; every brake locks wheel and swivel;
+the frame stands level; the plates run `z` 160-168, the bottom bars
+`z` 168-198, the top at 1025.
 
 A plate taken off later, for instance to change a castor, frees its corner
 bottom beam: clamp the beam first.
 
-## Step 9: Angles, from the bottom up
+## Step 7: Support angles, from the bottom up
 
-**Parts:** `angle.base` × 6, `angle.support` × 24, `angle.guard` × 6,
-`screw.m5x12_countersunk` × 144, `tnut.m5` × 144.
+**Parts:** `angle.support` × 24, `screw.m5x12_countersunk` × 96,
+`tnut.m5` × 96.
 
 ![Angle detail](../renders/angle_detail.png)
 
@@ -380,18 +360,15 @@ Each angle runs the full depth, `y` 0-435, and is held by 2 screws at each end
 into the inner slot of a front and a back upright. Fit one level at a time,
 from the bottom up:
 
-1. **Level 1, `angle.base`, 6 pieces.** Flat leg at the bottom on the bottom
-   bars (`z` 163-167), vertical leg up against the upright.
-2. **Levels 2-5, `angle.support`, 6 per level.** Flat leg on top, hanging leg
-   down along the upright; flat leg top at 412, 549, 686, 823.
-3. **Guard, `angle.guard`, 6 pieces.** Same orientation, flat leg 956-960,
-   just under the top bar.
-4. Before tightening each angle, set the spirit level across the pair of
-   angles of one column and on each angle along its length.
+1. **Levels 2-5, `angle.support`, 6 per level.** Flat leg on top, hanging leg
+   down along the upright; flat leg top at 447, 584, 721, 858.
+2. Before tightening each angle, set the spirit level across the pair of
+   angles of one column and on each angle along its length. Tighten to about
+   3 N·m (`UNVERIFIED`).
 
-**Check, every level:**
+**Check, every level (and level 1 and the guard once more):**
 
-- Flat leg height at front and back within 1 mm of the table in step 2.
+- Flat leg height at front and back within 1 mm of the table in step 1.
 - Clear width 310 between the two hanging legs (between the vertical legs at
   level 1) of each column, front and back; 238 between the leg tips.
 - Both angles of a column at the same height.
@@ -400,7 +377,7 @@ from the bottom up:
   carries a box are deburred and their top edge slightly rounded, so a box
   pushed in from the front or the back does not catch.
 
-## Step 10: End caps
+## Step 8: End caps
 
 **Parts:** `cap.end_30` × 8.
 
@@ -409,7 +386,7 @@ other slots stay open.
 
 **Check:** no sharp edge at hand height.
 
-## Step 11: Top plate
+## Step 9: Top plate
 
 **Parts:** `plate.top` × 1, `bracket.plate` × 20, `screw.m6x12_button` × 20,
 `tnut.m6` × 20, `screw.wood_4_5x16` × 20.
@@ -430,9 +407,9 @@ nothing is taken apart ([BM Profiles][bm-nuts]).
    at `x` 90, 165, 242, 317, 472, 632, 776, 850, 926 and 999: 10 at the front
    and 10 at the back, four in each outer column and two in the middle one,
    clear of the depth-beam brackets on the right of each upright. The free leg
-   lies flush with the top of the bar (`z` 990). Snug the screws.
+   lies flush with the top of the bar (`z` 1025). Snug the screws.
 3. Lay the plate on top, 20 overhang at the sides and 24 at the front and the
-   back, its top at 1011; mark through the bracket holes from below.
+   back, its top at 1046; mark through the bracket holes from below.
 4. Lift off, pre-drill 2.5 mm at each mark, at most 14 mm deep (depth stop),
    so at least 5 mm of wood stays above the screw tip; lay the plate back and
    screw from below, 1 `screw.wood_4_5x16` per bracket.
@@ -441,7 +418,7 @@ nothing is taken apart ([BM Profiles][bm-nuts]).
 **Check:** 20 screws in; the plate lies flat and does not rock; the overhang
 is equal on opposite sides; nothing shows on top.
 
-## Step 12: Boxes, ColorClips and inserts
+## Step 10: Boxes, ColorClips and inserts
 
 **Parts:** `box.e220` × 3, `box.e120` × 12, `clip.blue` × 3,
 `clip.turquoise` × 6, `clip.lightgreen` × 6, `insert.set_quarter` × 6,
@@ -481,9 +458,10 @@ front or to the back it stays on its legs, and it comes out entirely at
 - Levels horizontal across and along, every column.
 - All 15 boxes in and centred, none rubbing.
 - Every screw tight; check again after the first week of use.
-- **M8 core bolts:** they alone keep the frames square. Check all 16 again
-  after the first few moves and whenever the rack has been rolled far; a frame
-  whose diagonals differ by more than 2 mm has a loose bolt.
+- **Angle screws and diagonals:** the base and guard angles alone hold the
+  uprights to the bars. Check their screws and the diagonals again after the
+  first moves and whenever the rack has been rolled far; diagonals that differ
+  by more than 2 mm point to a loose angle joint.
 - The rack stands free in the room, so a box can be pulled from both sides.
 - **Brakes:** set all four where the rack stands, so it does not roll when a
   box is pulled.
@@ -494,16 +472,17 @@ front or to the back it stays on its legs, and it comes out entirely at
 
 - A box takes at most 25 kg, the maker's rating ([aidB 120][aidb-12],
   [aidB 220][aidb-22]). Keep the heavy boxes low.
-- Each castor is rated 70 kg ([motedis castor][mo-castor]). The full rack in
-  the design case, about 170 kg (`DERIVED`), on three
-  castors of an uneven floor puts about 57 kg on each, 68 kg with a safety
-  factor of 1.2 (`DERIVED`, see `design.md`).
+- Each castor is rated 100 kg ([motedis castor][mo-castor]). The full rack in
+  the design case, about 172 kg (`DERIVED`), on three castors of an uneven
+  floor puts about 57 kg on each, 69 kg with a safety factor of 1.2 (`DERIVED`, see `design.md`).
 - **Tipping:** an empty rack can tip forward (or backward) when a child hangs
   on a pulled-out box: the ASTM F2057-23 test load of 27.2 kg on the edge of
-  one extended box tips it ([CPSC][cpsc-csu]; `DERIVED`, see `design.md`).
-  The brakes stop rolling, not tipping. Fill the bottom level first and keep
-  the rack loaded, pull one box at a time, never more than its 270 mm travel.
-- Never load the rack without the top plate (step 11): without it the middle
+  one extended box tips it unless about 15.5 kg of LEGO is in the rack
+  ([CPSC][cpsc-csu]; `DERIVED`, see `design.md`). The EN 75 N drawer test
+  passes with a factor of 2.77 (`DERIVED`). The brakes stop rolling, not
+  tipping. Fill the bottom level first and keep the rack loaded, pull one box
+  at a time, never more than its 270 mm travel.
+- Never load the rack without the top plate (step 9): without it the middle
   uprights hang on the 30 × 30 bottom bars alone.
 - The rack is not made to be climbed or stood on.
 
@@ -511,24 +490,27 @@ front or to the back it stays on its legs, and it comes out entirely at
 
 1. The box geometry used here (handle grip pocket, rim, ribs, foot width) is
    read from the product photos (`UNVERIFIED`); roadmap 0004 measures a box.
-2. The angle hole positions (11 and 28 from the flat leg, 15 from each end) are
-   a proposal (`UNVERIFIED`).
-3. Through-hole alignment: drilled at home, a hole off the core axis puts the
-   upright off its line; drill front and back bars together (step 1).
-4. Counterbore depth in the 30 mm top bar is not yet tried (`UNVERIFIED`).
-5. The depth of motedis' M8 core thread is not stated; 25 mm is assumed and
-   checked by hand in step 2 (`UNVERIFIED`, asked by email).
-6. The metal thickness at the castor's back hole is not in motedis' drawing;
-   the M8x35 fits from 0 to 13 mm (`UNVERIFIED`).
-7. The core-bolt joints' clamping force, tightening torque and the sideways
-   load they hold are estimates (`UNVERIFIED`, `design.md` → *Joints*).
+2. The angle hole positions (11 and 28 from the flat leg and, in the flat leg
+   of the base and guard angles, 14 and 32 from the upright face, all 15 from
+   each end) are a proposal (`UNVERIFIED`).
+3. The metal thickness at the castor's back hole is not in motedis' drawing;
+   the M8x35 fits from 0 to 13 mm (`UNVERIFIED`). The castor head, about ⌀45,
+   is read from motedis' CAD file (`UNVERIFIED`). Both are checked on arrival
+   (step 6).
+4. motedis publishes no load rating for its hammer nuts; the 3 N·m for the
+   M5 angle screws and the load the angle joints hold are estimates
+   (`UNVERIFIED`, `design.md` → *Joints*).
+5. A free-standing rack used by children tips under the 27.2 kg child test
+   unless about 15.5 kg of LEGO is in it (`DERIVED`); a wall strap would
+   remove that limit, but a strapped rack no longer opens at the back. To be
+   decided by the user.
 
 [mo-hm]: https://www.motedis.com/de/Hammermutter-B-Typ-Nut-8-M6
 [mo-winkel]: https://www.motedis.com/de/Winkel-30-B-Typ-Nut-8
 [mo-30]: https://www.motedis.com/de/Aluprofil-30x30-B-Typ-Nut-8
 [mo-angle]: https://www.motedis.com/de/Winkelstange-eloxiert-40x40x4mm
 [mo-plate]: https://www.motedis.com/de/Aluminium-Plaettchen-8x90-mm
-[mo-castor]: https://www.motedis.com/de/Rolle-100-Rueckenloch-mit-Bremse
+[mo-castor]: https://www.motedis.com/de/Rolle-125-Rueckenloch-mit-Bremse
 [bm-nuts]: https://www.bm-profile.com/de/ratgeber/nutensteine/
 [cnc-hm]: https://www.cnc-zubehoer.eu/Edelstahl-Nutenstein-Hammermutter-Nut-8-M6-schmal/AP.HM.N8M6S.ES
 [cpsc-csu]: https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Clothing-Storage-Units
