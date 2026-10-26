@@ -3,6 +3,16 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-10-26
+
+_Not ready to build: the box dimensions are provisional until the boxes are measured, the angle joints hold on an estimated tightening torque, and an empty rack can tip when a child hangs on a pulled-out box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: no profile is drilled or machined any more and the castors changed, so do not order from the old parts list, cut list or price list; the rack also stands 60 mm lower. Order the new ones._
+
+### Changed
+
+- **Breaking:** the uprights now stand on the bottom bars and hang from the top bars held by the base and guard angles alone, 192 M5 countersunk screws into hammer nuts, with no holes, counterbores or core bolts in any profile and no machining paid to motedis; the castors are the smaller swivel with total lock, wheel 75 mm, 100 high, 60 kg (motedis 06.07.02), which lets everything drop 60 mm: frame 1074 × 435 × 965 mm, top plate top at 986 mm, level floors 142, 387, 524, 661 and 798 mm, motedis order 457.83–467.63 € ([#30](https://github.com/countzero/lego_eurobox_rack/pull/30))
+
 ## [0.6.0] - 2026-10-25
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, the depth of motedis' M8 core thread is not yet confirmed, and an empty rack can tip when a child hangs on an extended box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
