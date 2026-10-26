@@ -72,5 +72,4 @@ the pieces below (`docs/prices.md`).
 | 30x30 B-type slot 8 | 8 x 375 mm                             | `profile.beam_depth`                         |
 | 40x40x4 anodised    | 9 bars of 1980 mm, each cut 4 x 435 mm | `angle.base`, `angle.support`, `angle.guard` |
 
-The uprights also need motedis' M8 machining at both ends and the bars their
-through holes; see `parts.csv`.
+No profile is machined or drilled; see `parts.csv`.
