@@ -27,7 +27,7 @@
     },
     "model_boxes": { "120": "cycle_120", "220": "cycle_220" },
     "box_shape": {
-        "status": "UNVERIFIED, read from the aidB product photos of the closed-handle C2G43-12; the inner floor is SECONDARY (inner_floor_status); roadmap 0004 measures a box",
+        "status": "UNVERIFIED, read from the aidB product photos of the closed-handle C2G43-12; the inner floor is SECONDARY (inner_floor_status); roadmap 0004 measures a box. aidB states 'glatter Boden' for every 400 x 300 NextGen box, 'ideal fuer den Einsatz auf Rollbahnen' (VERIFIED 2026-10-26), so the underside is flat and the foot band below is the stacking step at the edge, not a raised floor; its width and step stay UNVERIFIED",
         "colour": "neutral dark grey, about sRGB #3F3F3F on the lit faces of the photo",
         "rim_band": 6,
         "collar": 31,
@@ -53,58 +53,71 @@
         "bay_clear_width": 318,
         "width": 1074,
         "depth": 435,
-        "castor_height": 125,
+        "castor_height": 100,
         "castor": {
-            "part": "castor.brake",
-            "product": "motedis 1748, Rolle 100 Rueckenloch mit Bremse",
-            "brake": "total lock (wheel and swivel)",
-            "wheel": 100,
+            "part": "castor.brake_75",
+            "product": "motedis 06.07.02, Rolle 75 Rueckenloch mit Bremse",
+            "brake": "total lock (wheel and swivel): 'Lenkrolle mit nachlaufendem Totalfeststeller'",
+            "wheel": 75,
             "tread_width": 25,
-            "offset": 28,
+            "offset": 24,
+            "offset_status": "MEASURED 2026-10-26 in motedis' CAD file Motedis_06.07.02.stp: 24 between the bolt axis and the wheel axle; motedis writes Ausladung 25 on the page, the build follows the smaller and draws the wheel further in",
             "back_hole": 11,
-            "load_kg": 70,
-            "head_diameter": 46,
-            "head_diameter_status": "SECONDARY, the value 46 read as text from motedis' drawings of 1748 and 995; which feature it measures is not labelled",
+            "load_kg": 60,
+            "status": "VERIFIED 2026-10-26, motedis 06.07.02: 'Raddurchmesser 75mm, Reifenbreite 25mm, Rueckenloch 11mm. Ausladung 25mm, Bauhoehe 100 mm. Tragfaehigkeit 60Kg', 22.83 EUR per 4 incl. VAT; motedis states no mass",
+            "mass_kg_status": "UNVERIFIED, about 0.30 taken as an upper bound from motedis' 100 mm castor 1748 (0.298 kg VERIFIED); the smaller wheel, the 32 mm narrower tread and the shorter fork should weigh less, the 125 mm 996 weighs 0.813",
             "inset": 45,
-            "top_plate": 4,
-            "top_plate_status": "UNVERIFIED, the metal at the castor's back hole; motedis' drawing of 1748 does not give it. The washer and the head of the castor bolt sit under it inside the housing; screw.m8x35_socket fits any value from 0 to 13 (the build checks it)",
+            "top_plate": 11.15,
+            "top_plate_status": "MEASURED 2026-10-26 in the CAD file: the fork's metal at the back hole is 11.15 thick and its underside is 11.15 below the mounting face. The washer and the head of the castor bolt sit under it inside the fork; the wheel's top stands 25 below the face, so 13.85 remain for them and screw.m8x35_socket fits (the build checks it)",
+            "leg_width": 43,
+            "leg_width_status": "MEASURED 2026-10-26 in the CAD file: the fork spans 43 across the tread and its legs end 30 above the floor",
+            "boss_diameter": 23.5,
+            "boss_diameter_status": "MEASURED 2026-10-26 in the CAD file: the fork material within 12 of the bolt axis reaches 11.75 from it, so 45 of inset keeps it inside the frame outline",
+            "sweep": {
+                "wheel": 62.8,
+                "brake": 81.2,
+                "status": "DERIVED, the wheel: 24 + 37.5 in its plane, half the tread across, sqrt(61.5 squared + 12.5 squared). MEASURED, the brake: the farthest vertex of fork and pedal in the CAD file, 20 to 30 below the mounting face. Swept about the bolt at 45 in, the wheel passes the frame outline by 17.8 and the brake by 36.2, both below the castor plate at 100 and clear of every other part"
+            },
             "at": "under a castor plate at each corner, centre 45 from both outer faces"
         },
         "castor_plate": {
             "part": "plate.castor",
             "size": 90,
             "thickness": 8,
-            "bottom": 125,
-            "top": 133,
+            "bottom": 100,
+            "top": 108,
             "material": "EN AW-5083, motedis Aluminium Plaettchen 8x90",
             "holes": {
                 "castor_bolt": { "at": [45, 45], "diameter": 9, "bolt": "screw.m8x35_socket", "washer": "washer.m8", "nut": "nut.m8_lock" },
-                "bolt_clearance": { "at": [15, 15], "diameter": 14 },
                 "screws": { "at": [[60, 15], [80, 15], [15, 60], [15, 80]], "screw": "M6 countersunk from below", "diameter": 6.6 }
             }
         },
-        "bottom_bar": { "type": "30x30 B-type slot 8", "depth": 30, "height": 30, "bottom": 133, "top": 163, "length": 1074 },
-        "top_bar": { "type": "30x30 B-type slot 8", "bottom": 960, "top": 990, "length": 1074 },
-        "upright": { "bottom": 163, "top": 960, "length": 797 },
+        "bottom_bar": { "type": "30x30 B-type slot 8", "depth": 30, "height": 30, "bottom": 108, "top": 138, "length": 1074 },
+        "top_bar": { "type": "30x30 B-type slot 8", "bottom": 935, "top": 965, "length": 1074 },
+        "upright": { "bottom": 138, "top": 935, "length": 797 },
         "upright_x": [0, 348, 696, 1044],
         "upright_y": [0, 405],
-        "depth_beam": { "length": 375, "bottom": { "bottom": 133, "top": 163 }, "top": { "bottom": 960, "top": 990 } },
-        "core_thread": {
-            "thread": "M8",
-            "depth": 25,
-            "bolts": { "bottom": "screw.m8x50_socket", "top": "screw.m8x40_socket" },
-            "status": "UNVERIFIED: motedis cuts its standard M8 at both ends of the uprights and states no depth; 25 is assumed until motedis answers the user's email. The build stops unless each bolt engages at most the depth less 2"
+        "depth_beam": { "length": 375, "bottom": { "bottom": 108, "top": 138 }, "top": { "bottom": 935, "top": 965 } },
+        "upright_joints": {
+            "by": "the angles: angle.base at the bottom, angle.guard at the top",
+            "note": "No profile is drilled or machined. Each upright end stands against its bar, held by the 40 x 40 x 4 angle beside it, which works as a bracket: 2 screw.m5x12_countersunk per end through the upright leg into the upright's slot and 2 through the flat leg into the bar's slot (angles.holes.flat_leg). The middle uprights get one on each side, the corner uprights one on the inner side",
+            "torque": 3,
+            "torque_status": "UNVERIFIED: about 3 N m for the M5 screws into the hammer nuts, kept low because motedis publishes no rating for its hammer nuts"
         },
         "castors_at": "the four corners, each under a castor plate below the bottom bar and the bottom depth beam",
-        "bar_holes": {
-            "diameter": 8.5,
-            "at": "the upright centres, on the centre line of the bar's depth",
-            "top_counterbore": { "diameter": 14, "depth": 8 },
-            "status": "diameter and places from the assembly guide; the counterbore depth is UNVERIFIED, chosen so the M8 head (k 8) sits flush with the top"
-        },
         "slot": {
+            "opening": 8,
             "lip": 2.2,
-            "status": "UNVERIFIED, a typical lip of a B-type slot 8 in a 30 profile; a hammer nut's top sits this far below the face. The model draws the slot 8 wide and 6 deep without the undercut"
+            "depth": 9,
+            "undercut": 16.5,
+            "core_bore": 7.3,
+            "status": "VERIFIED, measured in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), 2026-10-26: opening 8.0 at its narrowest, lip 2.2, slot 9.0 deep, undercut 16.5 wide, core bore 7.3. The model draws the slot 8 wide and 6 deep without the undercut"
+        },
+        "section": {
+            "area": 313.9,
+            "mass_per_m": 0.848,
+            "i": 2.77,
+            "status": "DERIVED from motedis' CAD file P30_N8_B.stp: area in mm2 by Green's theorem over the end face, mass at 2.70 g/cm3 in kg/m, I about the centroid in cm4; motedis publishes none of them (Dold gives 0.843 kg/m and 2.68 cm4 for the same section type)"
         }
     },
     "brackets": {
@@ -128,21 +141,19 @@
     },
     "fasteners": {
         "screws": {
-            "screw.m8x50_socket": { "standard": "ISO 4762", "head": "socket", "d": 8, "length": 50, "head_d": 13, "head_k": 8, "material": "stainless A2, at least A2-50" },
-            "screw.m8x40_socket": { "standard": "ISO 4762", "head": "socket", "d": 8, "length": 40, "head_d": 13, "head_k": 8, "material": "stainless A2, at least A2-50" },
             "screw.m8x35_socket": { "standard": "ISO 4762", "head": "socket", "d": 8, "length": 35, "head_d": 13, "head_k": 8, "material": "stainless A2, at least A2-50" },
             "screw.m6x12_button": { "standard": "ISO 7380-1", "head": "button", "d": 6, "length": 12, "head_d": 10.5, "head_k": 3.3 },
             "screw.m6x16_countersunk": { "standard": "ISO 10642", "head": "countersunk", "d": 6, "length": 16, "head_d": 12, "head_k": 3 },
             "screw.m5x12_countersunk": { "standard": "ISO 10642", "head": "countersunk", "d": 5, "length": 12, "head_d": 10, "head_k": 2.5 },
             "screw.wood_4_5x16": { "standard": "none", "head": "pan", "d": 4.5, "length": 16, "head_d": 9, "head_k": 3.5 }
         },
-        "screws_status": "head_d and head_k of ISO 4762 M8 (13, 8) and ISO 7380-1 M6 (10.5, 3.3) VERIFIED from the standards' tables; ISO 10642 head_d is the DIN 7991 dk max (10, 12), VERIFIED, and head_k = (head_d - d) / 2 for the 90 degree head, DERIVED; length is the nominal length, which includes the head only for a countersunk screw; the wood screw's head is UNVERIFIED, no product is chosen. The M8 socket screws are motedis' DIN 912 in stainless A2, 'Festigkeitsklasse von mindestens A2-50', VERIFIED 2026-10-25",
+        "screws_status": "head_d and head_k of ISO 4762 M8 (13, 8) and ISO 7380-1 M6 (10.5, 3.3) VERIFIED from the standards' tables; ISO 10642 head_d is the DIN 7991 dk max (10, 12), VERIFIED, and head_k = (head_d - d) / 2 for the 90 degree head, DERIVED; length is the nominal length, which includes the head only for a countersunk screw; the wood screw's head is UNVERIFIED, no product is chosen. The M8 castor bolt is motedis' DIN 912 in stainless A2, 'Festigkeitsklasse von mindestens A2-50', VERIFIED 2026-10-25",
         "nuts": {
-            "tnut.m6": { "type": "hammer", "length": 16.4, "width": 8, "height": 6, "d": 6 },
-            "tnut.m5": { "type": "hammer", "length": 16.4, "width": 8, "height": 6, "d": 5 },
+            "tnut.m6": { "type": "hammer", "length": 16.5, "width": 8, "height": 6, "d": 6 },
+            "tnut.m5": { "type": "hammer", "length": 16.5, "width": 8, "height": 6, "d": 5 },
             "nut.m8_lock": { "type": "hex", "standard": "DIN 985", "across_flats": 13, "height": 8, "d": 8 }
         },
-        "nuts_status": "Hammer nuts VERIFIED, read from motedis' CAD files Motedis_S8BHASNM6.stp and Motedis_S8BHASNM5.stp: 16.4 x 8 x 6; drawn as a block across the slot. DIN 985 M8: s 13 and h max 8 SECONDARY from a DIN 985 table (schrauben-lexikon.de); motedis states no size; drawn as a plain hexagon",
+        "nuts_status": "Hammer nuts VERIFIED, measured in motedis' CAD files Motedis_S8BHASNM6.stp and Motedis_S8BHASNM5.stp (2026-10-26): 16.5 x 8.0 x 6.0, the drawing also gives 16,5; drawn as a block across the slot. motedis publishes no load rating. DIN 985 M8: s 13 and h max 8 SECONDARY from a DIN 985 table (schrauben-lexikon.de); motedis states no size; drawn as a plain hexagon",
         "washers": {
             "washer.m8": { "standard": "ISO 7089", "d1": 8.4, "d2": 16, "h": 1.6 }
         },
@@ -161,22 +172,28 @@
             "from_flat_leg": [11, 28],
             "diameter": 5.5,
             "screw": "screw.m5x12_countersunk",
-            "status": "UNVERIFIED, a proposal: in the leg against the upright, 15 from each end and 11 and 28 from the inner face of the flat leg, countersunk on the box side; the hole at 28 stays 8 from the leg tip, the head at 11 clears the root by 6"
+            "status": "UNVERIFIED, a proposal: in the leg against the upright, 15 from each end and 11 and 28 from the inner face of the flat leg, countersunk on the box side; the hole at 28 stays 8 from the leg tip, the head at 11 clears the root by 6",
+            "flat_leg": {
+                "angles": ["angle.base", "angle.guard"],
+                "from_end": 15,
+                "from_upright_face": [14, 32],
+                "status": "UNVERIFIED, a proposal: the joint holes of the base and guard angles, in the flat leg on the slot line of the bar under or over it (15 from each end), 14 and 32 from the upright face so the two hammer nuts (16.5 long) keep 1.5 between them; countersunk on the box side, the base angles' heads 0.1-0.2 below flush because the boxes slide over them"
+            }
         },
-        "base": { "orientation": "flat leg at the bottom on the bottom bars, vertical leg up", "flat_leg_top": 167 },
+        "base": { "orientation": "flat leg at the bottom on the bottom bars, vertical leg up", "flat_leg_top": 142 },
         "support_and_guard": { "orientation": "flat leg on top, hanging leg down along the upright" }
     },
     "levels": [
-        { "level": 1, "class": "220", "floor": 167, "angle": "angle.base" },
-        { "level": 2, "class": "120", "floor": 412, "angle": "angle.support" },
-        { "level": 3, "class": "120", "floor": 549, "angle": "angle.support" },
-        { "level": 4, "class": "120", "floor": 686, "angle": "angle.support" },
-        { "level": 5, "class": "120", "floor": 823, "angle": "angle.support" }
+        { "level": 1, "class": "220", "floor": 142, "angle": "angle.base" },
+        { "level": 2, "class": "120", "floor": 387, "angle": "angle.support" },
+        { "level": 3, "class": "120", "floor": 524, "angle": "angle.support" },
+        { "level": 4, "class": "120", "floor": 661, "angle": "angle.support" },
+        { "level": 5, "class": "120", "floor": 798, "angle": "angle.support" }
     ],
-    "tip_guard": { "flat_leg_bottom": 956, "angle": "angle.guard" },
+    "tip_guard": { "flat_leg_bottom": 931, "angle": "angle.guard" },
     "box_position": { "front_y": 17.5, "note": "centred in the 435 depth; no back stop" },
     "pull_out": { "travel": 270, "removal": 400, "sides": ["front", "back"] },
-    "outer": { "width": 1074, "depth": 435, "height": 990 },
+    "outer": { "width": 1074, "depth": 435, "height": 965 },
     "explode": {
         "note": "the exploded view, mm a part moves from its place, in three steps so nothing passes through another part: the boxes straight out to the front, far enough that they stay in front of the rack while the rest moves (the build checks this), then their levels spread upwards (box_levels_apart) so each level's inserts clear the box above; then the rest, the uprights lifting off the bottom bars (uprights_up) as the top bars lift off the uprights (top_up), the inserts lifting out and the rings coming off. Castors stay on the floor, so every part moves up from the one below it. Set by eye, no fact",
         "castor_plates_up": 80,
@@ -204,7 +221,7 @@
         "overhang": 20,
         "width": 1114,
         "depth": 483,
-        "top": 1011,
+        "top": 986,
         "mounts": {
             "part": "bracket.plate",
             "screw": "screw.wood_4_5x16",
@@ -266,26 +283,24 @@
         ]
     },
     "parts": [
-        { "id": "profile.upright", "category": "profile", "description": "Upright between the bars, motedis' standard M8 core thread at both ends", "material": "30x30 B-type slot 8", "length": 797, "quantity": 8, "unit": "piece", "status": "build" },
-        { "id": "profile.bar_top", "category": "profile", "description": "Top bar, front and back, one piece over all three columns; 4 through holes 8.5 with 14 mm counterbore", "material": "30x30 B-type slot 8", "length": 1074, "quantity": 2, "unit": "piece", "status": "build" },
-        { "id": "profile.bar_bottom", "category": "profile", "description": "Bottom bar, front and back, one piece over all three columns, flush with the bottom depth beams; shares the middle uprights' load with the top plate and top bar; 4 through holes 8.5", "material": "30x30 B-type slot 8", "length": 1074, "quantity": 2, "unit": "piece", "status": "build" },
+        { "id": "profile.upright", "category": "profile", "description": "Upright between the bars, no machining; each end held by the base or guard angle beside it", "material": "30x30 B-type slot 8", "length": 797, "quantity": 8, "unit": "piece", "status": "build" },
+        { "id": "profile.bar_top", "category": "profile", "description": "Top bar, front and back, one piece over all three columns, no holes; the guard angles are screwed up into its bottom slot", "material": "30x30 B-type slot 8", "length": 1074, "quantity": 2, "unit": "piece", "status": "build" },
+        { "id": "profile.bar_bottom", "category": "profile", "description": "Bottom bar, front and back, one piece over all three columns, flush with the bottom depth beams; shares the middle uprights' load with the top plate and top bar; no holes, the base angles are screwed down into its top slot", "material": "30x30 B-type slot 8", "length": 1074, "quantity": 2, "unit": "piece", "status": "build" },
         { "id": "profile.beam_depth", "category": "profile", "description": "Depth beam between the front and the back bar at each upright, the top one flush with the top bars, the bottom one flush with the underside of the bottom bars", "material": "30x30 B-type slot 8", "length": 375, "quantity": 8, "unit": "piece", "status": "build" },
-        { "id": "angle.base", "category": "angle", "description": "Level 1 support, flat leg at the bottom on the bottom bars", "material": "40x40x4 anodised", "length": 435, "quantity": 6, "unit": "piece", "status": "build" },
+        { "id": "angle.base", "category": "angle", "description": "Level 1 support, flat leg at the bottom on the bottom bars; also the bottom joint of the uprights: 4 holes in the vertical leg into the uprights and 4 in the flat leg into the bars", "material": "40x40x4 anodised", "length": 435, "quantity": 6, "unit": "piece", "status": "build" },
         { "id": "angle.support", "category": "angle", "description": "Level 2-5 support, flat leg on top, hanging leg guides the box below", "material": "40x40x4 anodised", "length": 435, "quantity": 24, "unit": "piece", "status": "build" },
-        { "id": "angle.guard", "category": "angle", "description": "Tip guard above level 5, same section and orientation as angle.support", "material": "40x40x4 anodised", "length": 435, "quantity": 6, "unit": "piece", "status": "build" },
+        { "id": "angle.guard", "category": "angle", "description": "Tip guard above level 5, same section and orientation as angle.support; also the top joint of the uprights: 4 holes in the hanging leg into the uprights and 4 in the flat leg up into the bars", "material": "40x40x4 anodised", "length": 435, "quantity": 6, "unit": "piece", "status": "build" },
         { "id": "bracket.inside_30", "category": "connector", "description": "Inside angle bracket 30 for B-type slot 8 (motedis Winkel 30 B-Typ Nut 8): upright to top depth beam (8), top depth beam to bar (8), bottom depth beam to bar on the beam's bay side at the middle uprights (4) and a second one on the other side there (4); at the corners the castor plate joins bottom bar and beam", "material": "die-cast zinc or aluminium", "quantity": 24, "unit": "piece", "status": "build" },
-        { "id": "plate.castor", "category": "connector", "description": "Castor plate 90x90x8 under each corner, screwed into the bottom slots of the bottom bar and the bottom depth beam; 9 mm hole at 45/45 for the castor bolt, 14 mm hole at 15/15 for the corner bolt head, 4 countersunk holes for M6", "material": "EN AW-5083, motedis Aluminium Plaettchen 8x90", "length": 90, "width": 90, "quantity": 4, "unit": "piece", "status": "build" },
+        { "id": "plate.castor", "category": "connector", "description": "Castor plate 90x90x8 under each corner, screwed into the bottom slots of the bottom bar and the bottom depth beam; 9 mm hole at 45/45 for the castor bolt, 4 countersunk holes for M6", "material": "EN AW-5083, motedis Aluminium Plaettchen 8x90", "length": 90, "width": 90, "quantity": 4, "unit": "piece", "status": "build" },
         { "id": "screw.m6x12_button", "category": "fastener", "description": "ISO 7380 M6x12, 2 per bracket.inside_30 (48) and 1 per bracket.plate (20)", "material": "steel 8.8, zinc-plated", "quantity": 68, "unit": "piece", "status": "build" },
         { "id": "screw.m6x16_countersunk", "category": "fastener", "description": "ISO 10642 M6x16 from below through the castor plates into the bottom slots, 4 per plate", "material": "steel 8.8, zinc-plated", "quantity": 16, "unit": "piece", "status": "build" },
         { "id": "tnut.m6", "category": "fastener", "description": "Hammer nut M6 B-type slot 8 for the brackets (48), the plate brackets (20) and the castor plates (16)", "material": "steel, zinc-plated", "quantity": 84, "unit": "piece", "status": "build" },
-        { "id": "screw.m5x12_countersunk", "category": "fastener", "description": "ISO 10642 M5x12 for the angles, flush in a countersunk hole so the hanging leg stays smooth", "material": "steel 8.8, zinc-plated", "quantity": 144, "unit": "piece", "status": "build" },
-        { "id": "tnut.m5", "category": "fastener", "description": "Hammer nut M5 B-type slot 8 for the angles", "material": "steel, zinc-plated", "quantity": 144, "unit": "piece", "status": "build" },
-        { "id": "screw.m8x50_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x50 from below through the bottom bar into an upright's core thread, 20 mm engaged; at a corner its head sits in the castor plate's 14 mm hole", "material": "stainless A2, at least A2-50", "quantity": 8, "unit": "piece", "status": "build" },
-        { "id": "screw.m8x40_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x40 through the top bar into an upright, head sunk in the counterbore, 18 mm engaged", "material": "stainless A2, at least A2-50", "quantity": 8, "unit": "piece", "status": "build" },
+        { "id": "screw.m5x12_countersunk", "category": "fastener", "description": "ISO 10642 M5x12 for the angles, flush in a countersunk hole so the hanging leg stays smooth: 4 per support angle, 8 per base and guard angle (4 into the uprights, 4 into the bars)", "material": "steel 8.8, zinc-plated", "quantity": 192, "unit": "piece", "status": "build" },
+        { "id": "tnut.m5", "category": "fastener", "description": "Hammer nut M5 B-type slot 8 for the angles, in the uprights' slots (144) and the bars' slots (48)", "material": "steel, zinc-plated", "quantity": 192, "unit": "piece", "status": "build" },
         { "id": "screw.m8x35_socket", "category": "fastener", "description": "ISO 4762 (DIN 912) M8x35 from inside the castor housing up through the back hole and the castor plate's 9 mm hole into a lock nut", "material": "stainless A2, at least A2-50", "quantity": 4, "unit": "piece", "status": "build" },
         { "id": "washer.m8", "category": "fastener", "description": "ISO 7089 (DIN 125 A) washer 8.4, one under the castor bolt's head inside the housing and one under its lock nut on the plate", "material": "steel, zinc-plated", "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "nut.m8_lock", "category": "fastener", "description": "DIN 985 M8 lock nut on top of the castor plate, holding the castor bolt", "material": "steel 8, zinc-plated", "quantity": 4, "unit": "piece", "status": "build" },
-        { "id": "castor.brake", "category": "castor", "description": "Swivel castor 100 mm with total-lock brake (motedis 1748), 125 high, back hole 11, offset 28, 70 kg, under a castor plate at each corner", "material": "PU tread on PP", "quantity": 4, "unit": "piece", "status": "build" },
+        { "id": "castor.brake_75", "category": "castor", "description": "Swivel castor 75 mm with total-lock brake (motedis 06.07.02), 100 high, back hole 11, offset 24, 60 kg, under a castor plate at each corner", "material": "PU tread on PP", "quantity": 4, "unit": "piece", "status": "build" },
         { "id": "cap.end_30", "category": "finish", "description": "End cap 30x30 for the ends of the top and the bottom bars", "material": "plastic PA, black", "quantity": 8, "unit": "piece", "status": "build" },
         { "id": "box.e120", "category": "box", "description": "Eurobox NextGen 2.0 Cycle 400x300x120, closed handles, anthracite (C2G43-12)", "material": "r-PP", "quantity": 12, "unit": "piece", "status": "build" },
         { "id": "box.e220", "category": "box", "description": "Eurobox NextGen 2.0 Cycle 400x300x220, closed handles, anthracite (C2G43-22), no inserts", "material": "r-PP", "quantity": 3, "unit": "piece", "status": "build" },

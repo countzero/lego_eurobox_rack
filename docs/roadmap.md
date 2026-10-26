@@ -58,6 +58,7 @@ sorted by ID; the order of work follows from the status.
 | 0020 | [Exploded view](#0020-exploded-view)                         | Done                 | [#23](https://github.com/countzero/lego_eurobox_rack/pull/23) |
 | 0021 | [Model size](#0021-model-size)                               | Done                 | [#27](https://github.com/countzero/lego_eurobox_rack/pull/27) |
 | 0022 | [Switch to motedis](#0022-switch-to-motedis)                 | Done                 | [#28](https://github.com/countzero/lego_eurobox_rack/pull/28) |
+| 0023 | [Angle-bracket frame](#0023-angle-bracket-frame)             | Done                 | [#30](https://github.com/countzero/lego_eurobox_rack/pull/30) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -147,7 +148,8 @@ measurements.
   info@kunststoffe-mueller.de; Auer).
 - One Auer EK 2/100 tried in a NextGen 120 box.
 
-**Open:** every value above; until then the design uses the envelope of
+**Open:** every value above, and whether the box underside is flat or has a
+stacking step, and its height; until then the design uses the envelope of
 `docs/design.md`.
 
 ## 0005 Insert plan
@@ -669,3 +671,48 @@ motedis does not publish (the loads use Dold's 2.68 cm⁴, `UNVERIFIED` for
 motedis); whether motedis still has four 1748 when ordering (fallback: the
 plain 995). This step supersedes the Dold parts and plain castors of 0014 and
 the joint estimate of 0017.
+
+## 0023 Angle-bracket frame
+
+**Goal:** no hole drilled or machined in any profile and no drill stand: the
+base and guard angles become the joints of the uprights, held to the upright
+and to the bar beside it, and the rack stands on motedis 06.07.02 castors
+(75 mm, 60 kg, total lock), the smaller castor the user asked for in place of
+the 125 mm one first read for this step.
+
+**Delivers:** `design/rack.json`, `blender/build_rack.py`,
+`blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `bom/parts.csv`,
+`bom/cutlist.csv`, `bom/README.md` if it changes, `docs/design.md`,
+`docs/assembly.md`, `docs/prices.md`, `README.md`, `docs/roadmap.md`.
+
+**Acceptance:**
+
+- No bar holes, counterbores, core bolts (`screw.m8x50_socket`,
+  `screw.m8x40_socket`) or motedis M8 machining in `rack.json`, the parts
+  list, the model, `web/rack.glb` or the documents, apart from earlier roadmap
+  sections and superseded rows of `docs/sources.md`.
+- Each upright end is held by the angle beside it: `angle.base` at the
+  bottom, `angle.guard` at the top, each with 2 `screw.m5x12_countersunk` per
+  end into the upright's slot and 2 through its flat leg into the bar's slot,
+  14 and 32 from the upright face and 15 from the angle end, on the slot line.
+  The build stops if two hammer nuts in one slot overlap.
+  `screw.m5x12_countersunk` and `tnut.m5` 192 each.
+- Heights 60 below the first reading of this step: frame 1074 × 435 × 965,
+  top plate top at 986, level floors 142, 387, 524, 661, 798. The same numbers
+  in `rack.json`, the scene's `outer_mm`, the documents and the README.
+- Four `castor.brake_75` (motedis 06.07.02: wheel 75, 100 high, back hole 11,
+  offset 24, 60 kg, total lock); the castor plates keep 5 holes; the fork's
+  metal at the back hole and its boss are `MEASURED` from motedis' CAD file.
+- `docs/design.md` *Loads* follows: four castors on a level floor, 51.1 of
+  60 kg each at safety factor 1.2, tipping lever 148.5, EN 75 N test factor
+  3.03.
+- `docs/prices.md` gives the motedis order read 2026-10-26, castor 06.07.02 at
+  22.83 € per 4 (`VERIFIED`), and the totals recomputed.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `build_bom.py` runs twice with the same CSV files; `npm --prefix web run
+  build` runs clean.
+- The pull request lists the `sources.md` rows to add on merge.
+
+**Open:** the rated load of motedis' hammer nuts; the alloy of the angles; the delivery time of
+the hammer nuts and brackets, which motedis' shop data shows two ways; whether
+the box underside is flat or stepped (0004).
