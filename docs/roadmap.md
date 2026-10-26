@@ -676,8 +676,9 @@ the joint estimate of 0017.
 
 **Goal:** no hole drilled or machined in any profile and no drill stand: the
 base and guard angles become the joints of the uprights, held to the upright
-and to the bar beside it, and the rack stands on motedis 996 castors (125 mm,
-100 kg, total lock).
+and to the bar beside it, and the rack stands on motedis 06.07.02 castors
+(75 mm, 60 kg, total lock), the smaller castor the user asked for in place of
+the 125 mm one first read for this step.
 
 **Delivers:** `design/rack.json`, `blender/build_rack.py`,
 `blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `bom/parts.csv`,
@@ -696,21 +697,22 @@ and to the bar beside it, and the rack stands on motedis 996 castors (125 mm,
   14 and 32 from the upright face and 15 from the angle end, on the slot line.
   The build stops if two hammer nuts in one slot overlap.
   `screw.m5x12_countersunk` and `tnut.m5` 192 each.
-- Heights +35: frame 1074 × 435 × 1025, top plate top at 1046, level floors
-  202, 447, 584, 721, 858. The same numbers in `rack.json`, the scene's
-  `outer_mm`, the documents and the README.
-- Four `castor.brake_125` (motedis 996: wheel 125, 160 high, back hole 11,
-  offset 41, 100 kg, total lock, 0.813 kg); the castor plates keep 5 holes.
-- `docs/design.md` *Loads* follows: castor 68.9 of 100 kg at safety factor
-  1.2, tipping lever 131.5, EN 75 N test factor 2.77.
-- `docs/prices.md` gives the motedis order read 2026-10-26, castor 996 at
-  40.78 € per 4 (`VERIFIED`), and the totals recomputed.
+- Heights 60 below the first reading of this step: frame 1074 × 435 × 965,
+  top plate top at 986, level floors 142, 387, 524, 661, 798. The same numbers
+  in `rack.json`, the scene's `outer_mm`, the documents and the README.
+- Four `castor.brake_75` (motedis 06.07.02: wheel 75, 100 high, back hole 11,
+  offset 24, 60 kg, total lock); the castor plates keep 5 holes; the fork's
+  metal at the back hole and its boss are `MEASURED` from motedis' CAD file.
+- `docs/design.md` *Loads* follows: four castors on a level floor, 51.1 of
+  60 kg each at safety factor 1.2, tipping lever 148.5, EN 75 N test factor
+  3.03.
+- `docs/prices.md` gives the motedis order read 2026-10-26, castor 06.07.02 at
+  22.83 € per 4 (`VERIFIED`), and the totals recomputed.
 - `build_rack.py` runs headless and a second run gives the same files;
   `build_bom.py` runs twice with the same CSV files; `npm --prefix web run
   build` runs clean.
 - The pull request lists the `sources.md` rows to add on merge.
 
-**Open:** the metal and head size at the back plate of castor 996; the rated
-load of motedis' hammer nuts; the alloy of the angles; the delivery time of
+**Open:** the rated load of motedis' hammer nuts; the alloy of the angles; the delivery time of
 the hammer nuts and brackets, which motedis' shop data shows two ways; whether
 the box underside is flat or stepped (0004).

@@ -44,7 +44,7 @@ motedis in one order (`docs/prices.md`).
 | `bracket.inside_30`       | 24       | 5            |
 | `screw.m6x12_button`      | 68       | 5, 9         |
 | `screw.m6x16_countersunk` | 16       | 6            |
-| `castor.brake_125`        | 4        | 6            |
+| `castor.brake_75`         | 4        | 6            |
 | `screw.m8x35_socket`      | 4        | 6            |
 | `washer.m8`               | 8        | 6            |
 | `nut.m8_lock`             | 4        | 6            |
@@ -116,24 +116,24 @@ profile end keeps the joint from closing.
 **Parts:** `profile.upright` × 8.
 
 1. Check that each upright is 797 long with square ends. Either end can be the
-   bottom (`z` 198); the other is the top (`z` 995).
+   bottom (`z` 138); the other is the top (`z` 935).
 2. Name the uprights by position: front row `F0`, `F1`, `F2`, `F3` at `x` 0,
    348, 696, 1044 (left edge of the profile), back row `B0` to `B3` at the same
    `x`, `y` 405. Write the name on a piece of tape at the top end.
-3. Measured from the bottom end (`z` 198 on the rack is 0 on the upright), mark
+3. Measured from the bottom end (`z` 138 on the rack is 0 on the upright), mark
    on each face that carries angles (the inner `x` faces; `F1`, `F2`, `B1`,
    `B2` have two) the flat leg of each angle:
 
 | Angle           | Level | Flat leg | Fixing leg on the upright | Mark on the upright (from bottom end) |
 | --------------- | ----- | -------- | ------------------------- | ------------------------------------- |
-| `angle.base`    | 1     | 198-202  | 198-238, leg up           | 0 (underside of flat leg, on the bar) |
-| `angle.support` | 2     | 443-447  | 407-447, leg down         | 249 (top of flat leg)                 |
-| `angle.support` | 3     | 580-584  | 544-584, leg down         | 386 (top of flat leg)                 |
-| `angle.support` | 4     | 717-721  | 681-721, leg down         | 523 (top of flat leg)                 |
-| `angle.support` | 5     | 854-858  | 818-858, leg down         | 660 (top of flat leg)                 |
-| `angle.guard`   | guard | 991-995  | 955-995, leg down         | 797 (top end, under the top bar)      |
+| `angle.base`    | 1     | 138-142  | 138-178, leg up           | 0 (underside of flat leg, on the bar) |
+| `angle.support` | 2     | 383-387  | 347-387, leg down         | 249 (top of flat leg)                 |
+| `angle.support` | 3     | 520-524  | 484-524, leg down         | 386 (top of flat leg)                 |
+| `angle.support` | 4     | 657-661  | 621-661, leg down         | 523 (top of flat leg)                 |
+| `angle.support` | 5     | 794-798  | 758-798, leg down         | 660 (top of flat leg)                 |
+| `angle.guard`   | guard | 931-935  | 895-935, leg down         | 797 (top end, under the top bar)      |
 
-The `z` of a mark is the mark plus 198.
+The `z` of a mark is the mark plus 138.
 
 **Check:** 8 uprights, every mark on the same face of every upright; laid side
 by side, the marks line up with the square.
@@ -270,7 +270,7 @@ can damage the slot lips ([cnc-zubehoer][cnc-hm]).
 1. **Bottom.** Lay both `profile.bar_bottom` on the floor, 435 apart outside
    to outside, and the 8 bottom depth beams between their inner faces, one
    under each upright position, flush with the bars top and bottom
-   (`z` 168-198). Fit the 8 brackets of the middle bottom beams: one on each
+   (`z` 108-138). Fit the 8 brackets of the middle bottom beams: one on each
    side of each middle beam, at both ends, in the corner with the bar's inner
    face. The corner bottom beams have no bracket: the castor plate of step 6
    joins each to its bars. Hold each corner square with a clamp across bar and
@@ -284,16 +284,16 @@ can damage the slot lips ([cnc-zubehoer][cnc-hm]).
    upright plumb with the spirit level, both directions.
 3. **Top bars and guard angles.** Lay a `profile.bar_top` on the top ends of
    each row of uprights. Fit each `angle.guard` the same way, hanging leg
-   against the uprights, flat leg under the top bars (`z` 991-995); its flat
+   against the uprights, flat leg under the top bars (`z` 931-935); its flat
    leg screws go in from below, through the empty level 5 bay. Snug only.
 4. **Top depth beams.** Fit the 4 top depth beams between the top bars, one
-   over each upright pair, flush with the bars (`z` 995-1025), and their
+   over each upright pair, flush with the bars (`z` 935-965), and their
    16 brackets:
    - Upright to top depth beam, 8: on the upright's inner `y` face, under the
      top depth beam.
    - Top depth beam to bar, 8: on the side of the top depth beam towards its
      bay in the corner with the bar's inner face, above the guard (within
-     `z` 995-1025).
+     `z` 935-965).
    No bracket sits on an upright face that carries an angle, so the angles
    stay clear.
 5. **Square and tighten.** With every screw snug, check the diagonals of the
@@ -302,7 +302,7 @@ can damage the slot lips ([cnc-zubehoer][cnc-hm]).
 
 **Check:**
 
-- Frame 1074 × 435 × 857 (`z` 168-1025 once on castors); with the top plate
+- Frame 1074 × 435 × 857 (`z` 108-965 once on castors); with the top plate
   1114 × 483 at the top.
 - Clear width 318 between neighbouring uprights at top and bottom.
 - Diagonals of front, back, top and bottom equal within 2 mm.
@@ -313,15 +313,15 @@ can damage the slot lips ([cnc-zubehoer][cnc-hm]).
 ## Step 6: Castor plates and castors
 
 **Parts:** `plate.castor` × 4, `screw.m6x16_countersunk` × 16, `tnut.m6` × 16,
-`castor.brake_125` × 4, `screw.m8x35_socket` × 4, `washer.m8` × 8,
+`castor.brake_75` × 4, `screw.m8x35_socket` × 4, `washer.m8` × 8,
 `nut.m8_lock` × 4.
 
-`castor.brake_125` is motedis 996, "Rolle 125 Rückenloch mit Bremse"
-([motedis castor][mo-castor]): wheel 125, back hole 11, offset 41, 160 high,
-100 kg, a total lock on wheel and swivel. Check one castor on arrival: the
-metal thickness at the back hole (the M8x35 fits from 0 to 13 mm,
-`UNVERIFIED`) and that its head (about ⌀45, `UNVERIFIED`) sits flat on the
-plate.
+`castor.brake_75` is motedis 06.07.02, "Rolle 75 Rückenloch mit Bremse"
+([motedis castor][mo-castor]): wheel 75, back hole 11, offset 24, 100 high,
+60 kg, a total lock on wheel and swivel. Check one castor on arrival: its
+fork's metal at the back hole measures 11.15 (`MEASURED` from motedis' CAD
+file, so the M8x35 fits) and the fork's boss at the back hole, ⌀23.5, sits
+flat on the plate.
 
 1. Lay the frame on its back on a blanket, so the undersides of the bottom bars
    and the bottom depth beams are reachable.
@@ -341,10 +341,10 @@ plate.
 4. Stand the frame up on its castors and set the brakes.
 
 **Check:** each plate flush with the frame's outer faces and flat under bar
-and beam; every castor head inside the frame outline seen from above; every
+and beam; every castor fork inside the frame outline seen from above; every
 castor swivels freely with the brake off; every brake locks wheel and swivel;
-the frame stands level; the plates run `z` 160-168, the bottom bars
-`z` 168-198, the top at 1025.
+the frame stands level; the plates run `z` 100-108, the bottom bars
+`z` 108-138, the top at 965.
 
 A plate taken off later, for instance to change a castor, frees its corner
 bottom beam: clamp the beam first.
@@ -407,9 +407,9 @@ nothing is taken apart ([BM Profiles][bm-nuts]).
    at `x` 90, 165, 242, 317, 472, 632, 776, 850, 926 and 999: 10 at the front
    and 10 at the back, four in each outer column and two in the middle one,
    clear of the depth-beam brackets on the right of each upright. The free leg
-   lies flush with the top of the bar (`z` 1025). Snug the screws.
+   lies flush with the top of the bar (`z` 965). Snug the screws.
 3. Lay the plate on top, 20 overhang at the sides and 24 at the front and the
-   back, its top at 1046; mark through the bracket holes from below.
+   back, its top at 986; mark through the bracket holes from below.
 4. Lift off, pre-drill 2.5 mm at each mark, at most 14 mm deep (depth stop),
    so at least 5 mm of wood stays above the screw tip; lay the plate back and
    screw from below, 1 `screw.wood_4_5x16` per bracket.
@@ -472,14 +472,14 @@ front or to the back it stays on its legs, and it comes out entirely at
 
 - A box takes at most 25 kg, the maker's rating ([aidB 120][aidb-12],
   [aidB 220][aidb-22]). Keep the heavy boxes low.
-- Each castor is rated 100 kg ([motedis castor][mo-castor]). The full rack in
-  the design case, about 172 kg (`DERIVED`), on three castors of an uneven
-  floor puts about 57 kg on each, 69 kg with a safety factor of 1.2 (`DERIVED`, see `design.md`).
+- Each castor is rated 60 kg ([motedis castor][mo-castor]). The full rack in
+  the design case, about 170 kg (`DERIVED`), on all four castors of a level
+  floor puts about 42.5 kg on each, 51 kg with a safety factor of 1.2 (`DERIVED`, see `design.md`).
 - **Tipping:** an empty rack can tip forward (or backward) when a child hangs
   on a pulled-out box: the ASTM F2057-23 test load of 27.2 kg on the edge of
-  one extended box tips it unless about 15.5 kg of LEGO is in the rack
+  one extended box tips it unless about 9.2 kg of LEGO is in the rack
   ([CPSC][cpsc-csu]; `DERIVED`, see `design.md`). The EN 75 N drawer test
-  passes with a factor of 2.77 (`DERIVED`). The brakes stop rolling, not
+  passes with a factor of 3.03 (`DERIVED`). The brakes stop rolling, not
   tipping. Fill the bottom level first and keep the rack loaded, pull one box
   at a time, never more than its 270 mm travel.
 - Never load the rack without the top plate (step 9): without it the middle
@@ -493,15 +493,14 @@ front or to the back it stays on its legs, and it comes out entirely at
 2. The angle hole positions (11 and 28 from the flat leg and, in the flat leg
    of the base and guard angles, 14 and 32 from the upright face, all 15 from
    each end) are a proposal (`UNVERIFIED`).
-3. The metal thickness at the castor's back hole is not in motedis' drawing;
-   the M8x35 fits from 0 to 13 mm (`UNVERIFIED`). The castor head, about ⌀45,
-   is read from motedis' CAD file (`UNVERIFIED`). Both are checked on arrival
-   (step 6).
+3. The fork's metal at the castor's back hole and the fork's boss at it are
+   measured from motedis' CAD file (11.15 mm and ⌀23.5, `MEASURED`); both are
+   checked on arrival (step 6).
 4. motedis publishes no load rating for its hammer nuts; the 3 N·m for the
    M5 angle screws and the load the angle joints hold are estimates
    (`UNVERIFIED`, `design.md` → *Joints*).
 5. A free-standing rack used by children tips under the 27.2 kg child test
-   unless about 15.5 kg of LEGO is in it (`DERIVED`); a wall strap would
+   unless about 9.2 kg of LEGO is in it (`DERIVED`); a wall strap would
    remove that limit, but a strapped rack no longer opens at the back. To be
    decided by the user.
 
@@ -510,7 +509,7 @@ front or to the back it stays on its legs, and it comes out entirely at
 [mo-30]: https://www.motedis.com/de/Aluprofil-30x30-B-Typ-Nut-8
 [mo-angle]: https://www.motedis.com/de/Winkelstange-eloxiert-40x40x4mm
 [mo-plate]: https://www.motedis.com/de/Aluminium-Plaettchen-8x90-mm
-[mo-castor]: https://www.motedis.com/de/Rolle-125-Rueckenloch-mit-Bremse
+[mo-castor]: https://www.motedis.com/de/Rolle-75-Rueckenloch-mit-Bremse
 [bm-nuts]: https://www.bm-profile.com/de/ratgeber/nutensteine/
 [cnc-hm]: https://www.cnc-zubehoer.eu/Edelstahl-Nutenstein-Hammermutter-Nut-8-M6-schmal/AP.HM.N8M6S.ES
 [cpsc-csu]: https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Clothing-Storage-Units

@@ -8,8 +8,8 @@ rack stands on 4 swivel castors with total lock, each under an aluminium
 plate at a corner, and has no panels. No profile is drilled or machined: the
 angles under the lowest and above the top boxes hold the uprights to the bars.
 The back is open: every box pulls out to the front and to the back, so the
-rack stands free in the room. Frame 1074 × 435 × 1025 mm under a structural
-21 mm birch plywood top plate, 1114 × 483 mm, its top at 1046 mm. Every metal
+rack stands free in the room. Frame 1074 × 435 × 965 mm under a structural
+21 mm birch plywood top plate, 1114 × 483 mm, its top at 986 mm. Every metal
 part and the castors come from motedis in one order.
 
 **[Open the 3D viewer](https://countzero.github.io/lego_eurobox_rack/)**: turn
@@ -27,36 +27,36 @@ the rack, pull the boxes out, draw it apart, pick the ColorClip colours.
 ## Front view
 
 Heights in mm, not to scale. One bar runs across all three columns at the top
-and at the bottom; the top plate (21 mm, top at 1046) is screwed to the top
+and at the bottom; the top plate (21 mm, top at 986) is screwed to the top
 bars from below and stiffens them. Each box stands on a 40 × 40 × 4 angle, whose
 hanging leg guides the rim of the box below and keeps it from tipping when it
-is pulled out. The castors (125 mm wheels, 160 high, 100 kg each, total
+is pulled out. The castors (75 mm wheels, 100 high, 60 kg each, total
 lock) sit under 8 mm castor plates at the corners.
 
 ```
         |<------------------------------ 1074 frame ------------------------------->|
- 1025 - =============================================================================  top bar
-  991 - ||#####             #####||#####             #####||#####             #####||
+  965 - =============================================================================  top bar
+  931 - ||#####             #####||#####             #####||#####             #####||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||   L5
-  858 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  798 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||  | 120, 1/4        |  ||   L4
-  721 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  661 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||   L3
-  584 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  524 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||  | 120, 1/2        |  ||   L2
-  447 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
+  387 - ||##+-----------------+##||##+-----------------+##||##+-----------------+##||
         ||  +-----------------+  ||  +-----------------+  ||  +-----------------+  ||
         ||  | 220             |  ||  | 220             |  ||  | 220             |  ||   L1
         ||  |                 |  ||  |                 |  ||  |                 |  ||
         ||  |                 |  ||  |                 |  ||  |                 |  ||
-  202 - ||L_+-----------------+_J||L_+-----------------+_J||L_+-----------------+_J||
-  198 - =============================================================================  bottom bar
-  168 - =============================================================================
-  160 - [==]                                                                     [==]  castor plates
+  142 - ||L_+-----------------+_J||L_+-----------------+_J||L_+-----------------+_J||
+  138 - =============================================================================  bottom bar
+  108 - =============================================================================
+  100 - [==]                                                                     [==]  castor plates
        (O)                                                                        (O)  braked castors
     0 - =============================================================================
         30<----- 318 clear ----->30<----- 318 clear ----->30<----- 318 clear ----->30

@@ -38,7 +38,7 @@ hardware store.
 | `profile.*` (20)                     | Aluprofil 30x30 B-Typ Nut 8, Zuschnitt, 9.87 €/m           | 8 × 797, 4 × 1074, 8 × 375         | 134.88 €            | DERIVED  | 2–4                    |
 | `angle.*` (36)                       | Winkelstange eloxiert 40x40x4mm, Zuschnitt ganzer Stab     | 9 × 1980 mm, cut to 4 × 435 each   | 149.98 €            | DERIVED  | 2–4                    |
 | `plate.castor` (4)                   | Aluminium Plättchen 8x90 mm (EN AW-5083)                   | 1 × 740 mm, cut to 4 × 90          | 31.55 €             | DERIVED  | 2–4                    |
-| `castor.brake_125` (4)               | Rolle 125 Rückenloch mit Bremse (996), total lock          | 1 bag of 4                         | 40.78 €             | VERIFIED | 1–2                    |
+| `castor.brake_75` (4)                | Rolle 75 Rückenloch mit Bremse (06.07.02), total lock      | 1 bag of 4                         | 22.83 €             | VERIFIED | 1–2                    |
 | `bracket.inside_30`, `bracket.plate` | Winkel 30 B-Typ Nut 8, 7.27 € per 10                       | 4 bags of 10 + 4 loose (44)        | 32.52 €             | DERIVED  | 1–2                    |
 | `tnut.m6` (84)                       | Hammermutter B-Typ Nut 8 [M6]                              | 84 loose                           | 12.55 €             | DERIVED  | 1–2                    |
 | `tnut.m5` (192)                      | Hammermutter B-Typ Nut 8 [M5], 14.54 € per 100             | 1 bag of 100 + 92 loose            | 28.25 €             | DERIVED  | 1–3                    |
@@ -49,9 +49,9 @@ hardware store.
 | `nut.m8_lock` (4)                    | Mutter DIN 985 M8, zinc-plated                             | 1 bag of 10                        | 0.53 €              | VERIFIED | 1–3                    |
 | `washer.m8` (8)                      | U-Scheibe DIN 125 M8, zinc-plated                          | 8 loose                            | 0.65 €              | DERIVED  | 1–3                    |
 | `cap.end_30` (8)                     | Abdeckkappe für Profil 30 Typ B Nut 8, black PA            | 8 loose                            | 2.34 €              | DERIVED  | 1–2                    |
-| **Parts**                            |                                                            |                                    | **448.56 €**        | DERIVED  |                        |
+| **Parts**                            |                                                            |                                    | **430.61 €**        | DERIVED  |                        |
 | Shipping                             | long goods up to 1,109.89 €, packing, once or twice        | about 31 kg, longest piece 1074 mm | 27.22–37.02 €       | DERIVED  |                        |
-| **Order**                            |                                                            |                                    | **475.78–485.58 €** | DERIVED  | **2–4**                |
+| **Order**                            |                                                            |                                    | **457.83–467.63 €** | DERIVED  | **2–4**                |
 
 Notes:
 
@@ -65,9 +65,10 @@ Notes:
 - **Plate:** a closeout item ("Schlussverkauf"); only 2 stock bars of 1490 mm
   were left. The 740 mm bar is stocked; a 490 mm bar would cost 20.89 € but is
   not a stocked length.
-- **Castors:** motedis 996 (wheel 125, 160 high, back hole 11, offset 41,
-  100 kg, total lock): only a 100 kg castor meets Blickle's catalogue safety
-  factor of 1.3–2.0. 40.78 € per 4, 76 in stock in Germany, 1–2 working days
+- **Castors:** motedis 06.07.02 (wheel 75, 100 high, back hole 11, offset 24,
+  60 kg, total lock): four castors on a level floor keep the design load at
+  about 51 kg each at safety factor 1.2. 22.83 € per 4, a sale price on local
+  overstock ("On Sale, Limited Stock"), from the next order day
   (`VERIFIED` 2026-10-26).
 - **Brackets:** motedis' Winkel 30 comes without screws; the 20 plate brackets
   take one `screw.m6x12_button` and one `tnut.m6` each, counted in those rows.
@@ -123,16 +124,16 @@ boxes, rings and inserts.
 
 | Shop           | Parts                                                                                           | Total           |
 | -------------- | ----------------------------------------------------------------------------------------------- | --------------- |
-| motedis        | every profile, angle, castor plate, bracket, hammer nut, screw, nut, washer, end cap, castor    | 475.78–485.58 € |
+| motedis        | every profile, angle, castor plate, bracket, hammer nut, screw, nut, washer, end cap, castor    | 457.83–467.63 € |
 | Holz-Speckmann | `plate.top`, cut to 1114 × 483                                                                  | 36.02 €         |
 | Hardware store | `screw.wood_4_5x16` × 20                                                                        | about 2.00 €    |
 | aidB           | `box.e120` × 12, `box.e220` × 3, `clip.*` × 15, `insert.set_half` × 6, `insert.set_quarter` × 6 | 277.68 €        |
 
 | Total                           | Amount              |
 | ------------------------------- | ------------------- |
-| Rack without boxes              | 513.80–523.60 €     |
+| Rack without boxes              | 495.85–505.65 €     |
 | Boxes, rings and inserts (aidB) | 277.68 €            |
-| **Overall**                     | **791.48–801.28 €** |
+| **Overall**                     | **773.53–783.33 €** |
 
 The rack total is the motedis order, the plate and the wood screws, without
 the plate's shipping. The range is motedis' shipping (once or twice the
@@ -157,7 +158,6 @@ delivery time of 2–3 weeks, and its braked castor 69490 was "Nicht vorrätig"
 - The cart prices: the loose-piece prices are worked out from the product data
   as the shop does, not read from a cart.
 - The price of the wood screws and the plate's shipping.
-- The metal of castor 996's back plate.
 - The rated load of motedis' hammer nuts.
 - The delivery time of the hammer nuts and brackets.
 

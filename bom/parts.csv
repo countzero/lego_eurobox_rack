@@ -16,7 +16,7 @@ tnut.m5,fastener,"Hammer nut M5 B-type slot 8 for the angles, in the uprights' s
 screw.m8x35_socket,fastener,ISO 4762 (DIN 912) M8x35 from inside the castor housing up through the back hole and the castor plate's 9 mm hole into a lock nut,"stainless A2, at least A2-50",,,4,piece,build
 washer.m8,fastener,"ISO 7089 (DIN 125 A) washer 8.4, one under the castor bolt's head inside the housing and one under its lock nut on the plate","steel, zinc-plated",,,8,piece,build
 nut.m8_lock,fastener,"DIN 985 M8 lock nut on top of the castor plate, holding the castor bolt","steel 8, zinc-plated",,,4,piece,build
-castor.brake_125,castor,"Swivel castor 125 mm with total-lock brake (motedis 996), 160 high, back hole 11, offset 41, 100 kg, under a castor plate at each corner",PU tread on PP,,,4,piece,build
+castor.brake_75,castor,"Swivel castor 75 mm with total-lock brake (motedis 06.07.02), 100 high, back hole 11, offset 24, 60 kg, under a castor plate at each corner",PU tread on PP,,,4,piece,build
 cap.end_30,finish,End cap 30x30 for the ends of the top and the bottom bars,"plastic PA, black",,,8,piece,build
 box.e120,box,"Eurobox NextGen 2.0 Cycle 400x300x120, closed handles, anthracite (C2G43-12)",r-PP,,,12,piece,build
 box.e220,box,"Eurobox NextGen 2.0 Cycle 400x300x220, closed handles, anthracite (C2G43-22), no inserts",r-PP,,,3,piece,build

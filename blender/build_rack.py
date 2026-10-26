@@ -844,30 +844,31 @@ def build_castors(mats, colls, frame_root):
     bolt = fr["castor_plate"]["holes"]["castor_bolt"]
     h = fr["castor_height"]
     W, D, inset = fr["width"], fr["depth"], ca["inset"]
-    head_r, wheel_r = ca["head_diameter"] / 2, ca["wheel"] / 2
-    tw, off = ca["tread_width"], ca["offset"]
+    boss, boss_r = ca["top_plate"], ca["boss_diameter"] / 2
+    wheel_r, leg_half = ca["wheel"] / 2, ca["leg_width"] / 2
+    tw, off, sweep = ca["tread_width"], ca["offset"], ca["sweep"]["brake"]
 
     def build():
         """The castor with its wheel trailing towards +y and the brake pedal
-        behind the wheel's top; the back ones are turned half round. The
-        pedal's size and place are drawn by eye."""
+        over the wheel; the back ones are turned half round. The boss at the
+        back hole, the fork's width across the tread, the legs' lower end, the
+        wheel and the pedal's reach are the measurements from motedis' CAD
+        file; their shape between them is drawn by eye."""
         bm = bmesh.new()
-        bm_cylinder(bm, (0, 0, m(h - 4)), m(head_r), m(8), "z")
-        bm_cylinder(bm, (0, 0, m(h - 12)), m(head_r * 0.7), m(8), "z")
-        ox = tw / 2 + 4
-        mm_box(bm, -ox - 3, ox + 3, -12, off + 12, h - 22, h - 16)
+        bm_cylinder(bm, (0, 0, m(h - boss)), m(boss_r), m(boss + 0.01), "z")
         for k in (-1, 1):
-            mm_box(bm, k * ox, k * (ox + 3), off - 18, off + 12, wheel_r - 8, h - 16)
+            mm_box(bm, k * (leg_half - 3), k * leg_half, off - 18, off + 12, 30, h - boss)
+        mm_box(bm, -leg_half, leg_half, -12, off + 12, h - boss - 6, h - boss)
         bm_cylinder(bm, (0, m(off), m(wheel_r)), m(wheel_r), m(tw), "x")
-        bm_cylinder(bm, (0, m(off), m(wheel_r)), m(6), m(2 * ox + 8), "x", segments=12)
-        mm_box(bm, -3, 3, off + 12, off + wheel_r, h - 22, h - 18)
-        mm_box(bm, -12, 12, off + wheel_r - 5, off + wheel_r + 10, h - 24, h - 18)
+        bm_cylinder(bm, (0, m(off), m(wheel_r)), m(6), m(ca["leg_width"] + 6), "x", segments=12)
+        mm_box(bm, -3, 3, off + 12, sweep - 10, h - 26, h - 20)
+        mm_box(bm, -12, 12, sweep - 12.5, sweep, h - 28.5, h - 21.5)
         return to_mesh(f"mesh.{part}", bm, mats["castor"])
 
     for n, (sx, sy) in enumerate(corners(), 1):
         cx = inset if sx > 0 else W - inset
         cy = inset if sy > 0 else D - inset
-        assert head_r <= cx <= W - head_r and head_r <= cy <= D - head_r, "castor head outside"
+        assert boss_r <= cx <= W - boss_r and boss_r <= cy <= D - boss_r, "castor boss outside"
         world = orient_ab((cx, cy, 0), sy * X, sy * Y)
         obj = place_at(f"{part}.{n}", shared(part, build), colls["castors"], world, frame_root, part)
         w = RACK["fasteners"]["washers"][bolt["washer"]]["h"]
@@ -906,13 +907,18 @@ def check_dimensions():
     assert RACK["tip_guard"]["flat_leg_bottom"] + t == tb["bottom"], RACK["tip_guard"]
     screws = RACK["fasteners"]["screws"]
     bolt = cp["holes"]["castor_bolt"]
+    ca = fr["castor"]
     w = RACK["fasteners"]["washers"][bolt["washer"]]["h"]
     nut_top = cp["top"] + w + RACK["fasteners"]["nuts"][bolt["nut"]]["height"]
-    for metal in (0, 13, fr["castor"]["top_plate"]):
+    for metal in (0, 13, ca["top_plate"]):
         tip = fr["castor_height"] - metal - w + screws[bolt["bolt"]]["length"]
         assert nut_top + 2 <= tip < bb["top"], f"castor bolt tip {tip} against nut top {nut_top} and bar top {bb['top']}"
+    head = fr["castor_height"] - ca["top_plate"] - w - screws[bolt["bolt"]]["head_k"]
+    assert head > ca["wheel"], (head, ca)  # the bolt's head stays clear of the wheel inside the fork
     print("dimension check: levels", [lv["floor"] for lv in RACK["levels"]], "gap", a["gap_above_box_max"],
-          "castor bolt tip", tip)
+          "castor bolt tip", tip, "head bottom", head)
+    print("dimension check: swept past the frame outline, wheel",
+          round(ca["sweep"]["wheel"] - ca["inset"], 1), "brake", round(ca["sweep"]["brake"] - ca["inset"], 1))
 
 
 def check_slot_nuts():
