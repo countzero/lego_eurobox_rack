@@ -51,7 +51,15 @@
         "clip": { "outer_width": 145, "outer_height": 50, "thickness": 2, "outer_radius": 12, "inner_radius": 6, "covers": "the face of the handle frame, round the grip pocket" }
     },
     "frame": {
-        "profile": { "section": 30, "type": "30x30 B-type slot 8" },
+        "profile": {
+            "section": 30,
+            "type": "30x30 B-type slot 8",
+            "outline": {
+                "eighth": [[5.485, 0], [6, 0.9], [6, 4.204], [10.05, 8.25], [12.8, 8.25], [12.8, 4.0], [14.5, 4.0], [14.5, 4.5], [15, 4.5], [15, 13]],
+                "corner_radius": 2,
+                "status": "MEASURED 2026-10-29 in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), the end face: eighth is one eighth of the outline from the V floor of the slot on the +x face to the start of the outer corner, centred on the profile axis, mirrored about the diagonal and turned four times; the R0.2 and R0.5 fillets are left out and their corners drawn at the lines' intersections; the outer corners R2. The file also has four corner chambers and the 7.3 core bore; the model leaves them out and closes the ends, since every profile end is covered by an end cap or stands against another profile"
+            }
+        },
         "columns": 3,
         "bay_clear_width": 318,
         "width": 1074,
@@ -81,7 +89,15 @@
                 "brake": 81.2,
                 "status": "DERIVED, the wheel: 24 + 37.5 in its plane, half the tread across, sqrt(61.5 squared + 12.5 squared). MEASURED, the brake: the farthest vertex of fork and pedal in the CAD file, 20 to 30 below the mounting face. Swept about the bolt at 45 in, the wheel passes the frame outline by 17.8 and the brake by 36.2, both below the castor plate at 100 and clear of every other part"
             },
-            "at": "under a castor plate at each corner, centre 45 from both outer faces"
+            "at": "under a castor plate at each corner, centre 45 from both outer faces",
+            "shape": {
+                "head": { "profile": [[5.5, 100], [10.75, 100], [11.75, 99], [11.75, 96.5], [17, 94.5], [20.6, 92.5], [21.7, 90], [21.7, 88.85], [5.5, 88.85]], "note": "(radius, height above the floor) revolved about the bolt axis: the boss with the 11 back hole and the swivel's ball race, down to the underside of the 11.15 metal at the hole" },
+                "fork": { "back_radius": 21.5, "sheet": 1.75, "back_bottom": 34, "top": 88.85, "plate_front": 30, "eye_radius": 8, "note": "one sheet: a half cylinder round the bolt axis on the side away from the wheel, and two flat side plates, 1.75 thick with their outer faces 21.5 from the middle, from it to the axle, each ending in a round eye about the axle" },
+                "axle": { "diameter": 6, "head_diameter": 11.6, "head_thickness": 1.5 },
+                "wheel": { "tread_half": [[0, 37.5], [4, 37.39], [8, 37.07], [12.45, 35.3], [12.45, 30], [10, 27]], "hub_half": [[10, 27], [7, 24], [7, 13], [10, 10], [10, 5]], "spacer_radius": 5, "note": "(along the axle from the wheel's middle, radius), mirrored about the middle and revolved about the axle: the polyurethane tread and the polypropylene centre; spacers from the hub to the fork's side plates" },
+                "brake": { "plate_x": [14, 15.75], "plate_y": [10, 64], "plate_z": [72, 82], "shoe": { "half_width": 15.75, "y": [14, 40], "z": [77, 84] }, "pedal": { "half_width": 14, "y": [60, 79.9], "z": [70, 78] }, "note": "the lever's two plates beside the wheel, the shoe across them over the tread, the pedal at their far end, y along the wheel's trail" },
+                "status": "MEASURED 2026-10-29 in motedis' CAD file Motedis_06.07.02.stp: the boss 23.5 across at the face (boss_diameter), the ball race radius 21.7, the fork's round back radius 21.5 in a 1.75 sheet from about 34 above the floor up to the head, its side plates at 19.75-21.5 from the middle, the axle 6.1 with heads 11.6, an eye of radius 8 about the axle, the tread 37.5 in radius and 25 wide with R7.2 shoulders, the hub's rim at radius 24-27, the brake lever plates 14-15.75 from the middle and the pedal 28 wide reaching 79.9 from the bolt axis. The outline of the fork's side plates, the hub's recess, the brake shoe and the head's profile between the measured radii are drawn by eye after motedis' photo (UNVERIFIED)"
+            }
         },
         "castor_plate": {
             "part": "plate.castor",
@@ -114,7 +130,7 @@
             "depth": 9,
             "undercut": 16.5,
             "core_bore": 7.3,
-            "status": "VERIFIED, measured in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), 2026-10-26: opening 8.0 at its narrowest, lip 2.2, slot 9.0 deep, undercut 16.5 wide, core bore 7.3. The model draws the slot 8 wide and 6 deep without the undercut"
+            "status": "VERIFIED, measured in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), 2026-10-26: opening 8.0 at its narrowest, lip 2.2, slot 9.0 deep, undercut 16.5 wide, core bore 7.3. The model draws the slot as the CAD file has it (frame.profile.outline)"
         },
         "section": {
             "area": 313.9,
