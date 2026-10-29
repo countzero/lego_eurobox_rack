@@ -1,8 +1,8 @@
 # Design
 
 Read when changing the rack. Every number here is a copy of
-`design/rack.json`, which wins where the two differ. The values are provisional
-until the boxes are measured (roadmap 0004).
+`design/rack.json`, which wins where the two differ. The boxes were measured on
+2026-10-28 (roadmap 0004); what was not measured is marked `UNVERIFIED`.
 
 ## Decisions
 
@@ -11,11 +11,11 @@ until the boxes are measured (roadmap 0004).
 | 3 columns, 5 levels, short side to front                   | The user's layout: one level of 220 mm boxes at the bottom, four levels of 120 mm boxes with inserts above, drawer style                                                                                                                                               | the user                                          |
 | Eurobox NextGen 2.0 Cycle 400 × 300, anthracite            | One vendor (ab-in-die-BOX, aidB) for boxes, inserts and ColorClips; the short 300 side with the closed handle faces the front                                                                                                                                          | the user; `sources.md` → *Boxes*                  |
 | Box envelope narrowed to 400 × 300                         | The user agreed that 600 × 400 boxes do not fit                                                                                                                                                                                                                        | the user                                          |
-| Box envelope narrowed to NextGen 2.0                       | The 40 × 40 × 4 angles leave 238 mm between the leg tips, so a box needs a foot of at least 282 mm; the user agreed that only NextGen 2.0 boxes are planned for (roadmap 0022)                                                                                         | the user                                          |
+| Box envelope narrowed to NextGen 2.0                       | The 40 × 40 × 4 angles leave 238 mm between the leg tips; the measured 264 mm NextGen foot keeps 13 mm on each leg centred and 7 mm pushed to one side; the user agreed that only NextGen 2.0 boxes are planned for (roadmap 0022) and to the 7 mm (roadmap 0004)      | the user                                          |
 | Boxes stand on their floor, not the rim                    | The foot stands on the flat legs, so the rim needs no ledge                                                                                                                                                                                                            | `sources.md` → *Racks that take every brand*      |
 | Every metal part from motedis                              | One order, cut by the shop, delivered in 2–4 working days; motedis sells no 50 × 50 × 3 angle, hence the 40 × 40 × 4 angles, the 8 mm castor plates and the stainless castor bolts below                                                                               | the user; `prices.md`                             |
 | No profile drilled at home                                 | The user's choice (roadmap 0023): no profile is drilled or machined, by the user or by motedis; holes only in the angles, the castor plates and the wood                                                                                                               | the user                                          |
-| 318 mm between the uprights                                | 310 mm between the hanging legs: 2.5 mm play per side for a 305 mm rim                                                                                                                                                                                                 | `DERIVED` below                                   |
+| 318 mm between the uprights                                | 310 mm between the hanging legs: 2.5 mm play per side for a 305 mm rim, 6 mm for the measured 298 mm rim                                                                                                                                                               | `DERIVED` below                                   |
 | Angles 40 × 40 × 4, flat leg on top                        | One angle carries the box above, guides the rim of the box below sideways and stops it tipping when pulled out; motedis' only angle of this size with a leg thick enough for a flush M5 countersunk head                                                               | `DERIVED` below                                   |
 | Levels set for the tallest box per class                   | 233 mm for the 220 class, 125 mm for the 120 class, 8 mm gap above                                                                                                                                                                                                     | `sources.md` → *Boxes*                            |
 | No slides, no slide tape, no pull-out stop                 | The user's choice; a box comes out like from an open shelf and slides on the bare aluminium of the flat legs; the slots stay open for an industrial look, only the eight bar ends get caps                                                                             | the user                                          |
@@ -34,78 +34,124 @@ until the boxes are measured (roadmap 0004).
 
 The rack takes Eurobox NextGen 2.0 boxes 400 × 300 only, the user's choice
 with roadmap 0022: the 40 × 40 × 4 angles leave less flat leg under the foot
-than the 50 × 50 × 3 angles before, too little for a box with a narrow foot. No
-maker publishes the foot width, so its minimum is an estimate; the NextGen
-foot is about 298 in the model (*Box shape in the model*), and roadmap 0004
-measures it. Every other box, 600 × 400 boxes, Wibo and keeeper / OKT Robusto
-are excluded.
+than the 50 × 50 × 3 angles before, too little for a box with a narrow foot.
+No maker publishes the foot width; the user measured it on 2026-10-28
+(roadmap 0004): the NextGen foot is the flat floor, 264 × 364, 17 in from the
+298 × 398 outline on every side (*Box shape in the model*). With the frame
+unchanged it keeps 7 mm on a leg with the box pushed fully to one side, which
+the user accepted in place of the 15 mm of roadmap 0022. Every other box,
+600 × 400 boxes, Wibo and keeeper / OKT Robusto are excluded.
 
-| Value             | Min | Max | Status     |
-| ----------------- | --- | --- | ---------- |
-| Rim width         | 296 | 305 | DERIVED    |
-| Rim length        | 394 | 405 | DERIVED    |
-| Foot width        | 282 |     | UNVERIFIED |
-| Height, 120 class |     | 125 | DERIVED    |
-| Height, 220 class |     | 233 | DERIVED    |
+| Value             | Min | Max | Status   |
+| ----------------- | --- | --- | -------- |
+| Rim width         | 296 | 305 | DERIVED  |
+| Rim length        | 394 | 405 | DERIVED  |
+| Foot width        | 264 |     | MEASURED |
+| Height, 120 class |     | 125 | DERIVED  |
+| Height, 220 class |     | 233 | DERIVED  |
 
 ### Fit check
 
-| Check                                   | Value                                                        | Result                                         |
-| --------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------- |
-| Widest rim between the hanging legs     | 305 in 310                                                   | 2.5 mm play per side                           |
-| Narrowest rim sideways travel           | (310 - 296) / 2                                              | 7 mm                                           |
-| Foot on each leg, box centred           | (282 - 238) / 2                                              | 22 mm                                          |
-| Foot on each leg, box fully to one side | 22 - 7                                                       | 15 mm                                          |
-| Gap above the tallest box, every level  | next flat leg bottom - (floor + max)                         | 8 mm; the build checks it                      |
-| Gap above a 220 box in a 220 level      | 8 + 233 - 220                                                | 21 mm; the tip guard acts later                |
-| Hanging leg beside the box below        | 40 - 4 - 8 - (125 - 120)                                     | 23 mm beside a 120 box, 15 mm beside a 220 box |
-| Rim under the flat leg above            | (296 - 238) / 2 to (305 - 238) / 2                           | 29–33.5 mm, the tip guard's hold               |
-| Box length in the depth                 | 400 centred at y 17.5–417.5 in 435; a 405 rim spans y 15–420 | fits; no stop, the box pulls out at either end |
+| Check                                   | Value                                                        | Result                                                    |
+| --------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| Widest rim between the hanging legs     | 305 in 310                                                   | 2.5 mm play per side                                      |
+| Measured rim between the hanging legs   | (310 - 298) / 2                                              | 6 mm play per side                                        |
+| Narrowest rim sideways travel           | (310 - 296) / 2                                              | 7 mm                                                      |
+| Foot on each leg, box centred           | (264 - 238) / 2                                              | 13 mm                                                     |
+| Foot on each leg, box fully to one side | 13 - (310 - 298) / 2                                         | 7 mm for the measured 298 rim                             |
+| Foot along the legs                     | 364 from y 18.5 + 17 = 35.5 to 416.5 - 17 = 399.5            | its whole length on the 435 legs                          |
+| Bottom band over the flat leg           | band edge 5 above the foot's underside                       | 5 mm clear of the flat leg                                |
+| Gap above the tallest box, every level  | next flat leg bottom - (floor + max)                         | 8 mm; the build checks it                                 |
+| Gap above a 220 box in a 220 level      | 8 + 233 - 220                                                | 21 mm; the tip guard acts later                           |
+| Hanging leg beside the box below        | 40 - 4 - 8 - (125 - 120)                                     | 23 mm beside a 120 box, 15 mm beside a 220 box            |
+| Hanging leg against the flanges         | top flange 0–2 below the rim, second flange 30–32            | the leg guides the top flange alone                       |
+| Rim under the flat leg above            | (298 - 238) / 2; (296 - 238) / 2 to (305 - 238) / 2          | 30 mm, 29–33.5 mm over the envelope; the tip guard's hold |
+| Box length in the depth                 | 398 centred at y 18.5–416.5 in 435; a 405 rim spans y 15–420 | fits; no stop, the box pulls out at either end            |
 
-The foot here is the box's flat underside at its outer edge: aidB states a
-"glatter Boden" (smooth floor) for every 400 × 300 NextGen box, "ideal für den
-Einsatz auf Rollbahnen" (`VERIFIED` 2026-10-26, aidB's C2G43-12 page,
+The foot is the box's flat floor, 264 × 364 and 5 high, measured on
+2026-10-28 (`MEASURED`, roadmap 0004). aidB states a "glatter Boden" (smooth
+floor) for every 400 × 300 NextGen box, "ideal für den Einsatz auf
+Rollbahnen" (`VERIFIED` 2026-10-26, aidB's C2G43-12 page,
 https://www.ab-in-die-box.de/b2bde/eurobox-nextgen-2-0-cycle-griffe-geschlossen-400-x-300-x-120-mm-anthrazit.html),
-so the box stands on the flat legs with its whole floor width and the numbers
-above hold.
+and the measurement agrees: the box stands on the flat legs with its whole
+floor width. The bottom band round the foot stays 5 above the flat leg and
+touches nothing; should a box ever slip off a leg, the band catches it.
 
 ### Box shape in the model
 
 The model draws the box from `box_shape` and `box_models` in
-`design/rack.json`. aidB and Müller & Sohn publish no drawing or CAD, so the
-values below were read from aidB's product photos by perspective measurement
-and are `UNVERIFIED` until a box is measured (roadmap 0004); the inner floor is
-`SECONDARY` or `DERIVED` as marked.
+`design/rack.json`. aidB and Müller & Sohn publish no drawing or CAD; the user
+measured the section of a C2G43-12 and a C2G43-22 on 2026-10-28 (roadmap
+0004), both alike but for the height, and photographed the underside. The
+relief on the walls, the handle and the corner radii were not measured and
+stay read from aidB's product photos (`UNVERIFIED`); the inner floor is
+`SECONDARY` or `DERIVED` as marked. The section of a long side between two
+cross ribs, inside on the left, not to scale:
 
-| Value                 | Model value                                                                                                                 | Status     |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| Rim band              | 6, at the 400 × 300 envelope                                                                                                | UNVERIFIED |
-| Collar below the rim  | 31, set back 5                                                                                                              | UNVERIFIED |
-| Ledge lip             | 3 thick, at the envelope, below the collar                                                                                  | UNVERIFIED |
-| Foot band             | 18, set back 1, a 45° chamfer of 4 up to the panel; the stacking step at the edge of the flat underside, not a raised floor | UNVERIFIED |
-| Side panel recess     | 6                                                                                                                           | UNVERIFIED |
-| Rib webs              | 2.5 thick, outer face at the envelope, from the foot chamfer to the rim                                                     | UNVERIFIED |
-| Rib pairs, long sides | centres 103 and 297 from the front, 16 wide outside, open pocket between the webs                                           | UNVERIFIED |
-| Corner webs           | one in each face, centre 24 from the corner, open pocket towards the corner                                                 | UNVERIFIED |
-| Pin blocks            | long sides, collar height, 30 wide, centre 49 from each corner, hole Ø4                                                     | UNVERIFIED |
-| Outer corner radius   | 8                                                                                                                           | UNVERIFIED |
-| Inner corner radius   | 6                                                                                                                           | UNVERIFIED |
-| Inner floor, 120 box  | 359 × 259; the wall tapers from the 365 × 265 inner top                                                                     | SECONDARY  |
-| Inner floor, 220 box  | 354 × 254, the same wall slope over 215                                                                                     | DERIVED    |
-| Handle frame          | 145 × 50, corner radius 12, from 15 below the rim; two webs 2.5 wide up to the rim                                          | UNVERIFIED |
-| Handle tray           | inside the frame, 8 deep; a raised lip 2 wide stands round the grip pocket                                                  | UNVERIFIED |
-| Handle grip pocket    | closed, 116 × 24, corner radius 6, 12 deep, from 28 below the rim                                                           | UNVERIFIED |
-| ColorClip ring        | 145 × 50 × 2, radii 12 outside and 6 inside, round the grip pocket                                                          | UNVERIFIED |
-| Colour                | about sRGB #3F3F3F lit in the photo; drawn at linear 0.04, IOR 1.49                                                         | UNVERIFIED |
+```
+                     │ │◄──── B 13 ─────►│
+ rim top ┄┄┄┄┄┄┄┄┄┄┄ ┌─────────────────────┐ ┄┄ ┬ ┄ ┬
+                     │     top flange      │    A 2 │
+                     │ ┌───────────────────┘ ┄┄ ┴   │
+                     │ │  upper wall                C 30
+                     │ │  (ribs, pin blocks)        │
+                     │ ├───────────────────┐ ┄┄ ┬ ┄ ┴
+                     │ │   second flange   │    D 2
+                     │ ├───────────────────┘ ┄┄ ┴
+                     │ │◄──── E 14 ───────►│      ┬
+                     │ │  side panel              F 53 (120), 153 (220)
+                     │ │  (slopes in)             │
+                     │ ●-._                ┄┄┄┄ ┼
+                     │ │   `-._  shoulder       G 13
+                     │ │       `-._             │
+                     │ │           `-._Q R2 ┐ ┄ ┼
+                     │ │    open           ││   │
+                     │ │    towards        ││   H 17, band wall S 4
+                     │ │    the floor      ││   │
+                     │ │                   └┘ ┄ ┼
+                     │ │  foot                  J 5
+ floor ┄┄┄┄┄┄┄┄┄┄┄┄┄ └─┘ ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄ ┴
+                       ◄────── I 17 ──────►
+```
 
-The relief (webs, pockets, ledge lip, chamfer, pin blocks, handle tray and grip
-pocket) is read from aidB's photo of C2G43-12; every piece stays inside the
-400 × 300 × height envelope, which the build checks.
+| Value                   | Model value                                                                                                                                                      | Status     |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Outer size              | 398 × 298 at the rim, 120 / 220 high with the foot; aidB states 400 × 300 ± 5                                                                                    | MEASURED   |
+| Top flange (A, B)       | 2 thick at the rim, 13 out from the wall below; the rim top about 16 wide                                                                                        | MEASURED   |
+| Wall under the rim      | 3.5: (298 - 265) / 2 - 13, from aidB's inner top                                                                                                                 | DERIVED    |
+| Second flange (C, D, E) | 2 thick, its top face 30 below the rim, 14 out from the panel                                                                                                    | MEASURED   |
+| Side panel (F)          | 14 in below the second flange, sloping to 17 in at the shoulder; 53 high (120), 153 (220): height - 30 - 2 - 13 - 17 - 5                                         | DERIVED    |
+| Shoulder (G, Q)         | 13 high, sloping out from the panel to the band; edge round about R2 at the band                                                                                 | MEASURED   |
+| Bottom band (H, S)      | 17 high, outer face on the outline, wall 4 thick, hollow and open below, its edge 5 above the floor                                                              | MEASURED   |
+| Cross ribs              | 1 thick across the 13 wide channel between band wall and foot: 11 a long side, 7 a short side, 1 diagonal a corner, evenly spaced                                | MEASURED   |
+| Foot (I, J)             | the flat floor 364 × 264, 5 high, 17 in from the outline on every side                                                                                           | MEASURED   |
+| Foot face               | flush with the bottom of the side panel                                                                                                                          | UNVERIFIED |
+| Corners                 | solid from the bottom band to the rim, faces on the outline                                                                                                      | UNVERIFIED |
+| Rib webs                | 2.5 thick, outer face on the outline, from the shoulder up to the top flange                                                                                     | UNVERIFIED |
+| Rib pairs, long sides   | centres 102 and 296 from the front, 16 wide outside, open pocket between the webs                                                                                | UNVERIFIED |
+| Corner webs             | one in each face, centre 24 from the corner, open pocket towards the corner                                                                                      | UNVERIFIED |
+| Pin blocks              | long sides, between the two flanges, 30 wide, centre 49 from each corner, hole Ø4                                                                                | UNVERIFIED |
+| Outer corner radius     | 8                                                                                                                                                                | UNVERIFIED |
+| Inner corner radius     | 6                                                                                                                                                                | UNVERIFIED |
+| Inner floor, 120 box    | 359 × 259; the wall tapers from the 365 × 265 inner top                                                                                                          | SECONDARY  |
+| Inner floor, 220 box    | 354 × 254, the same wall slope over 215                                                                                                                          | DERIVED    |
+| Handle frame            | 145 × 50, corner radius 12, from 15 below the rim, a surround 3 wide round it; two webs 2.5 wide up to the rim; where it meets the second flange is not measured | UNVERIFIED |
+| Handle tray             | inside the frame, 8 deep; a raised lip 2 wide stands round the grip pocket                                                                                       | UNVERIFIED |
+| Handle grip pocket      | closed, 116 × 24, corner radius 6, 12 deep, from 28 below the rim                                                                                                | UNVERIFIED |
+| ColorClip ring          | 145 × 50 × 2, radii 12 outside and 6 inside, round the grip pocket                                                                                               | UNVERIFIED |
+| Colour                  | about sRGB #3F3F3F lit in the photo; drawn at linear 0.04, IOR 1.49                                                                                              | UNVERIFIED |
 
-The underside is flat: aidB's "glatter Boden" (`VERIFIED`, *Fit check*) rules
-out a raised floor, so the 18 mm foot band of the model is the stacking step
-round the edge of that flat floor. Its width and step stay `UNVERIFIED` until
-roadmap 0004 measures a box.
+The relief on the walls (rib webs, pockets, pin blocks) and the handle (frame,
+tray, grip pocket) are read from aidB's photo of C2G43-12; every piece stays
+inside the 398 × 298 × height outline, which the build checks. The webs follow
+the sloped panel into the wall but not through it.
+
+The underside is flat, as aidB's "glatter Boden" (`VERIFIED`, *Fit check*)
+says: the foot is the flat floor, 264 × 364 and 5 high, and round it the
+bottom band ends 5 above the floor, hollow and open below, its 13 wide channel
+crossed by 1 mm ribs (`MEASURED` 2026-10-28). The model closes the channel at
+the band's top. It draws the cross ribs without the 0.8 mm edge round of the
+rest of the box, which keeps `web/rack.glb` under its limit.
 
 The inner floor of the 120 box is that of Bito XL43121 and Utz RAKO
 400 × 300 × 120 (both 359 × 259); aidB's insert sets, 366 × 266 at the top and
@@ -115,7 +161,9 @@ the taper).
 
 The published facts are `VERIFIED` (`sources.md` → *Boxes: aidB Eurobox
 NextGen 2.0*): outer 400 × 300 × 120 / 220, inner 365 × 265 × 115 / 215,
-11 l / 20 l, 800 g / 1180 g, r-PP, load 25 kg, ±5 mm.
+11 l / 20 l, 800 g / 1180 g, r-PP, load 25 kg, ±5 mm. The measured outer size
+at the rim, 398 × 298, lies within that tolerance and is the one the model and
+the fit check use.
 
 ## Dimensions
 
@@ -131,7 +179,7 @@ NextGen 2.0*): outer 400 × 300 × 120 / 220, inner 365 × 265 × 115 / 215,
 | Castor plate                 | 90 × 90 × 8, 100 to 108, castor centre 45 in from both outer faces (x 45, 1029; y 45, 390) |
 | Angle                        | 40 × 40 × 4, 435 long                                                                      |
 | Tip guard                    | `angle.guard`, flat leg 931 to 935                                                         |
-| Box position                 | front at y 17.5, centred in the depth                                                      |
+| Box position                 | front at y 18.5, (435 - 398) / 2, centred in the depth                                     |
 | Pull-out travel, removal     | 270, 400, to the front and to the back                                                     |
 | Top plate                    | 1114 × 483 × 21, top at 986, corners R10, edges broken 1.5, grain along 1114               |
 
@@ -220,7 +268,7 @@ hang from the top bar, stiffened by the screwed top plate, and stand on the
          (  75 )                                (  75 )   braked castor 75, 100 high, offset 24
           \___/                                  \___/
      0 - ===============================================
-         ^ boxes pull out here (front at y 17.5)  and here (back at y 417.5) ^
+         ^ boxes pull out here (front at y 18.5)  and here (back at y 416.5) ^
 ```
 
 ### One support angle
@@ -422,22 +470,27 @@ values are conservative. All values are `DERIVED`.
   shifts 0.33 kg·m, leaving 7.84 kg·m.
 - EN 14749 / EN 16122 (`SECONDARY`, via the CPSC rule text): 75 N (7.65 kg) on
   the front of one extended drawer, drawers empty. The box front at
-  y 17.5 - 270 = -252.5 gives a lever of 0.3385 m: 2.59 kg·m against 7.84,
-  passes with factor 3.03. EN 14749 applies from 600 mm height and tests
-  drawers without a stop at two-thirds extension (`SECONDARY`, the summary in
+  y 18.5 - 270 = -251.5 lies 69 + 251.5 = 320.5 mm in front of the wheel
+  contact: 7.65 × 0.3205 = 2.45 kg·m against 7.84, passes with factor 3.20.
+  EN 14749 applies from 600 mm height and tests drawers without a stop at
+  two-thirds extension, which 270 of 398 meets (`SECONDARY`, the summary in
   the US Federal Register 2022-01689).
 - ASTM F2057-23 / 16 CFR 1261 (`VERIFIED`,
   https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Clothing-Storage-Units):
   27.2 kg (60 lb) on the top edge of the extended element. Not binding (the
   rack is no clothing storage unit), but the only test built for a child. One
-  box out on the empty rack: 27.2 × 0.3385 = 9.21 kg·m against 7.84: the rack
+  box out on the empty rack: 27.2 × 0.3205 = 8.72 kg·m against 7.84: the rack
   tips. All 15 boxes out to the front (about 18.2 kg, 4.90 kg·m) leave
   8.17 - 4.90 = 3.27 kg·m: it tips.
-- With LEGO spread evenly the one-box case passes from about 9.2 kg of LEGO:
-  (9.21 + 0.33) / 0.1485 - 55.0 = 9.2 kg. Ballast for the empty rack at
-  factor 1.2, low and central: one box out (1.2 × 9.21 + 0.33) / 0.1485 - 55.0
-  = 21.6 kg; every box out to one side (1.2 × 9.21 + 4.90) / 0.1485 - 55.0
-  = 52.4 kg.
+- With LEGO spread evenly the one-box case passes from about 5.9 kg of LEGO:
+  (8.72 + 0.33) / 0.1485 - 55.0 = 5.9 kg. Ballast for the empty rack at
+  factor 1.2, low and central: one box out (1.2 × 8.72 + 0.33) / 0.1485 - 55.0
+  = 17.7 kg; every box out to one side (1.2 × 8.72 + 4.90) / 0.1485 - 55.0
+  = 48.5 kg.
+- Until roadmap 0004 these lines used a lever of 0.3385 m, left from the
+  125 mm castor's wheel contact at y 86; the 75 mm castor of 0023 puts it at
+  y 69. The 1 mm the measured box moves the front adds little: with the front
+  at y 17.5 the lever would be 0.3215 m.
 - A free-standing rack used by children should be strapped to a wall: storage
   furniture "must either be designed to resist toppling, or else be fastened to
   a wall" (`SECONDARY`, SATRA, https://www.satra.com/spotlight/article.php?id=544).
