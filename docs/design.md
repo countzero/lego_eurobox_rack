@@ -662,7 +662,22 @@ the front; moving a box node by `travel` along it pulls the box, its inserts
 and its rings out together. When `sides` contains `"back"`, the viewer pulls
 the box the other way, along `-pull_axis`, for a click on its back half.
 
-Material names: `aluminium`, `box_anthracite`, `insert_grey`, `clip_blue`,
-`clip_turquoise`, `clip_lightgreen`, `castor`, `plywood`, `steel` (the
-screws, nuts and washers, zinc-plated or stainless), `cap_black` (the end
-caps).
+Material names: `aluminium` (clear anodised, satin), `box_anthracite`,
+`insert_grey`, `clip_blue`, `clip_turquoise`, `clip_lightgreen`, `castor`
+(the castor's polyurethane tread), `castor_hub` (its polypropylene centre and
+spacers), `plywood`, `steel` (the screws, nuts and washers, zinc-plated or
+stainless, and the castor's fork, head, axle and brake lever), `cap_black`
+(the end caps and the castor's brake pedal). The castor is one mesh with four
+material slots.
+
+The 30 × 30 profiles have motedis' section from its CAD file
+(`rack.json` → `frame.profile.outline`, `MEASURED`): the slot with its lips,
+undercut and V floor, the R2 corners; the R0.2 and R0.5 fillets, the corner
+chambers and the core bore are left out and the ends closed. The castor follows
+motedis' CAD file of 06.07.02 (`frame.castor.shape`): the head and ball race
+revolved about the bolt axis, the fork of one 1.75 mm sheet with a round back
+and two side plates ending in eyes round the axle, the axle with its heads,
+the wheel as a polyurethane tread on a polypropylene centre, the brake lever
+with its shoe and pedal; the outlines between the measured points are drawn by
+eye (`UNVERIFIED`). Both are drawn with as few corner segments as keep
+`web/rack.glb` at or under its 110 kB.

@@ -29,8 +29,8 @@ def m(mm):
 
 
 # Visual details only.
-SLOT_WIDTH = 8.0
-SLOT_DEPTH = 6.0
+PROFILE_CORNER_SEGMENTS = 3
+CASTOR_SEGMENTS = 16
 INSERT_WALL = 1.5
 STAGE_GAP = 50.0  # mm between the box rows in the inserts top view
 CORNER_SEGMENTS = 6
@@ -44,17 +44,21 @@ INSERT_FIT_TOLERANCE = 1.0
 EEVEE_SAMPLES = 64
 # (linear colour, metallic, roughness, IOR); IOR 1.49 for PP, 1.59 for PS.
 COLOURS = {
-    "aluminium": ((0.62, 0.64, 0.66, 1), 1.0, 0.55, 1.5),
+    # Clear anodised: aluminium's own colour (physicallybased.info 0.916, 0.923,
+    # 0.924) dimmed by the matt oxide film, satin.
+    "aluminium": ((0.80, 0.81, 0.82, 1), 1.0, 0.42, 1.5),
     "box_anthracite": ((0.040, 0.041, 0.043, 1), 0.0, 0.5, 1.49),
     "insert_grey": ((0.22, 0.23, 0.24, 1), 0.0, 0.4, 1.59),
-    "castor": ((0.06, 0.06, 0.07, 1), 0.0, 0.6, 1.5),
-    "steel": ((0.70, 0.71, 0.72, 1), 1.0, 0.35, 1.5),  # zinc-plated
+    "castor": ((0.045, 0.048, 0.055, 1), 0.0, 0.55, 1.5),  # PU tread, dark blue-grey in motedis' photo
+    "castor_hub": ((0.20, 0.21, 0.22, 1), 0.0, 0.45, 1.49),  # PP centre, mid grey
+    # Zinc (physicallybased.info 0.808, 0.844, 0.865), bright, blue-passivated.
+    "steel": ((0.78, 0.82, 0.86, 1), 1.0, 0.28, 1.5),
     "cap_black": ((0.02, 0.02, 0.02, 1), 0.0, 0.5, 1.5),
     "plywood": ((0.609, 0.331, 0.117, 1), 0.0, 0.55, 1.5),  # linear mean of PLY_FACE
     "floor": ((0.45, 0.45, 0.45, 1), 0.0, 0.85, 1.5),
 }
 CLIP_ROUGHNESS = 0.35
-GRAINED = ("box_anthracite",)  # fine moulding grain as bump; not in the glb
+GRAINED = ("box_anthracite", "aluminium")  # fine moulding or blasted grain as bump; not in the glb
 
 
 # ---------------------------------------------------------------- scene setup
@@ -317,26 +321,22 @@ def hollow_tray(rim_x, rim_y, foot_x, foot_y, height, in_x, in_y, in_foot_x, in_
     return bm
 
 
-def rect_section(wa, wb):
-    """Outline of a slotted profile wa x wb mm, one slot per 30 mm module of each side."""
-    w, d = SLOT_WIDTH / 2, SLOT_DEPTH
-    ha, hb = wa / 2, wb / 2
-
-    def mods(length, half):
-        return [-half + 15 + 30 * i for i in range(int(round(length / 30)))]
-
-    pts = [(-ha, -hb)]
-    for c in mods(wa, ha):
-        pts += [(c - w, -hb), (c - w, -hb + d), (c + w, -hb + d), (c + w, -hb)]
-    pts.append((ha, -hb))
-    for c in mods(wb, hb):
-        pts += [(ha, c - w), (ha - d, c - w), (ha - d, c + w), (ha, c + w)]
-    pts.append((ha, hb))
-    for c in reversed(mods(wa, ha)):
-        pts += [(c + w, hb), (c + w, hb - d), (c - w, hb - d), (c - w, hb)]
-    pts.append((-ha, hb))
-    for c in reversed(mods(wb, hb)):
-        pts += [(-ha, c + w), (-ha + d, c + w), (-ha + d, c - w), (-ha, c - w)]
+def profile_section():
+    """Outline of the 30 x 30 profile (metres), counter-clockwise: motedis'
+    section from rack.json, one eighth mirrored about the diagonal into a
+    quarter with its R2 corner, the quarter turned four times."""
+    o = RACK["frame"]["profile"]["outline"]
+    eighth = [tuple(p) for p in o["eighth"]]
+    r = o["corner_radius"]
+    cx, cy = eighth[-1][0] - r, eighth[-1][1]  # the corner arc's centre
+    arc = [(cx + r * math.cos(math.radians(90 * i / PROFILE_CORNER_SEGMENTS)),
+            cy + r * math.sin(math.radians(90 * i / PROFILE_CORNER_SEGMENTS)))
+           for i in range(1, PROFILE_CORNER_SEGMENTS)]
+    quarter = eighth + arc + [(y, x) for x, y in reversed(eighth)][:-1]
+    pts = []
+    for k in range(4):
+        c, s = round(math.cos(k * math.pi / 2)), round(math.sin(k * math.pi / 2))
+        pts += [(c * x - s * y, s * x + c * y) for x, y in quarter]
     return [(m(a), m(b)) for a, b in pts]
 
 
@@ -836,6 +836,35 @@ def build_castor_plates(mats, colls, frame_root):
     return plates
 
 
+def revolve(bm, profile, point, n):
+    """Closed surface of revolution: the closed section profile (two numbers
+    a point, mm) swept through n steps of a full turn; point(p, q, angle)
+    gives each section point's position in mm."""
+    loops = [[mm_vec(point(p, q, 2 * math.pi * i / n)) for p, q in profile] for i in range(n)]
+    loft(bm, loops, closed=True)
+
+
+def multi_mesh(name, parts):
+    """One mesh from (bmesh, material) pairs, a material slot per pair."""
+    out = bmesh.new()
+    for i, (bm, _) in enumerate(parts):
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+        for f in bm.faces:
+            f.material_index = i
+        tmp = bpy.data.meshes.new("tmp.part")
+        bm.to_mesh(tmp)
+        bm.free()
+        out.from_mesh(tmp)
+        bpy.data.meshes.remove(tmp)
+    mesh = bpy.data.meshes.new(name)
+    out.to_mesh(mesh)
+    out.free()
+    for _, mat in parts:
+        mesh.materials.append(mat)
+    smooth(mesh)
+    return mesh
+
+
 def build_castors(mats, colls, frame_root):
     """Braked swivel castors 1-4 at front-left, front-right, back-left, back-right; wheels trail inward."""
     fr = RACK["frame"]
@@ -844,26 +873,76 @@ def build_castors(mats, colls, frame_root):
     bolt = fr["castor_plate"]["holes"]["castor_bolt"]
     h = fr["castor_height"]
     W, D, inset = fr["width"], fr["depth"], ca["inset"]
-    boss, boss_r = ca["top_plate"], ca["boss_diameter"] / 2
+    boss_r = ca["boss_diameter"] / 2
     wheel_r, leg_half = ca["wheel"] / 2, ca["leg_width"] / 2
-    tw, off, sweep = ca["tread_width"], ca["offset"], ca["sweep"]["brake"]
+    off = ca["offset"]
+    sh = ca["shape"]
 
     def build():
         """The castor with its wheel trailing towards +y and the brake pedal
-        over the wheel; the back ones are turned half round. The boss at the
-        back hole, the fork's width across the tread, the legs' lower end, the
-        wheel and the pedal's reach are the measurements from motedis' CAD
-        file; their shape between them is drawn by eye."""
-        bm = bmesh.new()
-        bm_cylinder(bm, (0, 0, m(h - boss)), m(boss_r), m(boss + 0.01), "z")
+        behind the wheel; the back ones are turned half round. Its parts after
+        rack.json → frame.castor.shape, measured in motedis' CAD file: the
+        head with its ball race, the fork of one sheet, the axle, the
+        polyurethane tread on a polypropylene centre, the brake lever with its
+        shoe and pedal. One mesh, a material per surface."""
+        steel, tread, hub, pedal = bmesh.new(), bmesh.new(), bmesh.new(), bmesh.new()
+        n = CASTOR_SEGMENTS
+        # head: revolved about the bolt axis
+        revolve(steel, sh["head"]["profile"], lambda r, z, a: (r * math.cos(a), r * math.sin(a), z), n)
+        fk = sh["fork"]
+        t, rb = fk["sheet"], fk["back_radius"]
+        # the fork's round back, on the side away from the wheel, and its top plate
+        # The fork's top plate lies against the head's underside (top): the
+        # castor bolt's washer and head sit below it, inside the fork.
+        ztop = fk["top"] + t
+        back = [(rb * math.cos(math.radians(a)), rb * math.sin(math.radians(a))) for a in range(180, 361, 30)]
+        inner = [(x * (rb - t) / rb, y * (rb - t) / rb) for x, y in back]
+        loft(steel, [[(m(x), m(y), m(z)) for x, y in back + inner[::-1]] for z in (fk["back_bottom"], ztop)],
+             closed=False)
+        top = back + [(rb, fk["plate_front"] - 4), (-rb, fk["plate_front"] - 4)]
+        loft(steel, [[(m(x), m(y), m(z)) for x, y in top] for z in (fk["top"], ztop)], closed=False)
+        # the side plates, each ending in an eye round the axle
+        er = fk["eye_radius"]
+        eye = [(off + er * math.cos(math.radians(a)), wheel_r + er * math.sin(math.radians(a)))
+               for a in range(0, -181, -20)]
+        side = [(0, ztop), (fk["plate_front"] - 4, ztop), (fk["plate_front"], ztop - 14)]
+        side += eye + [(0, fk["back_bottom"])]
         for k in (-1, 1):
-            mm_box(bm, k * (leg_half - 3), k * leg_half, off - 18, off + 12, 30, h - boss)
-        mm_box(bm, -leg_half, leg_half, -12, off + 12, h - boss - 6, h - boss)
-        bm_cylinder(bm, (0, m(off), m(wheel_r)), m(wheel_r), m(tw), "x")
-        bm_cylinder(bm, (0, m(off), m(wheel_r)), m(6), m(ca["leg_width"] + 6), "x", segments=12)
-        mm_box(bm, -3, 3, off + 12, sweep - 10, h - 26, h - 20)
-        mm_box(bm, -12, 12, sweep - 12.5, sweep, h - 28.5, h - 21.5)
-        return to_mesh(f"mesh.{part}", bm, mats["castor"])
+            loft(steel, [[(m(k * x), m(y), m(z)) for y, z in side] for x in (rb - t, rb)], closed=False)
+
+        def about_axle(a_, r, ang):  # a_ along the axle from the wheel's middle, r from it
+            return (a_, off + r * math.cos(ang), wheel_r + r * math.sin(ang))
+
+        # axle through both plates, its two heads outside them, the spacers inside
+        ax = sh["axle"]
+        hk, ar = ax["head_thickness"], ax["diameter"] / 2
+        revolve(steel, [(-rb - hk, ar), (rb + hk, ar), (rb + hk, 0.5), (-rb - hk, 0.5)], about_axle, 12)
+        wh = sh["wheel"]
+        hub_edge = wh["hub_half"][-1][0]
+        for k in (-1, 1):
+            a0, a1 = sorted((k * rb, k * (rb + hk)))
+            revolve(steel, [(a0, ax["head_diameter"] / 2), (a1, ax["head_diameter"] / 2), (a1, ar), (a0, ar)],
+                    about_axle, 12)
+            a0, a1 = sorted((k * hub_edge, k * (rb - t)))
+            revolve(hub, [(a0, wh["spacer_radius"]), (a1, wh["spacer_radius"]), (a1, ar), (a0, ar)], about_axle, 12)
+        # wheel: the tread and the centre, each half mirrored about the middle
+        tread_prof = [(-a_, r) for a_, r in reversed(wh["tread_half"])] + [(a_, r) for a_, r in wh["tread_half"][1:]]
+        hub_prof = [(a_, r) for a_, r in wh["hub_half"]] + [(-a_, r) for a_, r in reversed(wh["hub_half"])]
+        revolve(tread, tread_prof, about_axle, n)
+        revolve(hub, hub_prof, about_axle, n)
+        # brake: two lever plates beside the wheel, the shoe over the tread, the pedal
+        br = sh["brake"]
+        y0, y1 = br["plate_y"]
+        z0, z1 = br["plate_z"]
+        lever = [(y0, z1), (y1, z1), (y1, z0), (y0, z0 + 4)]
+        for k in (-1, 1):
+            loft(steel, [[(m(k * x), m(y), m(z)) for y, z in lever] for x in br["plate_x"]], closed=False)
+        s = br["shoe"]
+        mm_box(steel, -s["half_width"], s["half_width"], *s["y"], *s["z"])
+        p = br["pedal"]
+        mm_box(pedal, -p["half_width"], p["half_width"], *p["y"], *p["z"])
+        return multi_mesh(f"mesh.{part}", [(steel, mats["steel"]), (tread, mats["castor"]),
+                                           (hub, mats["castor_hub"]), (pedal, mats["cap_black"])])
 
     for n, (sx, sy) in enumerate(corners(), 1):
         cx = inset if sx > 0 else W - inset
@@ -1942,8 +2021,7 @@ def check_parts():
 
 def main():
     global SECTION
-    sec = RACK["frame"]["profile"]["section"]
-    SECTION = rect_section(sec, sec)
+    SECTION = profile_section()
     check_dimensions()
     scene = reset_scene()
     mats = make_materials()
