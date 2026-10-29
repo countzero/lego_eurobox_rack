@@ -945,7 +945,7 @@ def check_slot_nuts():
 # ---------------------------------------------------------------- boxes
 
 # mm the handle frame face sits behind the rim plane: it stands out of the
-# recessed panel but keeps the box 400 long and off the coplanar ledge face.
+# recessed panel but keeps the box within its length and off the flange faces.
 FRAME_PROUD = -0.2
 
 
@@ -1023,7 +1023,22 @@ def prism_y(outline, y0, y1, holes=()):
     return bm
 
 
-INNER_SKIN = 2.5  # mm, the smooth inner wall the outer bands sit on
+INNER_SKIN = 1.2  # mm, the smooth inner wall the outer section sits on; under the 1.7 the panel leaves
+MIN_CORNER = 2.0  # mm, corner radius of the deepest inset outlines (foot, panel)
+SECTION_OVERLAP = 0.3  # mm adjoining pieces reach into each other, so the union closes
+RIB_RECESS = 0.5  # mm the cross ribs stop short of the band's edge
+SECTION_SEGMENTS = 4  # segments per corner of the swept outer section
+
+
+def fillet_pts(prev, corner, nxt, r):
+    """Three points rounding the corner of a polyline in (d, z) with radius r."""
+    c = Vector(corner)
+    a, b = (Vector(prev) - c).normalized(), (Vector(nxt) - c).normalized()
+    half = a.angle(b) / 2
+    t = r / math.tan(half)
+    centre = c + (a + b).normalized() * (r / math.sin(half))
+    mid = centre + (c - centre).normalized() * r
+    return [tuple(c + a * t), tuple(mid), tuple(c + b * t)]
 
 
 def offset_outline(pts, dx, dz):
@@ -1049,14 +1064,14 @@ def weighted_normals(mesh, name):
     return result
 
 
-def shell(outers, inner_at, grow=0.0):
+def shell(outers, inner_at, grow=0.0, segments=CORNER_SEGMENTS):
     """Wall ring through outer rounded rectangles (hx, hy, r, z), bottom to top,
     closed by the tapered inner face moved out by grow (mm)."""
     bm = bmesh.new()
-    loops = [[(m(x), m(y), m(z)) for x, y in rr_outline(ox, oy, r)] for ox, oy, r, z in outers]
+    loops = [[(m(x), m(y), m(z)) for x, y in rr_outline(ox, oy, r, segments)] for ox, oy, r, z in outers]
     for z in (outers[-1][3], outers[0][3]):
         ix, iy, ir = inner_at(z)
-        loops.append([(m(x), m(y), m(z)) for x, y in rr_outline(ix + grow, iy + grow, ir + grow)])
+        loops.append([(m(x), m(y), m(z)) for x, y in rr_outline(ix + grow, iy + grow, ir + grow, segments)])
     loft(bm, loops, closed=True)
     return bm
 
@@ -1109,9 +1124,11 @@ def clean_slivers(mesh):
     bm.free()
 
 
-def rounded_mesh(bm, name, mat, round_mm):
+def rounded_mesh(bm, name, mat, round_mm, plain=None):
     """Mesh from bm with every edge sharper than SHARP_ANGLE rounded after the
-    union, so the joints of the pieces are rounded too."""
+    union, so the joints of the pieces are rounded too. plain: a bmesh added
+    after the rounding, unrounded, for thin parts whose rounding would cost more
+    vertices than it shows."""
     scene = bpy.context.scene
     mesh = bpy.data.meshes.new("tmp.round")
     bm.to_mesh(mesh)
@@ -1129,6 +1146,17 @@ def rounded_mesh(bm, name, mat, round_mm):
     bpy.data.objects.remove(obj)
     bpy.data.meshes.remove(mesh)
     clean_slivers(result)
+    if plain is not None:
+        bmesh.ops.recalc_face_normals(plain, faces=plain.faces[:])
+        tmp = bpy.data.meshes.new("tmp.plain")
+        plain.to_mesh(tmp)
+        plain.free()
+        both = bmesh.new()
+        both.from_mesh(result)
+        both.from_mesh(tmp)
+        both.to_mesh(result)
+        both.free()
+        bpy.data.meshes.remove(tmp)
     result.name = name
     result.materials.clear()
     result.materials.append(mat)
@@ -1153,6 +1181,78 @@ def inner_wall(bx):
     return at
 
 
+def box_section(H):
+    """The measured outer section of the wall as (inset from the outline, z) in
+    mm, from the floor up: foot, band, rounded edge, shoulder, sloped panel,
+    second flange, upper wall, top flange (box_shape, roadmap 0004)."""
+    s = RACK["box_shape"]
+    tf, sf, sh, bd, ft = s["top_flange"], s["second_flange"], s["shoulder"], s["band"], s["foot"]
+    panel = s["panel_bottom_reach"]
+    band_top = ft["height"] + bd["height"]
+    flange_bottom = H - sf["top_below_rim"] - sf["thickness"]
+    pts = [(ft["reach"], 0), (ft["reach"], ft["height"]), (0, ft["height"])]
+    pts += fillet_pts((0, ft["height"]), (0, band_top), (panel, band_top + sh["height"]), sh["edge_radius"])
+    pts += [(panel, band_top + sh["height"]), (sf["reach"], flange_bottom), (0, flange_bottom),
+            (0, flange_bottom + sf["thickness"]), (tf["reach"], flange_bottom + sf["thickness"]),
+            (tf["reach"], H - tf["thickness"]), (0, H - tf["thickness"]), (0, H)]
+    return pts
+
+
+def plate_z(bm, centre, along, length, thick, z0, z1):
+    """Thin upright plate (mm) centred on centre, its length along the unit
+    vector along, from z0 to z1."""
+    a = Vector((along[0], along[1])).normalized()
+    n = Vector((-a.y, a.x))
+    c = Vector(centre)
+    pts = [c + a * (sa * length / 2) + n * (sn * thick / 2) for sa, sn in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
+    loft(bm, [[(m(p.x), m(p.y), m(z)) for p in pts] for z in (z0, z1)], closed=False)
+
+
+def cross_ribs(X, Y, R):
+    """The ribs across the bottom band's channel, from the band wall to the
+    foot: evenly spaced on each side and one diagonal in each corner."""
+    s = RACK["box_shape"]
+    cr, bd, ft = s["cross_ribs"], s["band"], s["foot"]
+    d0, d1 = bd["wall"] - SECTION_OVERLAP, ft["reach"] + SECTION_OVERLAP
+    z0, z1 = ft["height"] + RIB_RECESS, ft["height"] + bd["height"] + SECTION_OVERLAP
+    t = cr["thickness"]
+    bm = bmesh.new()
+    for sx in (-1, 1):
+        for i in range(cr["long_side"]):
+            y = -Y + 2 * Y * (i + 1) / (cr["long_side"] + 1)
+            plate_z(bm, (sx * (X - (d0 + d1) / 2), y), (1, 0), d1 - d0, t, z0, z1)
+    for sy in (-1, 1):
+        for i in range(cr["short_side"]):
+            x = -X + 2 * X * (i + 1) / (cr["short_side"] + 1)
+            plate_z(bm, (x, sy * (Y - (d0 + d1) / 2)), (0, 1), d1 - d0, t, z0, z1)
+    # Diagonal: from the foot's corner arc to the band wall's, along the bisector.
+    r_out, r_in = max(R - bd["wall"], MIN_CORNER), max(R - ft["reach"], MIN_CORNER)
+    k = 1 / math.sqrt(2)
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            c_out = Vector((X - bd["wall"] - r_out, Y - bd["wall"] - r_out))
+            c_in = Vector((X - ft["reach"] - r_in, Y - ft["reach"] - r_in))
+            p_out = c_out + Vector((k, k)) * (r_out + SECTION_OVERLAP)
+            p_in = c_in + Vector((k, k)) * (r_in - SECTION_OVERLAP)
+            mid = (p_out + p_in) / 2
+            plate_z(bm, (sx * mid.x, sy * mid.y), (sx, sy), (p_out - p_in).length, t, z0, z1)
+    return bm
+
+
+WEB_BITE = 0.6  # mm a web, post or block reaches into the wall behind it
+
+
+def corner_outline(X, Y, R, d, sx, sy):
+    """The corner of the box outline inside the square d x d at the corner
+    (sx, sy): the outline's own arc outside, square inside (mm)."""
+    k = 4
+    pts = [(X, Y - d), (X, Y - R)]
+    pts += [(X - R + R * math.cos(math.radians(90 * i / k)), Y - R + R * math.sin(math.radians(90 * i / k)))
+            for i in range(1, k)]
+    pts += [(X - R, Y), (X - d, Y), (X - d, Y - d)]
+    return [(sx * x, sy * y) for x, y in pts]
+
+
 def cycle_box(bx, mat, name):
     """NextGen 2.0 Cycle box after box_shape; origin at the front bottom centre."""
     s = RACK["box_shape"]
@@ -1162,15 +1262,38 @@ def cycle_box(bx, mat, name):
     R = s["corner_radius"]
     inner = inner_wall(bx)
     floor_z = H - bx["inner_height"]
-    rim0 = H - s["rim_band"]
-    collar0 = rim0 - s["collar"]
-    ledge0 = collar0 - s["ledge"]
-    foot1 = s["foot_band"]
-    p, cr = s["panel_recess"], s["collar_recess"]
+    tf, sf, bd, ft = s["top_flange"], s["second_flange"], s["band"], s["foot"]
+    band_top = ft["height"] + bd["height"]
+    panel_bottom = band_top + s["shoulder"]["height"]
+    panel_top = H - sf["top_below_rim"] - sf["thickness"]  # underside of the second flange
+    upper0 = H - sf["top_below_rim"]  # top face of the second flange
+    upper1 = H - tf["thickness"]  # underside of the top flange
+    low, high, top = s["panel_bottom_reach"] + WEB_BITE, sf["reach"] + WEB_BITE, tf["reach"] + WEB_BITE
+
+    def depths(z0):
+        """(z, inset) a web or post follows from z0 up to the top flange: into the
+        sloped panel and the upper wall by WEB_BITE, never through the wall."""
+        if z0 >= panel_top:
+            return [(z0, top), (H - 1, top)]
+        if z0 < panel_bottom:
+            zd = [(z0, low), (panel_bottom, low)]
+        else:
+            zd = [(z0, low + (high - low) * (z0 - panel_bottom) / (panel_top - panel_bottom))]
+        return zd + [(panel_top, high), (panel_top, top), (H - 1, top)]
+
+    def x_web(bm, yc, sx, z0, half):  # web across a long side, outer face on the outline
+        loops = [[(m(sx * (X - d * u)), m(yc + v * half), m(z)) for u, v in ((0, -1), (1, -1), (1, 1), (0, 1))]
+                 for z, d in depths(z0)]
+        loft(bm, loops, closed=False)
+
+    def y_web(bm, xc, sy, z0, half):  # web across a short side
+        loops = [[(m(xc + v * half), m(sy * (Y - d * u)), m(z)) for u, v in ((0, -1), (0, 1), (1, 1), (1, -1))]
+                 for z, d in depths(z0)]
+        loft(bm, loops, closed=False)
+
     body = bmesh.new()
-    fx, fy, _ = inner(floor_z)
-    # The smooth inner wall and floor as one tapered tub; the outer bands hide
-    # their inner faces in its wall, so no band joint shows inside the box.
+    # The smooth inner wall and floor as one tapered tub; the outer section hides
+    # its inner faces in its wall, so no joint shows inside the box.
     skin = bmesh.new()
     loops = []
     for (z, grow) in ((0, INNER_SKIN), (H, INNER_SKIN)):
@@ -1188,46 +1311,48 @@ def cycle_box(bx, mat, name):
     skin.faces.new(vs[0][::-1])
     skin.faces.new(vs[-1])
     merge(body, skin, 0)
-    ch = s["foot_chamfer"]
-    # Outer profile from the floor up: foot, lit chamfer, panel, ledge lip, collar, rim.
-    profile_ = ((1, 0), (1, foot1), (p, foot1 + ch), (p, ledge0), (0, ledge0), (0, collar0),
-                (cr, collar0), (cr, rim0), (0, rim0), (0, H))
-    merge(body, shell([(X - d, Y - d, R - d, z) for d, z in profile_], inner, grow=INNER_SKIN / 2), 0)
+    # The measured outer section from the floor up, swept round the outline. The
+    # bottom band is hollow: from the foot's face the outline runs up the open
+    # channel, across its ceiling at the band's top and down the band wall.
+    section = box_section(H)
+    channel = [(ft["reach"], band_top), (bd["wall"], band_top), (bd["wall"], ft["height"])]
+    section = section[:1] + [(ft["reach"], band_top)] + channel[1:] + section[2:]
+    # Four segments a corner: the section has three times the loops of the old
+    # one, and the web export's size limit (web/build.mjs) holds the box to it.
+    merge(body, shell([(X - d, Y - d, max(R - d, MIN_CORNER), z) for d, z in section], inner,
+                      grow=INNER_SKIN / 2, segments=SECTION_SEGMENTS), 0)
     web = s["rib_web"]
-    deep = p + 1  # webs and blocks start buried behind the deepest recess
-
-    def x_web(yc, sx):  # web across a long side, outer face on the envelope
-        out = [(sx * (X - deep / 2) + x, yc + y) for x, y in rr_outline(deep / 2, web / 2, 0.0)]
-        merge(body, prism_z(out, foot1, H - 1), 0)
-
-    def y_web(xc, sy, z0, z1):  # web across a short side
-        out = [(xc + x, sy * (Y - deep / 2) + y) for x, y in rr_outline(web / 2, deep / 2, 0.0)]
-        merge(body, prism_z(out, z0, z1), 0)
-
     half_pair = (s["rib_pair_width"] - web) / 2
     pb = s["pin_block"]
     cutters = bmesh.new()
     hole_depth = 3
     for sx in (-1, 1):
         for sy in (-1, 1):
-            x_web(sy * (Y - s["corner_web"]), sx)
-            y_web(sx * (X - s["corner_web"]), sy, foot1, H - 1)
-            # Pin block in the collar with its round hole.
+            # Corner post from the band up to the rim, filling the corner to the wall.
+            post = bmesh.new()
+            loft(post, [[(m(x), m(y), m(z)) for x, y in corner_outline(X, Y, R, d, sx, sy)]
+                        for z, d in depths(band_top)], closed=False)
+            merge(body, post, 0)
+            x_web(body, sy * (Y - s["corner_web"]), sx, band_top, web / 2)
+            y_web(body, sx * (X - s["corner_web"]), sy, band_top, web / 2)
+            # Pin block between the flanges with its round hole.
             yc = sy * (Y - pb["from_corner"])
-            blk = [(sx * (X - deep / 2) + x, yc + y) for x, y in rr_outline(deep / 2, pb["width"] / 2, 0.0)]
-            merge(body, prism_z(blk, collar0, rim0 + 1), 0)
-            bm_cylinder(cutters, (m(sx * X), m(yc), m((collar0 + rim0) / 2)), m(pb["hole"] / 2),
+            blk = [(sx * (X - top / 2) + x, yc + y) for x, y in rr_outline(top / 2, pb["width"] / 2, 0.0)]
+            merge(body, prism_z(blk, upper0 - SECTION_OVERLAP, upper1 + SECTION_OVERLAP), 0)
+            bm_cylinder(cutters, (m(sx * X), m(yc), m((upper0 + upper1) / 2)), m(pb["hole"] / 2),
                         m(2 * hole_depth), "x", segments=12)
         for yr in s["long_side_rib_pairs"]:
             for d in (-half_pair, half_pair):
-                x_web(-Y + yr + d, sx)
+                x_web(body, -Y + yr + d, sx, band_top, web / 2)
     fw, fh = hd["frame_width"] / 2, hd["frame_height"] / 2
     fz = H - hd["frame_top_below_rim"] - fh
     frame = offset_outline(rr_outline(fw, fh, hd["frame_radius"]), 0, fz)
     iy = inner(fz - fh)[1] - 1  # ends inside the wall at the frame's lowest, narrowest point
     rw = hd["rim_webs"]
-    lip = s["ledge"]
-    # The ledge lip steps round the frame: a shoulder one ledge wide, cut back to the frame face.
+    lip = hd["surround_width"]
+    # A surround one lip wide steps round the frame, flush with the outline, from
+    # the outline into the wall, short of the inner face at the frame's top.
+    surround_depth = Y - inner(fz + fh + lip)[1] - 0.4
     shoulder = offset_outline(rr_outline(fw + lip, fh + lip, hd["frame_radius"] + lip), 0, fz)
     cl = s["clip"]
     band_w = (cl["outer_height"] - hd["pocket_height"]) / 2 - hd["clip_clearance"]  # as clip_ring
@@ -1239,8 +1364,8 @@ def cycle_box(bx, mat, name):
     for sy in (-1, 1):
         merge(body, prism_y(frame, sy * Y, sy * iy), 0)
         for sx in (-1, 1):
-            y_web(sx * (fw - rw["from_frame_edge"]), sy, fz, H - 1)
-        merge(body, prism_y(shoulder, sy * Y, sy * (Y - deep)), 0)
+            y_web(body, sx * (fw - rw["from_frame_edge"]), sy, fz, rw["width"] / 2)
+        merge(body, prism_y(shoulder, sy * Y, sy * (Y - surround_depth)), 0)
         merge(cutters, prism_y(frame, sy * (Y + FRAME_PROUD), sy * (Y + 5)), 0)
         merge(cutters, prism_y(tray, sy * (Y - hd["tray_recess"]), sy * (Y + 4)), 0)
     body = boolean_cut(body, cutters)
@@ -1254,7 +1379,10 @@ def cycle_box(bx, mat, name):
     grip = bmesh.new()
     for sy in (-1, 1):
         merge(grip, prism_y(pocket, sy * (Y + FRAME_PROUD - hd["pocket_depth"]), sy * (Y + 3)), 0)
-    mesh = rounded_mesh(boolean_cut(body, grip), name, mat, BOX_EDGE_ROUND)
+    # The 40 thin cross ribs join the mesh after the rounding, unrounded and
+    # unioned only by overlap: hidden in the band's channel, they would otherwise
+    # cost a quarter of the box's vertices.
+    mesh = rounded_mesh(boolean_cut(body, grip), name, mat, BOX_EDGE_ROUND, plain=cross_ribs(X, Y, R))
     shift = Matrix.Translation((0, m(Y), 0))
     mesh.transform(shift)
     return mesh

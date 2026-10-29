@@ -1,8 +1,8 @@
 # Assembly
 
 How one person builds the rack. Every number is a copy of `design/rack.json`,
-which wins where the two differ, and is provisional until the boxes are
-measured (roadmap 0004). Parts are named by their ID from `design.md` →
+which wins where the two differ; the boxes were measured on 2026-10-28
+(roadmap 0004). Parts are named by their ID from `design.md` →
 *Contracts*; `x`, `y` and `z` are the rack's coordinates (`x` to the right,
 `y` to the back, `z` up, origin on the floor at the front-left frame
 corner). Columns count 1-3 from the left seen from the
@@ -432,10 +432,10 @@ is equal on opposite sides; nothing shows on top.
    along the 400 side from the front. A set fills 266 × 365 (quarter
    266 × 364) of the 265 × 365 inner top (box tolerance ±5). The end walls of
    two inserts stand right behind each handle, a closed grip pocket gripped
-   from outside (`UNVERIFIED` until a box is measured).
+   from outside (`UNVERIFIED`; roadmap 0004 measured the wall, not the handle).
 3. Level 1 takes `box.e220`, levels 2-5 `box.e120`. Fill level 1 first. Each
    box goes in with its short side to the front; push it in until it is
-   centred, 17.5 behind the front and the back face of the frame. Nothing stops
+   centred, 18.5 behind the front and the back face of the frame. Nothing stops
    it there: pushed on, it comes out at the other side.
 
 ![Inserts from above](../renders/inserts_top.png)
@@ -477,9 +477,9 @@ front or to the back it stays on its legs, and it comes out entirely at
   floor puts about 42.5 kg on each, 51 kg with a safety factor of 1.2 (`DERIVED`, see `design.md`).
 - **Tipping:** an empty rack can tip forward (or backward) when a child hangs
   on a pulled-out box: the ASTM F2057-23 test load of 27.2 kg on the edge of
-  one extended box tips it unless about 9.2 kg of LEGO is in the rack
+  one extended box tips it unless about 5.9 kg of LEGO is in the rack
   ([CPSC][cpsc-csu]; `DERIVED`, see `design.md`). The EN 75 N drawer test
-  passes with a factor of 3.03 (`DERIVED`). The brakes stop rolling, not
+  passes with a factor of 3.20 (`DERIVED`). The brakes stop rolling, not
   tipping. Fill the bottom level first and keep the rack loaded, pull one box
   at a time, never more than its 270 mm travel.
 - Never load the rack without the top plate (step 9): without it the middle
@@ -488,8 +488,10 @@ front or to the back it stays on its legs, and it comes out entirely at
 
 ## Open points
 
-1. The box geometry used here (handle grip pocket, rim, ribs, foot width) is
-   read from the product photos (`UNVERIFIED`); roadmap 0004 measures a box.
+1. The box's outer size, flanges, bottom band and foot are measured
+   (`MEASURED` 2026-10-28, roadmap 0004); the handle grip pocket, the ribs on
+   the walls and the corner radii are still read from the product photos
+   (`UNVERIFIED`).
 2. The angle hole positions (11 and 28 from the flat leg and, in the flat leg
    of the base and guard angles, 14 and 32 from the upright face, all 15 from
    each end) are a proposal (`UNVERIFIED`).
@@ -500,7 +502,7 @@ front or to the back it stays on its legs, and it comes out entirely at
    M5 angle screws and the load the angle joints hold are estimates
    (`UNVERIFIED`, `design.md` → *Joints*).
 5. A free-standing rack used by children tips under the 27.2 kg child test
-   unless about 9.2 kg of LEGO is in it (`DERIVED`); a wall strap would
+   unless about 5.9 kg of LEGO is in it (`DERIVED`); a wall strap would
    remove that limit, but a strapped rack no longer opens at the back. To be
    decided by the user.
 
