@@ -59,6 +59,7 @@ sorted by ID; the order of work follows from the status.
 | 0021 | [Model size](#0021-model-size)                               | Done                 | [#27](https://github.com/countzero/lego_eurobox_rack/pull/27) |
 | 0022 | [Switch to motedis](#0022-switch-to-motedis)                 | Done                 | [#28](https://github.com/countzero/lego_eurobox_rack/pull/28) |
 | 0023 | [Angle-bracket frame](#0023-angle-bracket-frame)             | Done                 | [#30](https://github.com/countzero/lego_eurobox_rack/pull/30) |
+| 0024 | [Real profiles and castors](#0024-real-profiles-and-castors) | Planned              |                                                               |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -734,3 +735,36 @@ the 125 mm one first read for this step.
 **Open:** the rated load of motedis' hammer nuts; the alloy of the angles; the delivery time of
 the hammer nuts and brackets, which motedis' shop data shows two ways; whether
 the box underside is flat or stepped (0004).
+## 0024 Real profiles and castors
+
+**Goal:** the frame's profiles and the castors drawn as motedis makes them, and
+their surfaces as anodised aluminium, zinc-plated steel, polypropylene and
+polyurethane, so the renders show the parts that are bought.
+
+**Delivers:** `design/rack.json` (`frame.profile.section`, `frame.slot`,
+`frame.castor.shape`), `blender/build_rack.py`, `blender/rack.blend`,
+`renders/*.png`, `web/rack.glb`, `docs/design.md` (*Model objects and the
+web export*, material names), `docs/roadmap.md`.
+
+**Acceptance:**
+
+- Every 30 × 30 profile has motedis' section from its CAD file
+  `P30_N8_B.stp`: the slots with their lips, undercut and V-shaped floor, the
+  R2 corners, the four corner chambers and the core bore; the build reads the
+  section from `rack.json`, given once for an eighth of the outline.
+- The castor is drawn from motedis' CAD file `Motedis_06.07.02.stp`: the
+  head with the ball race, the fork bent from one sheet with its round back and
+  two side plates, the axle with its nuts, the wheel with a polypropylene centre
+  and a polyurethane tread, the brake lever and its pedal; one mesh with a
+  material per surface, so node names, extras and part counts stay.
+- Materials: the profiles, angles, brackets and plates satin anodised
+  aluminium; the castor fork, axle and lever zinc-plated steel (`steel`); the
+  tread `castor`, the centre `castor_hub`, the pedal black plastic.
+- `build_rack.py` runs headless and a second run gives the same
+  `web/rack.glb`; `npm --prefix web run build` runs clean and the glb
+  deflated stays at or below 110 kB.
+- Every new shape value names its status; the pull request lists the
+  `sources.md` rows to add on merge.
+
+**Open:** the castor's shape between the measured points is drawn by eye; the
+small fillets of the profile (R0.2, R0.5) are left out.
