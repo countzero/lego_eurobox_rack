@@ -3,6 +3,21 @@
 This changelog follows [Common Changelog](https://common-changelog.org) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-10-29
+
+_First release whose box dimensions are measured. Still not ready to build: the angle joints hold on an estimated tightening torque, and an empty rack can tip when a child hangs on a pulled-out box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._
+
+_Upgrade note: the boxes are 398 × 298 mm at the rim, not 400 × 300 mm, and stand 18.5 mm behind the front instead of 17.5 mm. The frame does not change, so bought profiles, angles, plates and castors stay valid. The tipping figures in the design and assembly guide are corrected: the EN 14749 drawer test passes with factor 3.20 instead of 3.03, and about 5.9 kg of LEGO instead of 9.2 kg keep the child test from tipping the rack._
+
+### Changed
+
+- **Breaking:** draw the boxes from the measured section: 398 × 298 mm at the rim, two 2 mm flanges, a side panel sloping from 14 to 17 mm in, a hollow 17 mm bottom band with 1 mm cross ribs, and a flat 264 × 364 mm foot 5 mm high; the foot keeps 13 mm on each flat leg with the box centred and 7 mm pushed to one side, which the user accepted in place of 15 mm, and the frame stays as it is ([#32](https://github.com/countzero/lego_eurobox_rack/pull/32))
+- Draw the 30 × 30 profiles with motedis' section from its CAD file (slot lips, undercut and V floor, R2 corners) and the castor 06.07.02 after its CAD file, one mesh with a material per surface; the aluminium is clear anodised and satin, the steel bright zinc ([#33](https://github.com/countzero/lego_eurobox_rack/pull/33))
+
+### Fixed
+
+- Correct the tipping lever in the design and assembly guide, left from the 125 mm castor since 0023 ([#32](https://github.com/countzero/lego_eurobox_rack/pull/32))
+
 ## [0.7.0] - 2026-10-26
 
 _Not ready to build: the box dimensions are provisional until the boxes are measured, the angle joints hold on an estimated tightening torque, and an empty rack can tip when a child hangs on a pulled-out box ([roadmap](https://github.com/countzero/lego_eurobox_rack/blob/main/docs/roadmap.md))._

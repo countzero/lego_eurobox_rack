@@ -40,7 +40,7 @@ sorted by ID; the order of work follows from the status.
 | 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1)   |
 | 0002 | [Rack specification](#0002-rack-specification)               | Done                 | [#2](https://github.com/countzero/lego_eurobox_rack/pull/2)   |
 | 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Done                 | [#6](https://github.com/countzero/lego_eurobox_rack/pull/6)   |
-| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Waiting for the user |                                                               |
+| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Done                 | [#32](https://github.com/countzero/lego_eurobox_rack/pull/32) |
 | 0005 | [Insert plan](#0005-insert-plan)                             | Done                 | [#4](https://github.com/countzero/lego_eurobox_rack/pull/4)   |
 | 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Done                 | [#3](https://github.com/countzero/lego_eurobox_rack/pull/3)   |
 | 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8)   |
@@ -59,6 +59,7 @@ sorted by ID; the order of work follows from the status.
 | 0021 | [Model size](#0021-model-size)                               | Done                 | [#27](https://github.com/countzero/lego_eurobox_rack/pull/27) |
 | 0022 | [Switch to motedis](#0022-switch-to-motedis)                 | Done                 | [#28](https://github.com/countzero/lego_eurobox_rack/pull/28) |
 | 0023 | [Angle-bracket frame](#0023-angle-bracket-frame)             | Done                 | [#30](https://github.com/countzero/lego_eurobox_rack/pull/30) |
+| 0024 | [Real profiles and castors](#0024-real-profiles-and-castors) | Done                 | [#33](https://github.com/countzero/lego_eurobox_rack/pull/33) |
 
 0003, 0005, 0006, 0007, 0008 and 0009 write disjoint files and run in one wave
 once 0002 is *Done*, each in its own worktree. They agree through the contracts
@@ -133,24 +134,42 @@ and the export for the web viewer.
 
 ## 0004 Measure the boxes
 
-**Goal:** the numbers no maker publishes, so the angles and clearances rest on
-measurements.
+**Goal:** the numbers no maker publishes, measured on the NextGen 2.0 boxes
+the rack holds, so the angles and clearances rest on measurements.
 
-**Delivers:** measured values in `docs/sources.md` and corrections to
-`design/rack.json`.
+**Delivers:** `design/rack.json`, `blender/build_rack.py`,
+`blender/rack.blend`, `renders/*.png`, `web/rack.glb`, `docs/design.md`,
+`docs/assembly.md`, `docs/roadmap.md`, `README.md`.
 
 **Acceptance:**
 
-- With a caliper, on one NextGen 2.0 and one Auer EG box of each height: rim
-  width and length, foot width and length at the bearing line, foot height,
-  rim overhang, real height.
-- Or the makers' written answer (Müller & Sohn for NextGen,
-  info@kunststoffe-mueller.de; Auer).
-- One Auer EK 2/100 tried in a NextGen 120 box.
+- Measured by the user on a C2G43-12 and a C2G43-22 (2026-10-28): the outer
+  size at the rim (398 × 298), the height with the foot (120, 220), the
+  section of the wall from rim to foot (flanges, panel, shoulder, bottom band,
+  cross ribs) and the foot (the flat floor 264 × 364, 5 high, 17 in from the
+  outline); every value is `MEASURED`, `DERIVED` or `UNVERIFIED` in
+  `rack.json` and `docs/design.md`.
+- The frame stays (the user's option A): 310 between the hanging legs, 238
+  between the leg tips. `foot_width_min` is 264 in place of 282: 13 on each
+  leg centred, at least 7 pushed to one side, the user's agreement in place of
+  the 15 of 0022. The box envelope (rim 296–305 × 394–405) is unchanged.
+- The boxes stand centred at `y` 18.5 ((435 - 398) / 2), spanning
+  18.5–416.5; *Fit check* and *Loads* follow, the tipping lever corrected to
+  the 75 mm castor of 0023 on the way.
+- The model draws the measured section; the build stops unless every box is
+  398 × 298 × its height at the rim, the inner top is 365 × 265 and no insert
+  reaches through a box wall.
+- `build_rack.py` runs headless and a second run gives the same files;
+  `npm --prefix web run build` runs clean and `web/rack.glb` deflated stays at
+  or below 110 kB. The pull request reports its size.
+- The pull request lists the `sources.md` rows to add on merge and the rows
+  they supersede.
 
-**Open:** every value above, and whether the box underside is flat or has a
-stacking step, and its height; until then the design uses the envelope of
-`docs/design.md`.
+**Open:** the relief on the walls (rib pairs, corner webs, pin blocks), the
+handle (frame, tray, grip pocket), the corner radii and whether the foot's
+face is flush with the panel's bottom stay read from the photos
+(`UNVERIFIED`). Auer boxes and inserts are no longer tried: the rack takes
+NextGen 2.0 boxes only since 0022.
 
 ## 0005 Insert plan
 
@@ -716,3 +735,36 @@ the 125 mm one first read for this step.
 **Open:** the rated load of motedis' hammer nuts; the alloy of the angles; the delivery time of
 the hammer nuts and brackets, which motedis' shop data shows two ways; whether
 the box underside is flat or stepped (0004).
+## 0024 Real profiles and castors
+
+**Goal:** the frame's profiles and the castors drawn as motedis makes them, and
+their surfaces as anodised aluminium, zinc-plated steel, polypropylene and
+polyurethane, so the renders show the parts that are bought.
+
+**Delivers:** `design/rack.json` (`frame.profile.section`, `frame.slot`,
+`frame.castor.shape`), `blender/build_rack.py`, `blender/rack.blend`,
+`renders/*.png`, `web/rack.glb`, `docs/design.md` (*Model objects and the
+web export*, material names), `docs/roadmap.md`.
+
+**Acceptance:**
+
+- Every 30 × 30 profile has motedis' section from its CAD file
+  `P30_N8_B.stp`: the slots with their lips, undercut and V-shaped floor, the
+  R2 corners, the four corner chambers and the core bore; the build reads the
+  section from `rack.json`, given once for an eighth of the outline.
+- The castor is drawn from motedis' CAD file `Motedis_06.07.02.stp`: the
+  head with the ball race, the fork bent from one sheet with its round back and
+  two side plates, the axle with its nuts, the wheel with a polypropylene centre
+  and a polyurethane tread, the brake lever and its pedal; one mesh with a
+  material per surface, so node names, extras and part counts stay.
+- Materials: the profiles, angles, brackets and plates satin anodised
+  aluminium; the castor fork, axle and lever zinc-plated steel (`steel`); the
+  tread `castor`, the centre `castor_hub`, the pedal black plastic.
+- `build_rack.py` runs headless and a second run gives the same
+  `web/rack.glb`; `npm --prefix web run build` runs clean and the glb
+  deflated stays at or below 110 kB.
+- Every new shape value names its status; the pull request lists the
+  `sources.md` rows to add on merge.
+
+**Open:** the castor's shape between the measured points is drawn by eye; the
+small fillets of the profile (R0.2, R0.5) are left out.

@@ -13,8 +13,8 @@
         "footprint": "400 x 300, short side with the handle at the front",
         "rim_width": { "min": 296, "max": 305 },
         "rim_length": { "min": 394, "max": 405 },
-        "foot_width_min": 282,
-        "foot_width_status": "UNVERIFIED: chosen so a foot keeps 15 mm on each flat leg when the box is pushed fully to one side, (282 - 238) / 2 - 7 = 15; the NextGen foot is about 298 in the model (box_shape), read from photos; roadmap 0004 measures it",
+        "foot_width_min": 264,
+        "foot_width_status": "MEASURED 2026-10-28 on a NextGen 2.0 box (roadmap 0004): the flat floor it stands on is 264 x 364, 298 - 2 x 17. On the 238 between the leg tips it keeps (264 - 238) / 2 = 13 on each flat leg centred and 13 - (310 - 298) / 2 = 7 pushed fully to one side (6 for a 296 rim); the user accepted this in place of the 15 of roadmap 0022 (option A, frame unchanged). The bottom band, 5 above the foot's underside, catches the box should it ever slip",
         "height_classes": {
             "120": { "nominal": 120, "max": 125 },
             "220": { "nominal": 220, "max": 233 }
@@ -22,20 +22,23 @@
         "excluded": ["every box but NextGen 2.0 400 x 300", "600 x 400 boxes", "Wibo", "keeeper / OKT Robusto"]
     },
     "box_models": {
-        "cycle_120": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2G43-12", "class": "120", "length": 400, "width": 300, "height": 120, "inner_length": 365, "inner_width": 265, "inner_height": 115, "inner_floor_length": 359, "inner_floor_width": 259, "volume_l": 11, "mass_g": 800 },
-        "cycle_220": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2G43-22", "class": "220", "length": 400, "width": 300, "height": 220, "inner_length": 365, "inner_width": 265, "inner_height": 215, "inner_floor_length": 354, "inner_floor_width": 254, "volume_l": 20, "mass_g": 1180 }
+        "outer_status": "length and width MEASURED 2026-10-28 by the user on a C2G43-12 and a C2G43-22: 398 x 298 at the rim, height 120 and 220 with the foot; aidB states 400 x 300 (VERIFIED) within +-5",
+        "cycle_120": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2G43-12", "class": "120", "length": 398, "width": 298, "height": 120, "inner_length": 365, "inner_width": 265, "inner_height": 115, "inner_floor_length": 359, "inner_floor_width": 259, "volume_l": 11, "mass_g": 800 },
+        "cycle_220": { "maker": "Mueller & Sohn", "vendor": "aidB", "article": "C2G43-22", "class": "220", "length": 398, "width": 298, "height": 220, "inner_length": 365, "inner_width": 265, "inner_height": 215, "inner_floor_length": 354, "inner_floor_width": 254, "volume_l": 20, "mass_g": 1180 }
     },
     "model_boxes": { "120": "cycle_120", "220": "cycle_220" },
     "box_shape": {
-        "status": "UNVERIFIED, read from the aidB product photos of the closed-handle C2G43-12; the inner floor is SECONDARY (inner_floor_status); roadmap 0004 measures a box. aidB states 'glatter Boden' for every 400 x 300 NextGen box, 'ideal fuer den Einsatz auf Rollbahnen' (VERIFIED 2026-10-26), so the underside is flat and the foot band below is the stacking step at the edge, not a raised floor; its width and step stay UNVERIFIED",
+        "status": "The outer wall section is MEASURED 2026-10-28 by the user on a C2G43-12 and a C2G43-22 (roadmap 0004), both alike but for the height; the user's photos of the underside show the hollow bottom band and its cross ribs. Every reach is in from the 298 x 398 outline unless named otherwise. The ribs and webs on the walls, the pin blocks, the handle and the corner radii stay UNVERIFIED, read from aidB's product photos; the inner floor is SECONDARY (inner_floor_status). aidB states 'glatter Boden' (VERIFIED 2026-10-26): the box stands on its flat floor, the foot",
         "colour": "neutral dark grey, about sRGB #3F3F3F on the lit faces of the photo",
-        "rim_band": 6,
-        "collar": 31,
-        "ledge": 3,
-        "foot_band": 18,
-        "foot_chamfer": 4,
-        "panel_recess": 6,
-        "collar_recess": 5,
+        "top_flange": { "thickness": 2, "reach": 13, "rim_top_width": 16, "note": "at the rim, out to the outline; the wall below it stands 13 in (reach); the rim top measures about 16 across, MEASURED, so the wall under the rim is about 3.5, DERIVED from aidB's 265 inner top: (298 - 265) / 2 - 13" },
+        "second_flange": { "top_below_rim": 30, "thickness": 2, "reach": 14, "note": "its top face 30 below the rim, out to the outline, 14 out from the side panel below it" },
+        "panel_bottom_reach": 17,
+        "panel_status": "DERIVED: the side panel slopes from 14 in under the second flange to 17 in at the shoulder, the reach of the bottom band; 53 high on the 120 box, 153 on the 220 box (height - 30 - 2 - 13 - 17 - 5)",
+        "shoulder": { "height": 13, "edge_radius": 2, "note": "slopes from the panel out to the bottom band; rounded about R2 where it meets the band's outer face (the user's estimate)" },
+        "band": { "height": 17, "wall": 4, "note": "the bottom band: its outer face on the outline from 5 to 22 above the floor, a wall 4 thick; hollow and open towards the floor, a channel 13 wide between the wall and the foot; the model closes the channel at the band's top" },
+        "foot": { "height": 5, "reach": 17, "note": "the flat floor the box stands on, 264 x 364, 5 below the band's edge, its face flush with the bottom of the side panel (flush is UNVERIFIED, an assumption)" },
+        "cross_ribs": { "thickness": 1, "long_side": 11, "short_side": 7, "corner": 1, "note": "across the band's channel from the wall to the foot, evenly spaced, 11 on each long side and 7 on each short side, and one diagonal rib in each corner" },
+        "corner_posts": "UNVERIFIED, read from aidB's product photo: each corner is solid from the bottom band up to the rim, its faces on the outline; the model fills the corner as deep as the section's recess",
         "rib_web": 2.5,
         "rib_pair_width": 16,
         "corner_web": 24,
@@ -43,12 +46,20 @@
         "corner_radius": 8,
         "inner_corner_radius": 6,
         "inner_floor_status": "box_models inner_floor_*: the inner wall tapers from the inner top to the floor. 120: SECONDARY, 359 x 259 is the inner floor of Bito XL43121 and Utz RAKO 400 x 300 x 120, and aidB's insert sets need at least 358 x 258. 220: DERIVED, the same wall slope over 215 instead of 115, 365 - 6 x 215 / 115 = 354",
-        "long_side_rib_pairs": [103, 297],
-        "handle": { "sides": "both short sides", "handles": "closed: a grip pocket, not an opening through the wall", "pocket_width": 116, "pocket_height": 24, "pocket_top_below_rim": 28, "pocket_radius": 6, "pocket_depth": 12, "lip_width": 2, "clip_clearance": 3, "frame_width": 145, "frame_height": 50, "frame_top_below_rim": 15, "frame_radius": 12, "tray_recess": 8, "rim_webs": { "from_frame_edge": 6, "width": 2.5 } },
+        "long_side_rib_pairs": [102, 296],
+        "handle": { "sides": "both short sides", "handles": "closed: a grip pocket, not an opening through the wall", "pocket_width": 116, "pocket_height": 24, "pocket_top_below_rim": 28, "pocket_radius": 6, "pocket_depth": 12, "lip_width": 2, "clip_clearance": 3, "frame_width": 145, "frame_height": 50, "frame_top_below_rim": 15, "frame_radius": 12, "surround_width": 3, "tray_recess": 8, "rim_webs": { "from_frame_edge": 6, "width": 2.5 } },
         "clip": { "outer_width": 145, "outer_height": 50, "thickness": 2, "outer_radius": 12, "inner_radius": 6, "covers": "the face of the handle frame, round the grip pocket" }
     },
     "frame": {
-        "profile": { "section": 30, "type": "30x30 B-type slot 8" },
+        "profile": {
+            "section": 30,
+            "type": "30x30 B-type slot 8",
+            "outline": {
+                "eighth": [[5.485, 0], [6, 0.9], [6, 4.204], [10.05, 8.25], [12.8, 8.25], [12.8, 4.0], [14.5, 4.0], [14.5, 4.5], [15, 4.5], [15, 13]],
+                "corner_radius": 2,
+                "status": "MEASURED 2026-10-29 in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), the end face: eighth is one eighth of the outline from the V floor of the slot on the +x face to the start of the outer corner, centred on the profile axis, mirrored about the diagonal and turned four times; the R0.2 and R0.5 fillets are left out and their corners drawn at the lines' intersections; the outer corners R2. The file also has four corner chambers and the 7.3 core bore; the model leaves them out and closes the ends, since every profile end is covered by an end cap or stands against another profile"
+            }
+        },
         "columns": 3,
         "bay_clear_width": 318,
         "width": 1074,
@@ -78,7 +89,15 @@
                 "brake": 81.2,
                 "status": "DERIVED, the wheel: 24 + 37.5 in its plane, half the tread across, sqrt(61.5 squared + 12.5 squared). MEASURED, the brake: the farthest vertex of fork and pedal in the CAD file, 20 to 30 below the mounting face. Swept about the bolt at 45 in, the wheel passes the frame outline by 17.8 and the brake by 36.2, both below the castor plate at 100 and clear of every other part"
             },
-            "at": "under a castor plate at each corner, centre 45 from both outer faces"
+            "at": "under a castor plate at each corner, centre 45 from both outer faces",
+            "shape": {
+                "head": { "profile": [[5.5, 100], [10.75, 100], [11.75, 99], [11.75, 96.5], [17, 94.5], [20.6, 92.5], [21.7, 90], [21.7, 88.85], [5.5, 88.85]], "note": "(radius, height above the floor) revolved about the bolt axis: the boss with the 11 back hole and the swivel's ball race, down to the underside of the 11.15 metal at the hole" },
+                "fork": { "back_radius": 21.5, "sheet": 1.75, "back_bottom": 34, "top": 88.85, "plate_front": 30, "eye_radius": 8, "note": "one sheet: a half cylinder round the bolt axis on the side away from the wheel, and two flat side plates, 1.75 thick with their outer faces 21.5 from the middle, from it to the axle, each ending in a round eye about the axle" },
+                "axle": { "diameter": 6, "head_diameter": 11.6, "head_thickness": 1.5 },
+                "wheel": { "tread_half": [[0, 37.5], [4, 37.39], [8, 37.07], [12.45, 35.3], [12.45, 30], [10, 27]], "hub_half": [[10, 27], [7, 24], [7, 13], [10, 10], [10, 5]], "spacer_radius": 5, "note": "(along the axle from the wheel's middle, radius), mirrored about the middle and revolved about the axle: the polyurethane tread and the polypropylene centre; spacers from the hub to the fork's side plates" },
+                "brake": { "plate_x": [14, 15.75], "plate_y": [10, 64], "plate_z": [72, 82], "shoe": { "half_width": 15.75, "y": [14, 40], "z": [77, 84] }, "pedal": { "half_width": 14, "y": [60, 79.9], "z": [70, 78] }, "note": "the lever's two plates beside the wheel, the shoe across them over the tread, the pedal at their far end, y along the wheel's trail" },
+                "status": "MEASURED 2026-10-29 in motedis' CAD file Motedis_06.07.02.stp: the boss 23.5 across at the face (boss_diameter), the ball race radius 21.7, the fork's round back radius 21.5 in a 1.75 sheet from about 34 above the floor up to the head, its side plates at 19.75-21.5 from the middle, the axle 6.1 with heads 11.6, an eye of radius 8 about the axle, the tread 37.5 in radius and 25 wide with R7.2 shoulders, the hub's rim at radius 24-27, the brake lever plates 14-15.75 from the middle and the pedal 28 wide reaching 79.9 from the bolt axis. The outline of the fork's side plates, the hub's recess, the brake shoe and the head's profile between the measured radii are drawn by eye after motedis' photo (UNVERIFIED)"
+            }
         },
         "castor_plate": {
             "part": "plate.castor",
@@ -111,7 +130,7 @@
             "depth": 9,
             "undercut": 16.5,
             "core_bore": 7.3,
-            "status": "VERIFIED, measured in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), 2026-10-26: opening 8.0 at its narrowest, lip 2.2, slot 9.0 deep, undercut 16.5 wide, core bore 7.3. The model draws the slot 8 wide and 6 deep without the undercut"
+            "status": "VERIFIED, measured in motedis' CAD file P30_N8_B.stp (30x30 B-Type Slot 8.zip), 2026-10-26: opening 8.0 at its narrowest, lip 2.2, slot 9.0 deep, undercut 16.5 wide, core bore 7.3. The model draws the slot as the CAD file has it (frame.profile.outline)"
         },
         "section": {
             "area": 313.9,
@@ -191,7 +210,7 @@
         { "level": 5, "class": "120", "floor": 798, "angle": "angle.support" }
     ],
     "tip_guard": { "flat_leg_bottom": 931, "angle": "angle.guard" },
-    "box_position": { "front_y": 17.5, "note": "centred in the 435 depth; no back stop" },
+    "box_position": { "front_y": 18.5, "note": "centred in the 435 depth, (435 - 398) / 2; no back stop" },
     "pull_out": { "travel": 270, "removal": 400, "sides": ["front", "back"] },
     "outer": { "width": 1074, "depth": 435, "height": 965 },
     "explode": {

@@ -20,9 +20,10 @@ the rack, pull the boxes out, draw it apart, pick the ColorClip colours.
 ![The rack drawn apart: every profile, angle, bracket, screw and nut, the boxes pulled out to the front](renders/exploded.png)
 
 > [!WARNING]
-> Not ready to build. The box geometry is provisional until the boxes are
-> measured (roadmap 0004). The [roadmap](docs/roadmap.md) says what is planned
-> and how far each step has got.
+> Not ready to build. The boxes are measured (roadmap 0004), but the angle
+> joints hold on an estimated tightening torque, and an empty rack can tip
+> when a child hangs on a pulled-out box. The [roadmap](docs/roadmap.md) says
+> what is planned and how far each step has got.
 
 ## Front view
 
