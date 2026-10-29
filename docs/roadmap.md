@@ -40,7 +40,7 @@ sorted by ID; the order of work follows from the status.
 | 0001 | [Repository and roadmap](#0001-repository-and-roadmap)       | Done                 | [#1](https://github.com/countzero/lego_eurobox_rack/pull/1)   |
 | 0002 | [Rack specification](#0002-rack-specification)               | Done                 | [#2](https://github.com/countzero/lego_eurobox_rack/pull/2)   |
 | 0003 | [Blender model and renders](#0003-blender-model-and-renders) | Done                 | [#6](https://github.com/countzero/lego_eurobox_rack/pull/6)   |
-| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | In progress          |                                                               |
+| 0004 | [Measure the boxes](#0004-measure-the-boxes)                 | Done                 | [#32](https://github.com/countzero/lego_eurobox_rack/pull/32) |
 | 0005 | [Insert plan](#0005-insert-plan)                             | Done                 | [#4](https://github.com/countzero/lego_eurobox_rack/pull/4)   |
 | 0006 | [Parts and cut list](#0006-parts-and-cut-list)               | Done                 | [#3](https://github.com/countzero/lego_eurobox_rack/pull/3)   |
 | 0007 | [Price comparison](#0007-price-comparison)                   | Done                 | [#8](https://github.com/countzero/lego_eurobox_rack/pull/8)   |
